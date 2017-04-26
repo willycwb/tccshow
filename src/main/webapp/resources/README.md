@@ -4,6 +4,7 @@ Introduction
 ![Bower version](https://img.shields.io/bower/v/adminlte.svg)
 [![npm version](https://img.shields.io/npm/v/admin-lte.svg)](https://www.npmjs.com/package/admin-lte)
 [![Packagist](https://img.shields.io/packagist/v/almasaeed2010/adminlte.svg)](https://packagist.org/packages/almasaeed2010/adminlte)
+[![CDNJS](https://img.shields.io/cdnjs/v/admin-lte.svg)](https://cdnjs.com/libraries/admin-lte)
 
 **AdminLTE** -- is a fully responsive admin template. Based on **[Bootstrap 3](https://github.com/twbs/bootstrap)** framework. Highly customizable and easy to use. Fits many screen resolutions from small mobile devices to large desktops. Check out the live preview now and see for yourself.
 
@@ -11,10 +12,9 @@ Introduction
 
 Looking for Premium Templates?
 ------------------------------
-**Almsaeed studio just opened a new premium templates page. Hand picked to insure the best quality and the most affordable prices. Visit https://almsaeedstudio.com/premium for more information.**
+**Almsaeed studio just opened a new premium templates website. Hand picked to ensure the best quality and the most affordable prices. Visit https://themequarry.com for more information.**
 
-
-!["AdminLTE Presentation"] (https://almsaeedstudio.com/AdminLTE2.png "AdminLTE Presentation")
+!["AdminLTE Presentation"](https://almsaeedstudio.com/AdminLTE2.png "AdminLTE Presentation")
 
 **AdminLTE** has been carefully coded with clear comments in all of its JS, LESS and HTML files. LESS has been used to increase code customizability.
 
@@ -22,11 +22,11 @@ Installation
 ------------
 There are multiple ways to install AdminLTE.
 
-####Download:
+#### Download:
 
 Download from Github or [visit Almsaeed Studio](https://almsaeedstudio.com) and download the latest release.
 
-####Using The Command Line:
+#### Using The Command Line:
 
 **Github**
 
@@ -102,7 +102,7 @@ AdminLTE 1.x can be easily upgraded to 2.x using [this guide](https://almsaeedst
 
 Change log
 ----------
-**For the most recent change log, visit the [releases page](https://github.com/almasaeed2010/AdminLTE/releases) or the [changelog file](https://github.com/almasaeed2010/AdminLTE/blob/master/changelog).** We will add a detailed release notes to each new release. 
+**For the most recent change log, visit the [releases page](https://github.com/almasaeed2010/AdminLTE/releases) or the [changelog file](https://github.com/almasaeed2010/AdminLTE/blob/master/changelog.md).** We will add a detailed release notes to each new release. 
 
 Image Credits
 -------------

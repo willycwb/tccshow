@@ -2,16 +2,16 @@ package br.com.arguments.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="EVENTOS")
@@ -31,7 +31,8 @@ public class EventoEntity implements Serializable {
 	@Column(name="NUM_IMAGEM", nullable=true)
 	private int numImagem;
 	
-	@Column(name="NUM_CURSO", nullable=true)
+	@ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="NUM_CURSO")
 	private CursosEntity numCurso;
 	
 	@Column(name="IMAGEM", nullable=true)
@@ -43,9 +44,8 @@ public class EventoEntity implements Serializable {
     @Column(name = "DATA_EVENTO")
     private Timestamp dataInicio;
 	
-	@Temporal(TemporalType.DATE)
     @Column(name = "DATA_CRIACAO")
-    private Date dataCriacao;
+    private Timestamp dataCriacao;
 
 	public int getId() {
 		return id;
@@ -67,11 +67,11 @@ public class EventoEntity implements Serializable {
 		return dataInicio;
 	}
 
-	public Date getDataCriacao() {
+	public Timestamp getDataCriacao() {
 		return dataCriacao;
 	}
 
-	public void setDataCriacao(Date dataCriacao) {
+	public void setDataCriacao(Timestamp dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
 

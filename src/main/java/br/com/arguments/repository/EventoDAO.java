@@ -1,6 +1,5 @@
 package br.com.arguments.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -39,20 +38,20 @@ public class EventoDAO extends BaseDAO {
 		 return getManager().merge(event);
 	}
 //	
-//	public void update(EventoEntity entity) {
-//		Query query = getManager().createQuery("UPDATE EventoEntity SET nome = :nome, dataInicio = :dataInicio, dataFinal = :dataFinal " + " WHERE id = :id ");
-//		query.setParameter("id", entity.getId());
-//		query.setParameter("nome", entity.getNome());
-//		query.setParameter("dataInicio", entity.getDataInicio());
-//		query.setParameter("dataFinal", entity.getDataFinal());
-//		query.executeUpdate();
-//	}
+	public void update(EventoEntity entity) {
+		Query query = getManager().createQuery("UPDATE EventoEntity SET nome = :nome, descricao = :desc, dataInicio = :dataInicio " + " WHERE id = :id ");
+		query.setParameter("id", entity.getId());
+		query.setParameter("nome", entity.getNome());
+		query.setParameter("desc", entity.getDescricao());
+		query.setParameter("dataInicio", entity.getDataInicio());
+		query.executeUpdate();
+	}
 //	
-//	public void remove(EventoEntity entity){
-//		Query query = getManager().createQuery("DELETE EventoEntity WHERE id = :id ");
-//		query.setParameter("id", entity.getId());
-//		query.executeUpdate();
-//	}
+	public void remove(EventoEntity entity){
+		Query query = getManager().createQuery("DELETE EventoEntity WHERE id = :id ");
+		query.setParameter("id", entity.getId());
+		query.executeUpdate();
+	}
 //	
 //	public void cancelParticipacaoEvent(EventoEntity evento,UsuarioEntity user){
 //		Query query = getManager().createQuery("DELETE UsuarioEventoEntity WHERE idUsuarioEntity = :idUsuarioEntity "

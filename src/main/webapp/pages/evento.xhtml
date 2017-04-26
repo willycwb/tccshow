@@ -7,28 +7,28 @@
 	<ui:define name="menu">
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
-			<h1>Evento</h1>
+			<h1>Cadastro de Evento</h1>
 			<ol class="breadcrumb">
 				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
 				<li class="active">Evento</li>
 			</ol>
 		</section>
-		<section class="content">
+		<h:form id="form1" enctype="multipart/form-data">
+			<section class="content">
 
-			<div class="box box-default">
+				<div class="box box-default">
 
-				<div class="box-header with-border">
-					<h3 class="box-title">Cadastro de Evento</h3>
+					<div class="box-header with-border">
+						<h3 class="box-title">Cadastro de Evento</h3>
 
-					<div class="box-tools pull-right">
-						<button type="button" class="btn btn-box-tool"
-							data-widget="collapse">
-							<i class="fa fa-minus"></i>
-						</button>
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"
+								data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
 					</div>
-				</div>
 
-				<h:form id="form1" enctype="multipart/form-data">
 					<div class="box-body">
 						<div class="row">
 							<div class="col-md-12">
@@ -46,7 +46,8 @@
 													<div class="col-sm-7">
 														<p:inputText class="form-control" id="idNome"
 															placeholder="Nome do Evento" required="true"
-															requiredMessage="Campo Nome Obrigatório." title="Nome do Evento a ser cadastrado"
+															requiredMessage="Campo Nome Obrigatório."
+															title="Nome do Evento a ser cadastrado"
 															value="#{eventoManager.dto.nome}" />
 														<p:tooltip id="toolTipFocus" for="idNome"
 															showEvent="focus" hideEvent="blur" />
@@ -66,22 +67,23 @@
 														<h:outputText id="display" />
 													</div>
 												</div>
-												
-<!-- 												CURSO -->
+
+												<!-- 												CURSO -->
 												<div class="form-group has-feedback">
 													<p:outputLabel for="idDesc"
-															class="col-sm-2 form-control-prime"
-															value="Curso" />
-													
+														class="col-sm-2 form-control-prime" value="Curso" />
+
 													<div class="col-sm-7">
 														<h:selectOneMenu id="idCursos" styleClass="form-control"
-																value="#{eventoManager.cursoSelecionado}">
+															required="true"
+															requiredMessage="Ao menos um curso precisa ser selecionado."
+															value="#{eventoManager.cursoSelecionado}">
 															<f:selectItem itemLabel="-- Selecione --" itemValue=""
 																noSelectionOption="" />
 															<f:selectItems var="curso" itemLabel="#{curso.nome}"
 																itemValue="#{curso.id}"
 																value="#{eventoManager.listaCursos}" />
-														</h:selectOneMenu>						
+														</h:selectOneMenu>
 													</div>
 												</div>
 
@@ -114,7 +116,15 @@
 											<p:commandButton styleClass="btn btn-info pull-right"
 												id="idBotaCadEvento" value="Cadastrar"
 												action="#{eventoManager.cadastrarEvento}"
-												update="form1 idTabelaGroup" ajax="false" />
+												rendered="#{eventoManager.edit == false}"
+												update="form1 :form1:idTabelaGroup" ajax="false" />
+
+											<!-- BOTAO SALVAR UM EVENTO QUANDO EDITADO -->
+											<p:commandButton styleClass="btn btn-info pull-right"
+												id="idBotaEditEvento" value="Salvarr"
+												action="#{eventoManager.saveEventoEdit}"
+												rendered="#{eventoManager.edit == true}"
+												update=":form1:idCadastroGroup" ajax="false" />
 
 										</div>
 
@@ -124,88 +134,105 @@
 							</div>
 						</div>
 					</div>
-<!-- 				</h:form> -->
-<!-- 				<h:form id="form"> -->
+				</div>
+
+				<div class="box box-default">
+
+					<div class="box-header with-border">
+						<h3 class="box-title">Tabela de Evento</h3>
+
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"
+								data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
 
 					<div class="box-body">
-					
-					<div class="box">
-						<div class="box-header">
-							<h3 class="box-title">Data Table With Full Features</h3>
-						</div>
-						<!-- /.box-header -->
+
 						<div class="box-body">
 							<h:panelGroup id="idTabelaGroup">
-								<table id="tabelaArtigo"
+								<table id="tabelaEvento"
 									class="table table-bordered table-striped">
 									<thead>
 										<tr>
 											<th>Nome do Evento</th>
 											<th>Descricao</th>
-											<th>Visualizar</th>
-	
+											<th>Curso</th>
+											<th>Data de Inicio</th>
+											<th>Editar</th>
+											<th>Remover</th>
+
 										</tr>
 									</thead>
 									<tbody>
-										<ui:repeat value="#{eventoManager.listEvento}" var="artigo">
+										<ui:repeat value="#{eventoManager.listEvento}" var="evento">
 											<tr>
-												<td>#{artigo.nome}</td>
-												<td>#{artigo.descricao}</td>
-												<td>
-													<p:commandButton styleClass="btn btn-primary"
-														oncomplete="PF('artigoDialogInfoWid').show();"
-														icon="fa fa-search" title="Search" ajax="true"
-														action="#{artigoManager.setSelectedArtigo(artigo)}">
-													</p:commandButton>
-												</td>
-	
+												<td>#{evento.nome}</td>
+												<td>#{evento.descricao}</td>
+												<td>#{evento.numCurso.nome}</td>
+												<td>#{eventoManager.convertTimestampToString(evento.dataInicio)}</td>
+												<td><p:commandButton icon="fa fa-edit" title="Edit"
+														update="form1" ajax="true" process=":form1:idTabelaGroup"
+														action="#{eventoManager.editEvent(evento)}" /></td>
+												<td><p:commandButton process="@this"
+														oncomplete="PF('eventDialogDelWid').show();"
+														icon="fa fa-remove" title="Remove" ajax="true"
+														action="#{eventoManager.setSelectedEvent(evento)}">
+													</p:commandButton></td>
+
 											</tr>
 										</ui:repeat>
 									</tbody>
-	
+
 								</table>
 							</h:panelGroup>
 						</div>
-
-						<!-- MODAL PARA VISUALIZAR ARTIGO -->
-						<p:dialog header="Informações do Artigo"
-							widgetVar="artigoDialogInfoWid" id="artigoDialogInfo"
-							modal="true" width="300" height="200" showEffect="fade"
-							hideEffect="fade" resizable="false">
-							<p:outputPanel id="artigoDetailInfo" style="text-align:lefth;">
-								<p:panelGrid columns="2">
-									<f:facet name="header">
-										<h:outputText value="#{artigoManager.selectedArtigo.nome}" />
-									</f:facet>
-
-									<h:outputText value="Data Inicio" />
-									<h:outputText value="#{artigoManager.selectedArtigo.descricao}" />
-
-									<h:outputText value="Data Termino" />
-									<h:outputText value="#{artigoManager.selectedArtigo.status}" />
-
-								</p:panelGrid>
+						
+						<!-- MODAL PARA EXCLUSÃO DO EVENTO -->
+						<p:dialog header="Exclusão do Evento"
+							widgetVar="eventDialogDelWid" id="eventDialogDel" modal="true"
+							showEffect="fade" hideEffect="fade" resizable="true">
+							<p:outputPanel id="eventDetailDel" style="text-align:lefth;">
+								<div>
+									<h:outputText
+										value=" Deseja excluir o evento #{eventoManager.selectedEvent.nome}" />
+								</div>
+								<div>
+									<p:commandButton styleClass="btn btn-info pull-lefth"
+										id="idBotaRemEven" value="Sim"
+										ajax="false" update=":form1:idTabelaGroup"
+										action="#{eventoManager.setRemoveEvent}" >
+									</p:commandButton>
+									
+									<p:commandLink styleClass="btn btn-info pull-lefth"
+										update=":form1:idTabelaGroup" value="g" ajax="false"
+										action="#{eventoManager.setRemoveEvent}">
+									</p:commandLink>
+									
+									<p:commandButton styleClass="btn btn-info pull-lefth"
+										value="Não" onclick="PF('eventDialogDelWid').hide();" />
+								</div>
 							</p:outputPanel>
 						</p:dialog>
-
+						
 					</div>
-
-					</div>
-				</h:form>
-			</div>
-			<script>
-				$(function() {
-					$('#tabelaArtigo').DataTable({
-						"paging" : true,
-						"lengthChange" : true,
-						"searching" : true,
-						"ordering" : true,
-						"info" : true,
-						"autoWidth" : true
+				</div>
+				<script>
+					$(function() {
+						$('#tabelaEvento').DataTable({
+							"paging" : true,
+							"lengthChange" : true,
+							"searching" : true,
+							"ordering" : true,
+							"info" : true,
+							"autoWidth" : true
+						});
 					});
-				});
-			</script>
-		</section>
+				</script>
+			</section>
+		</h:form>
 
 	</ui:define>
 

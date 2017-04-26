@@ -20,6 +20,8 @@ public class EventoDTO {
 	private boolean ativo;
 	
     private String dataInicio;
+    
+    private Timestamp dataInicioStamp;
 	
     private Date dataCriacao;
     
@@ -95,6 +97,14 @@ public class EventoDTO {
 
 	public void setCurso(CursosEntity curso) {
 		this.curso = curso;
+	}
+
+	public Timestamp getDataInicioStamp() {
+		return dataInicioStamp;
+	}
+
+	public void setDataInicioStamp(Timestamp dataInicioStamp) {
+		this.dataInicioStamp = dataInicioStamp;
 	}
 	
 }

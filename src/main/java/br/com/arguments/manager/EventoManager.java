@@ -1,9 +1,11 @@
 package br.com.arguments.manager;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -26,7 +28,11 @@ import br.com.arguments.util.jsf.SessionUtil;
 public class EventoManager implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	private static final Logger LOG = Logger.getLogger(CadastroManager.class.getName());
+	
+	private static final String ERRO_01 = "ERRO";
+	
 	@EJB
 	private EventoService eventoService;
 	
@@ -69,49 +75,76 @@ public class EventoManager implements Serializable {
 	public void cadastrarEvento() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		EventoEntity event = new EventoEntity();
-		if ((!dto.getNome().isEmpty() && dto.getNome() != null) || dto.getDataInicio() != null) {
-			
-			for(CursosEntity item : listaCursos){
-				if(item.getId().equals(new Long(cursoSelecionado))){
-					dto.setCurso(item);
+		if ((!dto.getNome().isEmpty() && dto.getNome() != null)) {
+			if(validData()){
+				if(cursoSelecionado != null){
+					for(CursosEntity item : listaCursos){
+						if(item.getId().equals(new Long(cursoSelecionado))){
+							dto.setCurso(item);
+						}
+					}
+					
+					event = eventoService.insert(dto);
+					
+					timeLineService.insertEvent(event);
+					
+					posInit();
+					carregaLista();
+					context.addMessage(null, new FacesMessage("Sucesso", "Cadastrado com Sucesso"));
+				}else{
+					LOG.warning(ERRO_01 + " Nenhum curso selecionado! ");
+					context.addMessage(null, new FacesMessage(ERRO_01, "Nenhum curso selecionado!"));
 				}
+			}else{
+				LOG.warning(ERRO_01 + " Nenhum curso selecionado! "); //data errada
+				context.addMessage(null, new FacesMessage(ERRO_01, "Nenhum curso selecionado!"));
 			}
-			
-			event = eventoService.insert(dto);
-			
-			timeLineService.insertEvent(event);
-			
-			posInit();
-			carregaLista();
-			context.addMessage(null, new FacesMessage("que ota", "Cadastrado com Sucesso"));
 		} else {
-//			LOG.warning(ERRO_01 + " Campos Sem preencher! ");
-//			context.addMessage(null, new FacesMessage(ERRO_01, "Campos Sem preencher!"));
+			LOG.warning(ERRO_01 + " Campos Sem preencher! ");
+			context.addMessage(null, new FacesMessage(ERRO_01, "Campos Sem preencher!"));
 		}
 	}
 	
-	public String removeEvent() {
-//		eventoService.remove(selectedEvent);
+	private boolean validData(){
+		if(dto.getDataInicio() != null){
+			try{
+			    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+			    Date parsedDate = dateFormat.parse(dto.getDataInicio());
+			    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+			    dto.setDataInicioStamp(timestamp);
+			    return true;
+			}catch(Exception e){//this generic but you can control another types of exception
+				e.printStackTrace();
+				return false;
+			}
+		}else{
+			return false;
+		}
+		
+	}
+	
+	public String setRemoveEvent() {
+		eventoService.remove(selectedEvent);
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage("Sucesso", "AOISDJAIOSDJOAIsj"));
 		return "evento.xhtml?faces-redirect=true";
 	}
 
 	public void editEvent(EventoEntity entity) {
-//		if (entity != null) {
-//			dto = new EventoDTO();
-//			dto.setId(Long.valueOf(entity.getId()));
-//			dto.setNome(entity.getNome());
-//			dto.setDataCriacao(entity.getDataCriacao());
-////			dto.setDataFinal(convertDateToString(entity.getDataFinal()));
-//			dto.setDataInicio(convertDateToString(entity.getDataInicio()));
-//			dto.setAtivo(entity.isAtivo());
-//			edit = true;
-//			tabindex = new Long("0");
-//		} else {
-//			FacesContext context = FacesContext.getCurrentInstance();
-//			context.addMessage(null, new FacesMessage("ERRO", "Evento em branco"));
-//		}
+		if (entity != null) {
+			dto = new EventoDTO();
+			dto.setId(entity.getId());
+			dto.setNome(entity.getNome());
+			dto.setDescricao(entity.getDescricao());
+			dto.setDataCriacao(entity.getDataCriacao());
+			cursoSelecionado = entity.getNumCurso().getId().intValue();
+			dto.setDataInicio(convertoCompleteTimestampToString(entity.getDataInicio()));
+			dto.setAtivo(entity.isAtivo());
+			edit = true;
+		} else {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage("ERRO", "Evento em branco"));
+		}
 	}
 
 	public String convertDateToString(Date data) {
@@ -121,21 +154,50 @@ public class EventoManager implements Serializable {
 		}
 		return null;
 	}
+	
+	public String convertTimestampToString(Timestamp data){
+		return new SimpleDateFormat("dd/MM/yyyy").format(data);
+	}
+	
+	private String convertoCompleteTimestampToString(Timestamp data){
+		return new SimpleDateFormat("dd/MM/yyyy hh:mm").format(data);
+	}
+	
+	public void selecionaEvento(EventoEntity evento){
+		this.selectedEvent = evento;
+	}
 
-	public String saveEdit() {
-//		if (edit) {
-//			FacesContext context = FacesContext.getCurrentInstance();
-//			if ((!dto.getNome().isEmpty() && dto.getNome() != null) || dto.getDataInicio() != null
-//					|| dto.getDataFinal() != null) {
-////				eventoService.update(dto);
-//				context.addMessage(null, new FacesMessage(ERRO_01, "Cadastrado com Sucesso"));
-//			} else {
-//				LOG.warning(ERRO_01 + " Campos Sem preencher! ");
-//				context.addMessage(null, new FacesMessage(ERRO_01, "Campos Sem preencher!"));
-//				return null;
+	public void saveEventoEdit() {
+		FacesContext context = FacesContext.getCurrentInstance();
+//		EventoEntity event = new EventoEntity();
+//		if ((!dto.getNome().isEmpty() && dto.getNome() != null)) {
+//			if(validData()){
+//				if(cursoSelecionado != null){
+//					for(CursosEntity item : listaCursos){
+//						if(item.getId().equals(new Long(cursoSelecionado))){
+//							dto.setCurso(item);
+//						}
+//					}
+//					
+//					event = eventoService.insert(dto);
+//					
+//					timeLineService.insertEvent(event);
+//					
+//					posInit();
+//					carregaLista();
+//					context.addMessage(null, new FacesMessage("Sucesso", "Cadastrado com Sucesso"));
+//				}else{
+//					LOG.warning(ERRO_01 + " Nenhum curso selecionado! ");
+//					context.addMessage(null, new FacesMessage(ERRO_01, "Nenhum curso selecionado!"));
+//				}
+//			}else{
+//				LOG.warning(ERRO_01 + " Nenhum curso selecionado! "); //data errada
+//				context.addMessage(null, new FacesMessage(ERRO_01, "Nenhum curso selecionado!"));
 //			}
+//		} else {
+//			LOG.warning(ERRO_01 + " Campos Sem preencher! ");
+//			context.addMessage(null, new FacesMessage(ERRO_01, "Campos Sem preencher!"));
 //		}
-		return "evento.xhtml?faces-redirect=true";
 	}
 	
 	private void carregaLista() {

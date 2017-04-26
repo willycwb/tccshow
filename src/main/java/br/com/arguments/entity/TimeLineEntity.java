@@ -1,13 +1,17 @@
 package br.com.arguments.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,18 +28,19 @@ public class TimeLineEntity implements Serializable {
 	@Column(name="TIPO_CONTEUDO")
 	private int tipoConteudo;
 	
-	@Column(name="ID_TIPO_CONTEUDO_EVENTO")
+	@ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="ID_TIPO_CONTEUDO_EVENTO")
 	private TipoConteudoEventoEntity idTipoConteudoEvento;
 	
-	@Column(name="ID_TIPO_CONTEUDO_DEBATE")
+	@ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="ID_TIPO_CONTEUDO_DEBATE")
 	private TipoConteudoDebateEntity idTipoConteudoDebate;
 	
 	@Column(name="ID_CURSO", nullable=true)
 	private int idCurso;
 	
-	@Temporal(TemporalType.DATE)
     @Column(name = "DATA_CRIACAO")
-    private Date dataCriacao;
+    private Timestamp dataCriacao;
 
 	public int getId() {
 		return id;
@@ -61,11 +66,11 @@ public class TimeLineEntity implements Serializable {
 		this.idCurso = idCurso;
 	}
 
-	public Date getDataCriacao() {
+	public Timestamp getDataCriacao() {
 		return dataCriacao;
 	}
 
-	public void setDataCriacao(Date dataCriacao) {
+	public void setDataCriacao(Timestamp dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
 

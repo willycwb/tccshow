@@ -1,6 +1,7 @@
 package br.com.arguments.service;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class TimeLineService {
 		TimeLineEntity tl = new TimeLineEntity();
 		tl.setIdCurso(event.getNumCurso().getId().intValue());
 		tl.setIdTipoConteudoEvento(tpEntity);
-		tl.setDataCriacao(new Timestamp(2015, 11, 25, 20, 15, 35, 10));
+		tl.setDataCriacao(dataAtual());
 		tl.setTipoConteudo(1);
 		
 		TimeLineEntity tlEntity = timeLineDAO.insert(tl);
@@ -60,12 +61,26 @@ public class TimeLineService {
 		//tl.setIdCurso(debate.getCurso().getId().intValue());//show vai mudar
 		tl.setIdCurso(1);
 		tl.setIdTipoConteudoDebate(tpEntity);
-		tl.setDataCriacao(new Timestamp(2015, 11, 25, 20, 15, 35, 10));
+		tl.setDataCriacao(dataAtual());
 		tl.setTipoConteudo(2);
 		
 		TimeLineEntity tlEntity = timeLineDAO.insert(tl);
 		
 		return tlEntity;
+	}
+	
+	public Timestamp dataAtual(){
+		try{
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+			String dataAtual = format.format(new Date());
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		    Date parsedDate = dateFormat.parse(dataAtual.toString());
+		    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+		    return timestamp;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 }

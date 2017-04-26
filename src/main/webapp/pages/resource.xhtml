@@ -55,7 +55,14 @@
 <f:view contentType="text/html" />
 <h:body>
 
-	<p:growl id="mensagens" showDetail="true" sticky="true" />
+	<p:growl id="mensagens" showDetail="false" sticky="false" globalOnly="true" autoUpdate="false"
+                     life="15000" />
+	
+<!-- 	<p:growl id="user-feedback" -->
+<!--                      globalOnly="false" -->
+<!--                      autoUpdate="true" -->
+<!--                      life="30000" /> -->
+                     
 	<ui:insert name="main" />
 
 	<!-- jQuery 2.2.3 -->

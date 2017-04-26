@@ -1,5 +1,6 @@
 package br.com.arguments.service;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,8 +39,8 @@ public class EventoService {
 		evento.setNome(dto.getNome());
 		evento.setDescricao(dto.getDescricao());
 		evento.setNumCurso(dto.getCurso());
-//		evento.setDataInicio(convertStringToDate(dto.getDataInicio()));
-		evento.setDataCriacao(new Date());
+		evento.setDataInicio(dto.getDataInicioStamp());
+		evento.setDataCriacao(dataAtual());
 		evento.setAtivo(true);
 //		if (dto.isImagem()) { 
 //			evento.setCaminho(dto.getCaminho());
@@ -60,9 +61,9 @@ public class EventoService {
 //		return null;
 //	}
 //	
-//	public void remove(EventoEntity entity){
-//		eventoDAO.remove(entity);
-//	}
+	public void remove(EventoEntity entity){
+		eventoDAO.remove(entity);
+	}
 //	
 //	public boolean verifyParticipacao(EventoEntity evento, UsuarioEntity user){
 //		return eventoDAO.verifyParticipacao(evento, user);
@@ -76,17 +77,16 @@ public class EventoService {
 //		eventoDAO.cancelParticipacaoEvent(evento,user);
 //	}
 //	
-//	public void update(EventoDTO dto){
-//		EventoEntity evento = new EventoEntity();
-//		evento.setId(dto.getId().intValue());
-//		evento.setNome(dto.getNome());
-//		evento.setDescricao(dto.getDescricao());
-//		evento.setDataInicio(convertStringToDate(dto.getDataInicio()));
-//		evento.setDataFinal(convertStringToDate(dto.getDataFinal()));
-//		evento.setDataCriacao(new Date());
-//		evento.setAtivo(true);
-//		eventoDAO.update(evento);
-//	}
+	public void update(EventoDTO dto){
+		EventoEntity evento = new EventoEntity();
+		evento.setId(dto.getId());
+		evento.setNome(dto.getNome());
+		evento.setDescricao(dto.getDescricao());
+		evento.setDataInicio(dto.getDataInicioStamp());
+		evento.setDataCriacao(dataAtual());
+		evento.setAtivo(true);
+		eventoDAO.update(evento);
+	}
 //	
 //	public List<EventoEntity> pesquisaEvento(String nome){
 //		return eventoDAO.pesquisaEvento(nome);
@@ -101,6 +101,20 @@ public class EventoService {
 //	}
 	public List<CursosEntity> findAllCursos() {
 		return eventoDAO.findAllCursos();
+	}
+	
+	public Timestamp dataAtual(){
+		try{
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+			String dataAtual = format.format(new Date());
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		    Date parsedDate = dateFormat.parse(dataAtual.toString());
+		    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+		    return timestamp;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	
