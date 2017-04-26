@@ -1,0 +1,178 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+	<ui:define name="menu">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>Grupos</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
+				<li class="active">Grupos</li>
+			</ol>
+		</section>
+
+		<section class="content">
+
+			<div class="box box-default">
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Criar Grupo</h3>
+
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool"
+							data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				<h:form id="form" enctype="multipart/form-data">
+					<p:growl id="mensagens" showDetail="true" sticky="true" />
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+
+										<p:tab title="Criar Grupo">
+
+											<h:panelGroup id="idCadastroGroup">
+
+												<div class="form-horizontal">
+													<div class="box-body">
+														<div class="form-group">
+															<p:outputLabel for="idNome"
+																class="col-sm-2 form-control-prime"
+																value="Nome do Grupo" />
+
+															<div class="col-sm-7">
+																<p:inputText class="form-control" id="idNome"
+																	placeholder="Nome do Grupo" required="true"
+																	requiredMessage="Campo Nome Obrigatório."
+																	value="#{gruposManager.gruposDTO.nomeGrupo}" />
+
+															</div>
+														</div>
+													</div>
+												</div>
+
+											</h:panelGroup>
+											
+											<h:panelGroup>
+
+												<div class="form-horizontal">
+													<div class="box-body">
+														<div class="form-group">
+															<p:outputLabel for="idNome"
+																class="col-sm-2 form-control-prime"
+																value="Privacidade" />
+
+															<div class="col-sm-7">
+																<p:inputText class="form-control" id="idPrivacidae"
+																	placeholder="Privacidade do Grupo" required="true"
+																	requiredMessage="Campo Privacidade Obrigatório."
+																	value="#{gruposManager.gruposDTO.privacidade}" />
+
+															</div>
+														</div>
+													</div>
+												</div>
+
+											</h:panelGroup>
+
+
+											<h:panelGroup>
+
+												<div class="form-group">
+													<div class="form-group">
+														<p:outputLabel for="idNome"
+															class="col-sm-2 form-control-prime" value=" Curso " />
+
+													</div>
+													<div class="col-sm-4">
+														<h:selectOneMenu id="menu" label="CURSO" filter="true"
+															filterMatchMode="startsWith"
+															value="#{gruposManager.gruposDTO.curso}"
+															style="width:183%;height:30px;">
+															<f:selectItem itemLabel="Selecione..."
+																noSelectionOption="" itemValue="" />
+															<f:selectItems var="area" itemLabel="#{area.nome}"
+																itemValue="#{area.id}" value="#{gruposManager.gruposDTO.curso}" />
+														</h:selectOneMenu>														
+
+
+													</div>
+												</div>																						
+
+											</h:panelGroup>
+											
+									</p:tab>	
+									
+									<p:commandButton styleClass="btn btn-info pull-right"
+												id="idBotaCadEvento" value="Cadastrar"
+												action="#{gruposManager.criaGrupo()}"
+												update="form1 idTabelaGroup" ajax="false" />								
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="box">
+						<div class="box-header">
+							<h3 class="box-title">Grupos Cadastrados</h3>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body">
+							<table id="tabelaArtigo"
+								class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>Nome Grupo</th>
+										<th>Privacidade</th>
+										<th><center>Curso</center></th>										
+
+									</tr>
+								</thead>
+								<tbody>
+									<ui:repeat value="#{gruposManager.listaGrupos}" var="artigo">
+										<tr>
+											<td>#{artigo.nome}</td>
+											<td>#{artigo.privacidade}</td>
+											<td>#{artigo.curso}</td>
+											
+
+										</tr>
+									</ui:repeat>
+								</tbody>
+
+								<tfoot>
+									<tr>
+									<td>#{artigo.nome}</td>
+									<td>#{artigo.privacidade}</td>
+									<td>#{artigo.curso}</td>
+
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+				</h:form>
+			</div>
+			<script>
+				$(function() {
+					$('#tabelaArtigo').DataTable({
+						"paging" : true,
+						"lengthChange" : true,
+						"searching" : true,
+						"ordering" : true,
+						"info" : true,
+						"autoWidth" : true
+					});
+				});
+			</script>
+		</section>
+	</ui:define>
+
+</ui:composition>
