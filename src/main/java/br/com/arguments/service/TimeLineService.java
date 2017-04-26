@@ -58,7 +58,7 @@ public class TimeLineService {
 		TipoConteudoDebateEntity tpEntity = timeLineDAO.insertTipoConteudoDebate(tpd);
 		
 		TimeLineEntity tl = new TimeLineEntity();
-		//tl.setIdCurso(debate.getCurso().getId().intValue());//show vai mudar
+//		tl.setIdCurso(debate.getCurso().getId().intValue());
 		tl.setIdCurso(1);
 		tl.setIdTipoConteudoDebate(tpEntity);
 		tl.setDataCriacao(dataAtual());

@@ -1,7 +1,9 @@
 package br.com.arguments.manager;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,8 +13,10 @@ import javax.faces.bean.ViewScoped;
 
 import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.entity.TimeLineEntity;
+import br.com.arguments.entity.TipoConteudoDebateEntity;
 import br.com.arguments.entity.TipoConteudoEventoEntity;
 import br.com.arguments.entity.UsuarioEntity;
+import br.com.arguments.filter.TimeLineFilter;
 import br.com.arguments.service.TimeLineService;
 import br.com.arguments.util.jsf.SessionUtil;
 
@@ -43,11 +47,44 @@ public class TimeLineManager implements Serializable {
 		
 		listaIdConteudoEvento = new ArrayList<>();
 		
-//		for(TimeLineEntity item : timeLineLista){
-//			if(item.getTipoConteudo() == 1){
-//				listaIdConteudoEvento.add(item.getIdTipoConteudo());
-//			}
-//		}
+		List<TimeLineFilter> filter = new ArrayList<>();
+		
+		HashMap<Timestamp, List<TimeLineFilter>> map = new HashMap<>();
+		
+		Timestamp key = null;
+		
+		List<TipoConteudoEventoEntity> evento = null;
+		List<TipoConteudoDebateEntity> debate = null;
+		TimeLineFilter time = null;
+		
+		for(TimeLineEntity item : timeLineLista){
+			key = item.getDataCriacao();
+			
+			if(map.containsKey(key)){
+				
+				
+
+				
+				
+			}else{
+				
+				if(item.getTipoConteudo() == 1){
+					evento = new ArrayList<>();
+					evento.add(item.getIdTipoConteudoEvento());
+				}else if(item.getTipoConteudo() == 2){
+					debate = new ArrayList<>();
+					debate.add(item.getIdTipoConteudoDebate());
+				}
+				
+				time = new TimeLineFilter();
+				
+				time.setData(item.getDataCriacao());
+				time.setListaDebate(debate);
+				time.setListaEvento(evento);
+				
+				map.put(key, filter);
+			}
+		}
 //		
 //		if(listaIdConteudoEvento.size() > 0){
 //			consultaTipoConteudoEvento();
