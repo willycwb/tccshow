@@ -10,284 +10,234 @@
 			<h1>Debate</h1>
 			<ol class="breadcrumb">
 				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
-				<li class="active">Debate viado</li>
+				<li class="active">Debate</li>
 			</ol>
 		</section>
 
-		<section class="content">
+		<h:form id="formRegister">
+			<section class="content">
 
-			<div class="box box-default">
+				<div class="box box-default">
 
-				<div class="box-header with-border">
-					<h3 class="box-title">Criar Debate</h3>
+					<div class="box-header with-border">
+						<h3 class="box-title">Cadastro de Debate</h3>
 
-					<div class="box-tools pull-right">
-						<button type="button" class="btn btn-box-tool"
-							data-widget="collapse">
-							<i class="fa fa-minus"></i>
-						</button>
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"
+								data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
 					</div>
-				</div>
-				<h:form id="formRegister" >
-					<p:growl id="mensagens" showDetail="true" sticky="true" />
+
 					<div class="box-body">
 						<div class="row">
 							<div class="col-md-12">
 								<div class="form-group">
-											<h:panelGroup id="idCadastroGroup">
+									<h:panelGroup id="idCadastroGroup">
 
-												<div class="form-horizontal">
-													<div class="box-body">
-														<div class="form-group">
-															<p:outputLabel for="idNome"
-																class="col-sm-2 form-control-prime"
-																value="Nome do Debate" />
-
-															<div class="col-sm-7">
-																<p:inputText class="form-control" id="idNome"
-																	placeholder="Nome do Debate" required="true"
-																	requiredMessage="Campo Nome Obrigatório."
-																	value="#{debateManager.debateDTO.nomeDebate}" />
-
-															</div>
-														</div>
-													</div>
-												</div>
-
-											</h:panelGroup>
-											
-											<h:panelGroup>
-
-												<div class="form-horizontal">
-													<div class="box-body">
-														<div class="form-group">
-															<p:outputLabel for="idNome"
-																class="col-sm-2 form-control-prime"
-																value="Tema do Debate" />
-
-															<div class="col-sm-7">
-																<p:inputText class="form-control"
-																	placeholder="tema do Debate" required="true"
-																	requiredMessage="Campo Nome Obrigatório."
-																	value="#{debateManager.debateDTO.temaDebate}" />
-
-															</div>
-														</div>
-													</div>
-												</div>
-
-											</h:panelGroup>
-											
-											<h:panelGroup>
-
-												<div class="form-horizontal">
-													<div class="box-body">
-														<div class="form-group">
-															<p:outputLabel for="idNome"
-																class="col-sm-2 form-control-prime"
-																value="Data de Abertura" />
-
-															<div class="col-sm-7">
-															
-																									
-																													
-															 <p:inputMask id="idDataAbertura" mask="99/99/9999"
-															 required="true"																										 
-															 value="#{debateManager.debateDTO.dataCriacao}" />
-															</div>
-														</div>
-													</div>
-												</div>
-
-											</h:panelGroup>											
-											
-											<h:panelGroup>
-
-												<div class="form-horizontal">
-													<div class="box-body">
-														<div class="form-group">
-															<p:outputLabel for="idNome"
-																class="col-sm-2 form-control-prime"
-																value="Data de Fechamento" />
-
-															<div class="col-sm-7">
-															 <p:inputMask id="idDataFechamento" mask="99/99/9999"
-															 required="true"															 
-															 value="#{debateManager.debateDTO.dataFechamento}" />															
-																
-
-															</div>
-														</div>
-													</div>
-												</div>
-
-											</h:panelGroup>
-											
-											<div class="form-group">
+										<div class="form-horizontal">
+											<div class="box-body">
+												<div class="form-group">
 													<p:outputLabel for="idNome"
-														class="col-sm-2 form-control-prime" value="Instituição e Curso" />
-														<h:selectOneMenu id="idInituicoes" styleClass="form-control"
-									value="#{debateManager.instituicaoSelecionada}">
-									<f:selectItem itemLabel="-- Selecione --" itemValue=""
-										noSelectionOption="" />
-									<f:selectItems var="inst" itemLabel="#{inst.nome}"
-										itemValue="#{inst.id}"
-										value="#{debateManager.listaInstituicao}" />
-									<p:ajax event="change" update="lsCursos" listener="#{debateManager.buscaCursosInstituicao()}"
-										resetValues="true" />
-									</h:selectOneMenu>	
+														class="col-sm-2 form-control-prime" value="Nome do Debate" />
+
 													<div class="col-sm-7">
-														
+														<p:inputText class="form-control" id="idNome"
+															placeholder="Nome do Debate" required="true"
+															requiredMessage="Campo Nome Obrigatório."
+															value="#{debateManager.debateDTO.nomeDebate}" />
+
 													</div>
 												</div>
-									<h:panelGroup id="lsCursos" >	
-																	
-							<div class="form-group has-feedback">							
-								<h:selectOneMenu id="idCursos" styleClass="form-control" rendered="#{debateManager.instituicaoSelecionada ne null}"
-										value="#{debateManager.cursoSelecionado}">
-										<f:selectItem itemLabel="-- Selecione --" itemValue=""
-											noSelectionOption="" />
-										<f:selectItems var="curso" itemLabel="#{curso.nome}"
-											itemValue="#{curso.id}"
-											value="#{debateManager.listaCursos}" />
-									</h:selectOneMenu>						
-							</div>
-						</h:panelGroup>
+											</div>
+										</div>
+
+									</h:panelGroup>
+
+									<h:panelGroup>
+
+										<div class="form-horizontal">
+											<div class="box-body">
+												<div class="form-group">
+													<p:outputLabel for="idNome"
+														class="col-sm-2 form-control-prime" value="Tema do Debate" />
+
+													<div class="col-sm-7">
+														<p:inputText class="form-control"
+															placeholder="tema do Debate" required="true"
+															requiredMessage="Campo Nome Obrigatório."
+															value="#{debateManager.debateDTO.temaDebate}" />
+
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</h:panelGroup>
+
+									<h:panelGroup>
+
+										<div class="form-horizontal">
+											<div class="box-body">
+												<div class="form-group">
+													<p:outputLabel for="idNome"
+														class="col-sm-2 form-control-prime"
+														value="Data de Abertura" />
+
+													<div class="col-sm-7">
 
 
-<!-- 											<h:panelGroup> -->
 
-<!-- 												<div class="form-group"> -->
-<!-- 													<div class="form-group"> -->
-<!-- 														<p:outputLabel for="idNome" -->
-<!-- 															class="col-sm-2 form-control-prime" value=" Curso Alvo" /> -->
+														<p:inputMask id="idDataAbertura" mask="99/99/9999 99:99"
+															required="true"
+															value="#{debateManager.debateDTO.dataCriacao}" />
+													</div>
+												</div>
+											</div>
+										</div>
 
-<!-- 													</div> -->
-<!-- 													<div class="col-sm-4"> -->
-<!-- 														<h:selectOneMenu id="idCursos" label="CURSO" filter="true" -->
-<!-- 															filterMatchMode="startsWith" -->
-<!-- 															value="#{debateManager.cursoSelecionado}" -->
-<!-- 															style="width:183%;height:30px;"> -->
-<!-- 															<f:selectItem itemLabel="Selecione..." -->
-<!-- 																noSelectionOption="" itemValue="" /> -->
-<!-- 															<f:selectItems var="curso" itemLabel="#{curso.nome}" -->
-<!-- 																itemValue="#{curso.id}" value="#{debateManager.listaCursos}" /> -->
-<!-- 														</h:selectOneMenu> -->
+									</h:panelGroup>
 
-<!-- 													</div> -->
-<!-- 												</div> -->
+									<h:panelGroup>
 
-<!-- 											</h:panelGroup> -->
+										<div class="form-horizontal">
+											<div class="box-body">
+												<div class="form-group">
+													<p:outputLabel for="idNome"
+														class="col-sm-2 form-control-prime"
+														value="Data de Fechamento" />
 
-											<br></br>
-											<br></br>
-											<br></br>
-											<br></br>
+													<div class="col-sm-7">
+														<p:inputMask id="idDataFechamento" mask="99/99/9999 99:99"
+															required="true"
+															value="#{debateManager.debateDTO.dataFechamento}" />
 
 
-											<br></br>
-											<br></br>
-											<br></br>
-											<br></br>
-										
-									
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</h:panelGroup>
+
+									<div class="form-group has-feedback">
+										<p:outputLabel for="idCursos"
+											class="col-sm-2 form-control-prime" value="Curso" />
+
+										<div class="col-sm-7">
+											<h:selectOneMenu id="idCursos" styleClass="form-control"
+												required="true"
+												requiredMessage="Ao menos um curso precisa ser selecionado."
+												value="#{debateManager.cursoSelecionado}">
+												<f:selectItem itemLabel="-- Selecione --" itemValue=""
+													noSelectionOption="" />
+												<f:selectItems var="curso" itemLabel="#{curso.nome}"
+													itemValue="#{curso.id}"
+													value="#{debateManager.listaInstituicao}" />
+											</h:selectOneMenu>
+										</div>
+									</div>
 
 								</div>
 							</div>
 						</div>
-						<p:commandButton styleClass="btn btn-info pull-right"
-												id="idBotaCadEvento" value="Cadastrar"
-												action="#{debateManager.CriaDebate()}"
-												update="form1 idTabelaGroup" ajax="false" />
-						
-						
-					</div>
 
-									<div class="box-body">
-					
-					<div class="box">
-						<div class="box-header">
-							<h3 class="box-title">Data Table With Full Features</h3>
+						<div class="box-footer">
+							<p:commandButton styleClass="btn btn-info pull-right"
+								id="idBotaCadEvento" value="Cadastrar"
+								action="#{debateManager.CriaDebate()}"
+								update="form1 idTabelaGroup" ajax="false" />
 						</div>
-						<!-- /.box-header -->
-						<div class="box-body">
-							<h:panelGroup id="idTabelaGroup">
-								<table id="tabelaArtigo"
-									class="table table-bordered table-striped">
-									<thead>
-										<tr>
-											<th>Nome Debate</th>
-											<th>Tema</th>
-											<th>Curso</th>
-											<th>Instituicao</th>
-											<th>Data Abertura</th>
-											<th>Data Finalizacao</th>
-	
-										</tr>
-									</thead>
-									<tbody>
-										<ui:repeat value="#{debateManager.listaDebate}" var="artigo">
+
+					</div>
+				</div>
+				<div class="box box-default">
+
+					<div class="box-body">
+
+						<div class="box">
+							<div class="box-header">
+								<h3 class="box-title">Tabela de Debate</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<h:panelGroup id="idTabelaGroup">
+									<table id="tabelaArtigo"
+										class="table table-bordered table-striped">
+										<thead>
 											<tr>
-												<td>#{artigo.nome}</td>
-												<td>#{artigo.tema}</td>
-												<td>#{artigo.curso}</td>
-												<td>#{artigo.data_abertura}</td>
-												<td>#{artigo.data_fechamento}</td>
-												<td>
-													<p:commandButton styleClass="btn btn-primary"
-														oncomplete="PF('artigoDialogInfoWid').show();"
-														icon="fa fa-search" title="Search" ajax="true"
-														action="#{artigoManager.setSelectedArtigo(artigo)}">
-													</p:commandButton>
-												</td>
-	
+												<th>Nome Debate</th>
+												<th>Tema</th>
+												<th>Curso</th>
+												<th>Data Abertura</th>
+												<th>Data Finalizacao</th>
+												<th>Visualizar</th>
+
 											</tr>
-										</ui:repeat>
-									</tbody>
-	
-								</table>
-							</h:panelGroup>
+										</thead>
+										<tbody>
+											<ui:repeat value="#{debateManager.listaDebate}" var="debate">
+												<tr>
+													<td>#{debate.nome}</td>
+													<td>#{debate.tema}</td>
+													<td>#{debate.idCurso.nome}</td>
+													<td>#{debate.dataAbertura}</td>
+													<td>#{debate.dataFechamento}</td>
+													<td><p:commandButton styleClass="btn btn-primary"
+															oncomplete="PF('artigoDialogInfoWid').show();"
+															icon="fa fa-search" title="Search" ajax="true"
+															action="#{artigoManager.setSelectedArtigo(debate)}">
+														</p:commandButton></td>
+
+												</tr>
+											</ui:repeat>
+										</tbody>
+
+									</table>
+								</h:panelGroup>
+							</div>
+
+							<!-- MODAL PARA VISUALIZAR ARTIGO -->
+							<p:dialog header="Informações do Artigo"
+								widgetVar="artigoDialogInfoWid" id="artigoDialogInfo"
+								modal="true" width="300" height="200" showEffect="fade"
+								hideEffect="fade" resizable="false">
+								<p:outputPanel id="artigoDetailInfo" style="text-align:lefth;">
+									<p:panelGrid columns="2">
+										<f:facet name="header">
+											<h:outputText value="#{artigoManager.selectedArtigo.nome}" />
+										</f:facet>
+
+										<h:outputText value="Data Inicio" />
+										<h:outputText
+											value="#{artigoManager.selectedArtigo.descricao}" />
+
+										<h:outputText value="Data Termino" />
+										<h:outputText value="#{artigoManager.selectedArtigo.status}" />
+
+									</p:panelGrid>
+								</p:outputPanel>
+							</p:dialog>
+
 						</div>
 
-						<!-- MODAL PARA VISUALIZAR ARTIGO -->
-						<p:dialog header="Informações do Artigo"
-							widgetVar="artigoDialogInfoWid" id="artigoDialogInfo"
-							modal="true" width="300" height="200" showEffect="fade"
-							hideEffect="fade" resizable="false">
-							<p:outputPanel id="artigoDetailInfo" style="text-align:lefth;">
-								<p:panelGrid columns="2">
-									<f:facet name="header">
-										<h:outputText value="#{artigoManager.selectedArtigo.nome}" />
-									</f:facet>
-
-									<h:outputText value="Data Inicio" />
-									<h:outputText value="#{artigoManager.selectedArtigo.descricao}" />
-
-									<h:outputText value="Data Termino" />
-									<h:outputText value="#{artigoManager.selectedArtigo.status}" />
-
-								</p:panelGrid>
-							</p:outputPanel>
-						</p:dialog>
-
 					</div>
-
-					</div>
-				</h:form>
-			</div>
-			<script>
-				$(function() {
-					$('#tabelaArtigo').DataTable({
-						"paging" : true,
-						"lengthChange" : true,
-						"searching" : true,
-						"ordering" : true,
-						"info" : true,
-						"autoWidth" : true
+				</div>
+				<script>
+					$(function() {
+						$('#tabelaArtigo').DataTable({
+							"paging" : true,
+							"lengthChange" : true,
+							"searching" : true,
+							"ordering" : true,
+							"info" : true,
+							"autoWidth" : true
+						});
 					});
-				});
-			</script>
-		</section>
+				</script>
+			</section>
+		</h:form>
 	</ui:define>
 
 </ui:composition>

@@ -55,9 +55,9 @@ public class DebateDAO extends BaseDAO {
 		query.setParameter("id", entity.getId());
 		query.setParameter("nome", entity.getNome());
 		query.setParameter("tema", entity.getTema());
-		query.setParameter("curso", entity.getCurso());		
-		query.setParameter("data_abertura", entity.getData_abertura());
-		query.setParameter("data_fechamento", entity.getData_fechamento());
+//		query.setParameter("curso", entity.getCurso());		
+//		query.setParameter("data_abertura", entity.getData_abertura());
+//		query.setParameter("data_fechamento", entity.getData_fechamento());
 		query.executeUpdate();
 	}
 

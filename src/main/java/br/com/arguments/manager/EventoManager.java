@@ -86,7 +86,7 @@ public class EventoManager implements Serializable {
 					
 					event = eventoService.insert(dto);
 					
-					timeLineService.insertEvent(event);
+					timeLineService.insertEvent(event,user);
 					
 					posInit();
 					carregaLista();
@@ -123,7 +123,7 @@ public class EventoManager implements Serializable {
 		
 	}
 	
-	public String setRemoveEvent() {
+	public String removeEvent() {
 		eventoService.remove(selectedEvent);
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage("Sucesso", "AOISDJAIOSDJOAIsj"));
@@ -168,7 +168,7 @@ public class EventoManager implements Serializable {
 	}
 
 	public void saveEventoEdit() {
-		FacesContext context = FacesContext.getCurrentInstance();
+//		FacesContext context = FacesContext.getCurrentInstance();
 //		EventoEntity event = new EventoEntity();
 //		if ((!dto.getNome().isEmpty() && dto.getNome() != null)) {
 //			if(validData()){

@@ -2,8 +2,11 @@ package br.com.arguments.manager;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -35,6 +38,8 @@ public class TimeLineManager implements Serializable {
 	
 	private List<TimeLineEntity> timeLineLista;
 	
+	private List<TimeLineFilter> listaFilter;
+	
 	private List<TipoConteudoEventoEntity> tipoConteudoEventoLista;
 	
 	private List<Integer> listaIdConteudoEvento;
@@ -47,49 +52,77 @@ public class TimeLineManager implements Serializable {
 		
 		listaIdConteudoEvento = new ArrayList<>();
 		
-		List<TimeLineFilter> filter = new ArrayList<>();
+		HashMap<String, TimeLineFilter> map = new HashMap<>();
 		
-		HashMap<Timestamp, List<TimeLineFilter>> map = new HashMap<>();
+		String key = null;
 		
-		Timestamp key = null;
-		
-		List<TipoConteudoEventoEntity> evento = null;
-		List<TipoConteudoDebateEntity> debate = null;
+		List<TipoConteudoEventoEntity> evento = new ArrayList<>(); 
+		List<TipoConteudoDebateEntity> debate = new ArrayList<>();
 		TimeLineFilter time = null;
 		
-		for(TimeLineEntity item : timeLineLista){
-			key = item.getDataCriacao();
+		if(timeLineLista != null){
 			
-			if(map.containsKey(key)){
+			for(TimeLineEntity item : timeLineLista){
 				
+				SimpleDateFormat formatado = new SimpleDateFormat("dd/MM/yyyy");
 				
-
-				
-				
-			}else{
-				
-				if(item.getTipoConteudo() == 1){
-					evento = new ArrayList<>();
-					evento.add(item.getIdTipoConteudoEvento());
-				}else if(item.getTipoConteudo() == 2){
-					debate = new ArrayList<>();
-					debate.add(item.getIdTipoConteudoDebate());
-				}
+				key = new SimpleDateFormat("dd/MM/yyyy").format(item.getDataCriacao());
 				
 				time = new TimeLineFilter();
 				
-				time.setData(item.getDataCriacao());
-				time.setListaDebate(debate);
-				time.setListaEvento(evento);
-				
-				map.put(key, filter);
+				if(map.containsKey(key)){
+					
+					if(item.getTipoConteudo() == 1){
+						if(map.get(key).getListaEvento() == null){
+							map.get(key).setListaEvento(new ArrayList<>());
+						}
+						map.get(key).getListaEvento().add(item.getIdTipoConteudoEvento());
+					}else if(item.getTipoConteudo() == 2){
+						if(map.get(key).getListaDebate() == null){
+							map.get(key).setListaDebate(new ArrayList<>());
+						}
+						map.get(key).getListaDebate().add(item.getIdTipoConteudoDebate());
+					}
+					
+				}else{
+					
+					if(item.getTipoConteudo() == 1){
+						evento = new ArrayList<>();
+						evento.add(item.getIdTipoConteudoEvento());
+						time.setListaEvento(evento);
+					}else if(item.getTipoConteudo() == 2){
+						debate = new ArrayList<>();
+						debate.add(item.getIdTipoConteudoDebate());
+						time.setListaDebate(debate);
+					}
+					
+					time.setData(item.getDataCriacao());
+					
+					map.put(key, time);
+				}
 			}
+			
+			listaFilter = new ArrayList<TimeLineFilter>(map.values());
+			
 		}
-//		
-//		if(listaIdConteudoEvento.size() > 0){
-//			consultaTipoConteudoEvento();
-//		}
 		
+		
+	}
+	
+	public String convertDateToString(Date data) {
+		if (data != null) {
+			SimpleDateFormat formatado = new SimpleDateFormat("dd/MM/yyyy");
+			return formatado.format(data);
+		}
+		return null;
+	}
+	
+	public String convertDateToStringHora(Date data) {
+		if (data != null) {
+			SimpleDateFormat formatado = new SimpleDateFormat("HH:mm");
+			return formatado.format(data);
+		}
+		return null;
 	}
 	
 	/** GETTERS E SETTERS */
@@ -132,6 +165,14 @@ public class TimeLineManager implements Serializable {
 
 	public void setListaIdConteudoEvento(List<Integer> listaIdConteudoEvento) {
 		this.listaIdConteudoEvento = listaIdConteudoEvento;
+	}
+
+	public List<TimeLineFilter> getListaFilter() {
+		return listaFilter;
+	}
+
+	public void setListaFilter(List<TimeLineFilter> listaFilter) {
+		this.listaFilter = listaFilter;
 	}
 
 }

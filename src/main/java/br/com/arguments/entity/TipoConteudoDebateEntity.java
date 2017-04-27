@@ -1,7 +1,7 @@
 package br.com.arguments.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="TIPO_CONTEUDO_DEBATE")
@@ -35,28 +33,23 @@ public class TipoConteudoDebateEntity implements Serializable {
 	@Column(name="TEMA_DEBATE")
 	private String tema;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="ID_INSTITUICAO_CURSOS")
-	private InstituicaoCursosEntity idInstituicaoCursos;
-	
-	@Temporal(TemporalType.DATE)
 	@Column(name="DATA_ABERTURA")
-	private Date data_abertura;
+	private Timestamp dataAbertura;
 	
-	@Temporal(TemporalType.DATE)
 	@Column(name="DATA_FECHAMENTO")
-	private Date data_fechamento;
+	private Timestamp dataFechamento;
 	
-	@Column(name="STATUS") // 1-Criado 2-Finalizado
-	private int status;
-	
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="ID_USUARIO")
+    private UsuarioEntity usuario;
+
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}	
+	}
 
 	public String getNome() {
 		return nome;
@@ -74,36 +67,28 @@ public class TipoConteudoDebateEntity implements Serializable {
 		this.tema = tema;
 	}
 
-	public int getStatus() {
-		return status;
+	public Timestamp getDataAbertura() {
+		return dataAbertura;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public void setDataAbertura(Timestamp dataAbertura) {
+		this.dataAbertura = dataAbertura;
 	}
 
-	public Date getData_abertura() {
-		return data_abertura;
+	public Timestamp getDataFechamento() {
+		return dataFechamento;
 	}
 
-	public void setData_abertura(Date data_abertura) {
-		this.data_abertura = data_abertura;
+	public void setDataFechamento(Timestamp dataFechamento) {
+		this.dataFechamento = dataFechamento;
 	}
 
-	public Date getData_fechamento() {
-		return data_fechamento;
+	public UsuarioEntity getUsuario() {
+		return usuario;
 	}
 
-	public void setData_fechamento(Date data_fechamento) {
-		this.data_fechamento = data_fechamento;
+	public void setUsuario(UsuarioEntity usuario) {
+		this.usuario = usuario;
 	}
-
-	public InstituicaoCursosEntity getIdInstituicaoCursos() {
-		return idInstituicaoCursos;
-	}
-
-	public void setIdInstituicaoCursos(InstituicaoCursosEntity idInstituicaoCursos) {
-		this.idInstituicaoCursos = idInstituicaoCursos;
-	}
-
+	
 }

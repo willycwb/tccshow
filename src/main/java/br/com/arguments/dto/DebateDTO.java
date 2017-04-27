@@ -1,7 +1,8 @@
 package br.com.arguments.dto;
 
+import java.sql.Timestamp;
+
 import br.com.arguments.entity.CursosEntity;
-import br.com.arguments.entity.InstituicaoCursosEntity;
 import br.com.arguments.entity.UsuarioEntity;
 
 public class DebateDTO {
@@ -12,15 +13,17 @@ public class DebateDTO {
 	
 	private String temaDebate;
 	
-	private CursosEntity curso;
-	
-	private InstituicaoCursosEntity idInstituicaoCursos;
+	private CursosEntity idCursos;
 	
 	private int status; // 1-ativo 0-terminado
 	
 	private String dataCriacao;
 	
+	private Timestamp dataCriacaoStamp;
+	
 	private String dataFechamento;
+	
+	private Timestamp dataFechamentoStamp;
 	
 	private UsuarioEntity usuario;
 
@@ -80,20 +83,28 @@ public class DebateDTO {
 		this.dataFechamento = dataFechamento;
 	}
 
-	public CursosEntity getCurso() {
-		return curso;
+	public Timestamp getDataCriacaoStamp() {
+		return dataCriacaoStamp;
 	}
 
-	public void setCurso(CursosEntity curso) {
-		this.curso = curso;
+	public void setDataCriacaoStamp(Timestamp dataCriacaoStamp) {
+		this.dataCriacaoStamp = dataCriacaoStamp;
 	}
 
-	public InstituicaoCursosEntity getIdInstituicaoCursos() {
-		return idInstituicaoCursos;
+	public Timestamp getDataFechamentoStamp() {
+		return dataFechamentoStamp;
 	}
 
-	public void setIdInstituicaoCursos(InstituicaoCursosEntity idInstituicaoCursos) {
-		this.idInstituicaoCursos = idInstituicaoCursos;
+	public void setDataFechamentoStamp(Timestamp dataFechamentoStamp) {
+		this.dataFechamentoStamp = dataFechamentoStamp;
+	}
+
+	public CursosEntity getIdCursos() {
+		return idCursos;
+	}
+
+	public void setIdCursos(CursosEntity idCursos) {
+		this.idCursos = idCursos;
 	}
 	
 

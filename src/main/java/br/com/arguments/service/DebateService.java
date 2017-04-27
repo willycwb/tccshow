@@ -1,6 +1,6 @@
 package br.com.arguments.service;
 
-import java.text.ParseException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +10,6 @@ import javax.ejb.Stateless;
 
 import br.com.arguments.dto.DebateDTO;
 import br.com.arguments.entity.CursosEntity;
-import br.com.arguments.entity.DebateCursoEntity;
 import br.com.arguments.entity.DebateEntity;
 import br.com.arguments.repository.DebateDAO;
 
@@ -31,33 +30,35 @@ public class DebateService {
 	public DebateEntity insert(DebateDTO dto){
 		DebateEntity debate = new DebateEntity();
 		debate.setNome(dto.getNomeDebate());
+		debate.setDataAbertura(dto.getDataCriacaoStamp());
+		debate.setDataFechamento(dto.getDataFechamentoStamp());
+		debate.setIdCurso(dto.getIdCursos());
 		debate.setIdUsuarioEntity(dto.getUsuario());
-		debate.setData_abertura(StringToDate(dto.getDataCriacao()));
-		debate.setData_fechamento(StringToDate(dto.getDataFechamento()));
 		debate.setStatus(1);
-		debate.setCurso(dto.getCurso());
-		debate.setIdInstituicaoCursos(dto.getIdInstituicaoCursos());
 		debate.setTema(dto.getTemaDebate());
-		
 		return debateDao.insert(debate);
 	}
 	
-	private Date StringToDate(String data){
-		SimpleDateFormat formatado = new SimpleDateFormat("dd/MM/yyyy");
-		try {
-			return formatado.parse(data);
-		} catch (ParseException e) {
+	public Timestamp dataAtual(){
+		try{
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+			String dataAtual = format.format(new Date());
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		    Date parsedDate = dateFormat.parse(dataAtual.toString());
+		    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+		    return timestamp;
+		}catch(Exception e){
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 	
-	public void remove(DebateEntity debate){
-		debateDao.remove(debate);
-	}
-
-	public List<DebateCursoEntity> findDebatesByCursos(DebateEntity item) {
-		return debateDao.findDebatesByCursos(item);
-	}
+//	public void remove(DebateEntity debate){
+//		debateDao.remove(debate);
+//	}
+//
+//	public List<DebateCursoEntity> findDebatesByCursos(DebateEntity item) {
+//		return debateDao.findDebatesByCursos(item);
+//	}
 	
 }

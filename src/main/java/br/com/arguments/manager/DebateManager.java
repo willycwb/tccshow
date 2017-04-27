@@ -1,7 +1,9 @@
 package br.com.arguments.manager;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -15,7 +17,6 @@ import javax.faces.context.FacesContext;
 import br.com.arguments.dto.DebateDTO;
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.DebateEntity;
-import br.com.arguments.entity.InstituicaoCursosEntity;
 import br.com.arguments.entity.InstituicaoEntity;
 import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.service.DebateService;
@@ -27,11 +28,14 @@ import br.com.arguments.util.jsf.SessionUtil;
 @ViewScoped
 public class DebateManager implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private static final Logger LOG = Logger.getLogger(DebateManager.class.getName());
 	
 	private static final String ERRO_01 = "ERRO";
-	
-	private static final String ERRO_02 = "ERRO INESPERADO";
 	
 	private static final String SUCESSO_01 = "SUCESSO";
 	
@@ -62,8 +66,6 @@ public class DebateManager implements Serializable {
 	
 	private Long selectedclassif;
 	
-	private List<InstituicaoCursosEntity> listaInstituicaoCursos;
-	
 	private Integer instituicaoSelecionada;
 	
 	private List<InstituicaoEntity> listaInstituicao;
@@ -88,19 +90,51 @@ public class DebateManager implements Serializable {
 		
 		if((!debateDTO.getNomeDebate().isEmpty() && debateDTO.getNomeDebate() != null) || debateDTO.getDataCriacao() != null
 				|| debateDTO.getDataFechamento() != null){
-			debate = debateService.insert(debateDTO);
-			
-			timeLineService.insertDebate(debate);
-			
-			posInit();
-			carregaLista();
-			buscaCursoInstutuicao();
-			context.addMessage(null, new FacesMessage(SUCESSO_01, "Cadastro com Sucesso"));
+			if(validData()){
+				
+				buscaCursoInstutuicao();
+				debate = debateService.insert(debateDTO);
+				
+				timeLineService.insertDebate(debate,user.getIdUsuario());
+				
+				posInit();
+				carregaLista();
+				context.addMessage(null, new FacesMessage(SUCESSO_01, "Cadastro com Sucesso"));
+			}else{
+				LOG.warning(ERRO_01 + " Data Invalida! ");
+				context.addMessage(null, new FacesMessage(ERRO_01, "Data Invalida!"));
+			}
+		}else{
+			LOG.warning(ERRO_01 + " Campo sem preencher! ");
+			context.addMessage(null, new FacesMessage(ERRO_01, "Campo sem preencher!"));
 		}
 	}
-
-
 	
+	private boolean validData(){
+		if(debateDTO.getDataCriacao() != null && debateDTO.getDataFechamento() != null){
+			try{
+			    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+			    
+			    Date parsedDateIni = dateFormat.parse(debateDTO.getDataCriacao());
+			    Date parsedDateFim = dateFormat.parse(debateDTO.getDataFechamento());
+			    
+			    Timestamp timestampIni = new java.sql.Timestamp(parsedDateIni.getTime());
+			    Timestamp timestampFim = new java.sql.Timestamp(parsedDateFim.getTime());
+			    
+			    debateDTO.setDataCriacaoStamp(timestampIni);
+			    debateDTO.setDataFechamentoStamp(timestampFim);
+			    
+			    return true;
+			}catch(Exception e){
+				e.printStackTrace();
+				return false;
+			}
+		}else{
+			return false;
+		}
+		
+	}
+
 	private void carregaLista(){
 		listaDebate = debateService.findAllDebates();		
 	}
@@ -111,10 +145,10 @@ public class DebateManager implements Serializable {
 			debateDTO.setId(Long.valueOf(debatentidade.getId()));
 			debateDTO.setNomeDebate(debatentidade.getNome());
 			debateDTO.setTemaDebate(debatentidade.getTema());
-			debateDTO.setCurso(debatentidade.getCurso());
-			debateDTO.setIdInstituicaoCursos(debatentidade.getIdInstituicaoCursos());
-			debateDTO.setDataCriacao(debatentidade.getData_abertura().toString());
-			debateDTO.setDataFechamento(debatentidade.getData_fechamento().toString());
+//			debateDTO.setCurso(debatentidade.getCurso());
+//			debateDTO.setIdInstituicaoCursos(debatentidade.getIdInstituicaoCursos());
+//			debateDTO.setDataCriacao(debatentidade.getData_abertura().toString());
+//			debateDTO.setDataFechamento(debatentidade.getData_fechamento().toString());
 			edit = true;
 		}else{
 			FacesContext context = FacesContext.getCurrentInstance();
@@ -122,25 +156,10 @@ public class DebateManager implements Serializable {
 		}
 	}
 	
-	public void buscaCursosInstituicao(){
-		for(InstituicaoEntity item : listaInstituicao){
-			if(item.getId() == instituicaoSelecionada.longValue()){
-				listaInstituicaoCursos = instituicaoService.findCursosByInstituicao(item);
-				if(listaInstituicaoCursos != null){
-					listaCursos = new ArrayList<>();
-					for(InstituicaoCursosEntity it : listaInstituicaoCursos){
-						listaCursos.add(it.getIdCursosEntity());
-					}
-				}
-			}
-		}
-	}
-	
 	public void buscaCursoInstutuicao(){
-		for(InstituicaoCursosEntity item : listaInstituicaoCursos){
-			if(item.getIdCursosEntity().getId() == cursoSelecionado.longValue() &&
-					item.getIdInstituicaoEntity().getId() == instituicaoSelecionada.longValue()){
-				debateDTO.setIdInstituicaoCursos(item);
+		for(CursosEntity item : listaCursos){
+			if(item.getId().equals(cursoSelecionado)){
+				debateDTO.setIdCursos(item);
 			}
 		}
 	}
@@ -227,14 +246,6 @@ public class DebateManager implements Serializable {
 
 	public void setListaCursos(List<CursosEntity> listaCursos) {
 		this.listaCursos = listaCursos;
-	}
-
-	public List<InstituicaoCursosEntity> getListaInstituicaoCursos() {
-		return listaInstituicaoCursos;
-	}
-
-	public void setListaInstituicaoCursos(List<InstituicaoCursosEntity> listaInstituicaoCursos) {
-		this.listaInstituicaoCursos = listaInstituicaoCursos;
 	}
 
 	public Integer getInstituicaoSelecionada() {

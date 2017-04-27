@@ -6,9 +6,12 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -28,6 +31,10 @@ public class TipoConteudoEventoEntity implements Serializable {
 	
     @Column(name = "DATA_EVENTO")
     private Timestamp dataInicio;
+    
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="ID_USUARIO")
+    private UsuarioEntity usuario;
 	
 	public int getId() {
 		return id;
@@ -59,6 +66,14 @@ public class TipoConteudoEventoEntity implements Serializable {
 
 	public void setDataInicio(Timestamp dataInicio) {
 		this.dataInicio = dataInicio;
+	}
+
+	public UsuarioEntity getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(UsuarioEntity usuario) {
+		this.usuario = usuario;
 	}
 
 }

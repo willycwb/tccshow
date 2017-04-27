@@ -13,6 +13,7 @@ import br.com.arguments.entity.EventoEntity;
 import br.com.arguments.entity.TimeLineEntity;
 import br.com.arguments.entity.TipoConteudoDebateEntity;
 import br.com.arguments.entity.TipoConteudoEventoEntity;
+import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.repository.TimeLineDAO;
 
 @Stateless
@@ -21,12 +22,13 @@ public class TimeLineService {
 	@EJB
 	private TimeLineDAO timeLineDAO;
 	
-	public TimeLineEntity insertEvent(EventoEntity event) {
+	public TimeLineEntity insertEvent(EventoEntity event, UsuarioEntity user) {
 		
 		TipoConteudoEventoEntity tpe = new TipoConteudoEventoEntity();
 		tpe.setNome(event.getNome());
 		tpe.setDescricao(event.getDescricao());
 		tpe.setDataInicio(event.getDataInicio());
+		tpe.setUsuario(user);
 		
 		TipoConteudoEventoEntity tpEntity = timeLineDAO.insertTipoConteudoEvento(tpe);
 		
@@ -50,10 +52,11 @@ public class TimeLineService {
 		return timeLineDAO.findTipoConteudoEvento(listaIdConteudoEvento);
 	}
 
-	public TimeLineEntity insertDebate(DebateEntity debate) {
+	public TimeLineEntity insertDebate(DebateEntity debate, UsuarioEntity user) {
 		TipoConteudoDebateEntity tpd = new TipoConteudoDebateEntity();
 		tpd.setNome(debate.getNome());
 		tpd.setTema(debate.getTema());
+		tpd.setUsuario(user);
 		
 		TipoConteudoDebateEntity tpEntity = timeLineDAO.insertTipoConteudoDebate(tpd);
 		
