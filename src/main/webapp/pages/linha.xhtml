@@ -30,7 +30,7 @@
 									<li><i class="fa fa-calendar bg-red"></i>
 	
 										<div class="timeline-item">
-											<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(evento.dataInicio)}</span>
+											<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
 	
 											<h3 class="timeline-header">
 												<i class="fa fa-user"></i>&#160;#{evento.usuario.nome} #{evento.usuario.sobrenome}&#160;|&#160;
@@ -50,11 +50,23 @@
 									<li><i class="fa fa-comments bg-green"></i>
 	
 										<div class="timeline-item">
-											<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(debate.dataInicio)}</span>
-	
+											<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
+											
+											
 											<h3 class="timeline-header no-border">
-												<a href="#">#{debate.nome}</a> #{debate.tema}
+												<i class="fa fa-bookmark"></i>&#160;#{debate.nome}&#160;|&#160;
+												<i class="fa fa-tags"></i>&#160;#{debate.tema}
 											</h3>
+											
+											<div class="timeline-body"><i class="fa fa-calendar-plus-o"></i>&#160;#{timeLineManager.convertDateToStringFull(debate.dataAbertura)}</div>
+											<div class="timeline-body"><i class="fa fa-calendar-minus-o"></i>&#160;#{timeLineManager.convertDateToStringFull(debate.dataFechamento)}</div>
+											
+											<div class="timeline-body"><i class="fa fa-comment"></i>&#160;654w</div>
+											<div class="timeline-footer">
+												<a class="btn btn-primary btn-xs">Comentar</a>
+												<p:commandButton value="Comentar" action="#{timeLineManager.comentarDebate(debate.debate)}" ></p:commandButton> 
+												<a class="btn btn-danger btn-xs">Deletasdasde</a>
+											</div>
 										</div></li>
 							</ui:repeat>
 

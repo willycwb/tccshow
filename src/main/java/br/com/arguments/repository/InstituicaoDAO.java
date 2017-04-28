@@ -50,5 +50,17 @@ public class InstituicaoDAO extends BaseDAO {
 		
 		
 	}
+
+	public List<CursosEntity> findAllCursos() {
+		TypedQuery<CursosEntity> query = getManager()
+				.createQuery("FROM CursosEntity", CursosEntity.class);
+		List<CursosEntity> ls = query.getResultList();
+		
+		if(ls.isEmpty()){
+			return null;
+		}
+		
+		return ls;
+	}
 	
 }

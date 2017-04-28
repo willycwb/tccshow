@@ -75,7 +75,8 @@ public class DebateManager implements Serializable {
 	@PostConstruct
 	public void init(){		
 		user = (LoginEntity) SessionUtil.getParam("UserLoged");
-		listaInstituicao = instituicaoService.findAllInstituicao();
+//		listaInstituicao = instituicaoService.findAllInstituicao();
+		listaCursos = instituicaoService.findAllCursos();
 		posInit();
 	}
 	
@@ -93,7 +94,7 @@ public class DebateManager implements Serializable {
 			if(validData()){
 				
 				buscaCursoInstutuicao();
-				debate = debateService.insert(debateDTO);
+				debate = debateService.insert(debateDTO, user.getIdUsuario());
 				
 				timeLineService.insertDebate(debate,user.getIdUsuario());
 				
@@ -158,7 +159,7 @@ public class DebateManager implements Serializable {
 	
 	public void buscaCursoInstutuicao(){
 		for(CursosEntity item : listaCursos){
-			if(item.getId().equals(cursoSelecionado)){
+			if(item.getId().equals(new Long(cursoSelecionado))){
 				debateDTO.setIdCursos(item);
 			}
 		}

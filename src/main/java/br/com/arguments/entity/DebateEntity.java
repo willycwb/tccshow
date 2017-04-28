@@ -33,6 +33,9 @@ public class DebateEntity implements Serializable {
 	@Column(name="TEMA_DEBATE")
 	private String tema;
 	
+	@Column(name="ASSUNTO_DEBATE")
+	private String assunto;
+	
 	@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="ID_CURSO")
 	private CursosEntity idCurso;
@@ -43,7 +46,11 @@ public class DebateEntity implements Serializable {
 	@Column(name="DATA_FECHAMENTO")
 	private Timestamp dataFechamento;
 	
-	@Column(name="ID_USUARIO")
+	@Column(name = "DATA_CRIACAO")
+    private Timestamp dataCriacao;
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="ID_USUARIO")
 	private UsuarioEntity idUsuarioEntity;
 	
 	@Column(name="STATUS") // 1-Criado 2-Finalizado
@@ -111,6 +118,22 @@ public class DebateEntity implements Serializable {
 
 	public void setIdCurso(CursosEntity idCurso) {
 		this.idCurso = idCurso;
+	}
+
+	public String getAssunto() {
+		return assunto;
+	}
+
+	public void setAssunto(String assunto) {
+		this.assunto = assunto;
+	}
+
+	public Timestamp getDataCriacao() {
+		return dataCriacao;
+	}
+
+	public void setDataCriacao(Timestamp dataCriacao) {
+		this.dataCriacao = dataCriacao;
 	}
 	
 }

@@ -1,6 +1,5 @@
 package br.com.arguments.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -83,6 +82,23 @@ public class DebateDAO extends BaseDAO {
 		return itens;
 		
 		
+	}
+
+	public DebateCursoEntity insertComentarioDebate(DebateCursoEntity entity) {
+		return getManager().merge(entity);
+		
+	}
+
+	public List<DebateCursoEntity> findAllDebatesByDebate(DebateEntity debate) {
+
+		TypedQuery<DebateCursoEntity> query = getManager()
+				.createQuery("SELECT L FROM DebateCursoEntity L JOIN L.idDebateEntity "
+						+ "WHERE L.idDebateEntity = :idDebateEntity ", DebateCursoEntity.class);
+		query.setParameter("idDebateEntity", debate);
+		
+		List<DebateCursoEntity> itens = query.getResultList();
+		
+		return itens;
 	}
 	
 }

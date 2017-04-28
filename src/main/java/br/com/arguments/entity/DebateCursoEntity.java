@@ -1,6 +1,7 @@
 package br.com.arguments.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,7 +38,9 @@ public class DebateCursoEntity implements Serializable {
 	@Column(name="COMENTARIO")
 	private String comentario;
 	
-
+	@Column(name = "DATA_CRIACAO")
+    private Timestamp dataCriacao;
+	
 	public Long getId() {
 		return id;
 	}
@@ -68,6 +71,14 @@ public class DebateCursoEntity implements Serializable {
 
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
+	}
+
+	public Timestamp getDataCriacao() {
+		return dataCriacao;
+	}
+
+	public void setDataCriacao(Timestamp dataCriacao) {
+		this.dataCriacao = dataCriacao;
 	}	
 
 

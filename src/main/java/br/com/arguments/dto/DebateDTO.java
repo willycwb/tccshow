@@ -25,6 +25,8 @@ public class DebateDTO {
 	
 	private Timestamp dataFechamentoStamp;
 	
+	private String assunto;
+	
 	private UsuarioEntity usuario;
 
 	public Long getId() {
@@ -105,6 +107,14 @@ public class DebateDTO {
 
 	public void setIdCursos(CursosEntity idCursos) {
 		this.idCursos = idCursos;
+	}
+
+	public String getAssunto() {
+		return assunto;
+	}
+
+	public void setAssunto(String assunto) {
+		this.assunto = assunto;
 	}
 	
 

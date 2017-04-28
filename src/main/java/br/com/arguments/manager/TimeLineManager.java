@@ -1,12 +1,10 @@
 package br.com.arguments.manager;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +12,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import br.com.arguments.entity.DebateEntity;
 import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.entity.TimeLineEntity;
 import br.com.arguments.entity.TipoConteudoDebateEntity;
@@ -64,7 +63,7 @@ public class TimeLineManager implements Serializable {
 			
 			for(TimeLineEntity item : timeLineLista){
 				
-				SimpleDateFormat formatado = new SimpleDateFormat("dd/MM/yyyy");
+//				SimpleDateFormat formatado = new SimpleDateFormat("dd/MM/yyyy");
 				
 				key = new SimpleDateFormat("dd/MM/yyyy").format(item.getDataCriacao());
 				
@@ -109,6 +108,11 @@ public class TimeLineManager implements Serializable {
 		
 	}
 	
+	public String comentarDebate(DebateEntity debate){
+		SessionUtil.setParam("DebateSelecionado", debate);
+		return "debateDetalhe.xhtml?faces-redirect=true";
+	}
+	
 	public String convertDateToString(Date data) {
 		if (data != null) {
 			SimpleDateFormat formatado = new SimpleDateFormat("dd/MM/yyyy");
@@ -120,6 +124,14 @@ public class TimeLineManager implements Serializable {
 	public String convertDateToStringHora(Date data) {
 		if (data != null) {
 			SimpleDateFormat formatado = new SimpleDateFormat("HH:mm");
+			return formatado.format(data);
+		}
+		return null;
+	}
+	
+	public String convertDateToStringFull(Date data) {
+		if (data != null) {
+			SimpleDateFormat formatado = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			return formatado.format(data);
 		}
 		return null;

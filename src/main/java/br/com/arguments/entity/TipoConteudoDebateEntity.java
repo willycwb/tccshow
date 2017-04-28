@@ -27,6 +27,10 @@ public class TipoConteudoDebateEntity implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="ID_DEBATE")
+    private DebateEntity debate;
+	
 	@Column(name="NOME_DEBATE")
 	private String nome;
 	
@@ -39,9 +43,9 @@ public class TipoConteudoDebateEntity implements Serializable {
 	@Column(name="DATA_FECHAMENTO")
 	private Timestamp dataFechamento;
 	
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="ID_USUARIO")
-    private UsuarioEntity usuario;
+//    @ManyToOne(fetch=FetchType.EAGER)
+//    @JoinColumn(name="ID_USUARIO")
+//    private UsuarioEntity usuario;
 
 	public Long getId() {
 		return id;
@@ -83,12 +87,20 @@ public class TipoConteudoDebateEntity implements Serializable {
 		this.dataFechamento = dataFechamento;
 	}
 
-	public UsuarioEntity getUsuario() {
-		return usuario;
+//	public UsuarioEntity getUsuario() {
+//		return usuario;
+//	}
+//
+//	public void setUsuario(UsuarioEntity usuario) {
+//		this.usuario = usuario;
+//	}
+
+	public DebateEntity getDebate() {
+		return debate;
 	}
 
-	public void setUsuario(UsuarioEntity usuario) {
-		this.usuario = usuario;
+	public void setDebate(DebateEntity debate) {
+		this.debate = debate;
 	}
 	
 }

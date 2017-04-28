@@ -23,5 +23,9 @@ public class InstituicaoService {
 	public List<InstituicaoCursosEntity> findCursosByInstituicao(InstituicaoEntity item) {
 		return instituicaoDao.findCursosByInstituicao(item);
 	}
+
+	public List<CursosEntity> findAllCursos() {
+		return instituicaoDao.findAllCursos();
+	}
 	
 }

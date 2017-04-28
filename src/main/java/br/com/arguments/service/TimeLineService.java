@@ -56,13 +56,15 @@ public class TimeLineService {
 		TipoConteudoDebateEntity tpd = new TipoConteudoDebateEntity();
 		tpd.setNome(debate.getNome());
 		tpd.setTema(debate.getTema());
-		tpd.setUsuario(user);
+		tpd.setDataAbertura(debate.getDataAbertura());
+		tpd.setDataFechamento(debate.getDataFechamento());
+		tpd.setDebate(debate);
+//		tpd.setUsuario(user);
 		
 		TipoConteudoDebateEntity tpEntity = timeLineDAO.insertTipoConteudoDebate(tpd);
 		
 		TimeLineEntity tl = new TimeLineEntity();
-//		tl.setIdCurso(debate.getCurso().getId().intValue());
-		tl.setIdCurso(1);
+		tl.setIdCurso(debate.getIdCurso().getId().intValue());
 		tl.setIdTipoConteudoDebate(tpEntity);
 		tl.setDataCriacao(dataAtual());
 		tl.setTipoConteudo(2);
@@ -74,9 +76,9 @@ public class TimeLineService {
 	
 	public Timestamp dataAtual(){
 		try{
-			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			String dataAtual = format.format(new Date());
-		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		    Date parsedDate = dateFormat.parse(dataAtual.toString());
 		    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
 		    return timestamp;

@@ -10,7 +10,9 @@ import javax.ejb.Stateless;
 
 import br.com.arguments.dto.DebateDTO;
 import br.com.arguments.entity.CursosEntity;
+import br.com.arguments.entity.DebateCursoEntity;
 import br.com.arguments.entity.DebateEntity;
+import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.repository.DebateDAO;
 
 @Stateless
@@ -27,23 +29,25 @@ public class DebateService {
 		return debateDao.findCursos();
 	}
 	
-	public DebateEntity insert(DebateDTO dto){
+	public DebateEntity insert(DebateDTO dto, UsuarioEntity usuario ){
 		DebateEntity debate = new DebateEntity();
 		debate.setNome(dto.getNomeDebate());
 		debate.setDataAbertura(dto.getDataCriacaoStamp());
 		debate.setDataFechamento(dto.getDataFechamentoStamp());
 		debate.setIdCurso(dto.getIdCursos());
-		debate.setIdUsuarioEntity(dto.getUsuario());
+		debate.setDataCriacao(dataAtual());
+		debate.setIdUsuarioEntity(usuario);
 		debate.setStatus(1);
 		debate.setTema(dto.getTemaDebate());
+		debate.setAssunto(dto.getAssunto());
 		return debateDao.insert(debate);
 	}
 	
 	public Timestamp dataAtual(){
 		try{
-			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			String dataAtual = format.format(new Date());
-		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		    Date parsedDate = dateFormat.parse(dataAtual.toString());
 		    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
 		    return timestamp;
@@ -51,6 +55,23 @@ public class DebateService {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public DebateCursoEntity insertComentarioDebate(UsuarioEntity user, DebateEntity debate, String comentario) {
+		
+		DebateCursoEntity entity = new DebateCursoEntity();
+		
+		entity.setComentario(comentario);
+		entity.setIdDebateEntity(debate);
+		entity.setIdUsuarioEntity(user);
+		entity.setDataCriacao(dataAtual());
+		
+		return debateDao.insertComentarioDebate(entity);
+		
+	}
+
+	public List<DebateCursoEntity> findAllDebatesByDebate(DebateEntity debate) {
+		return debateDao.findAllDebatesByDebate(debate);
 	}
 	
 //	public void remove(DebateEntity debate){
