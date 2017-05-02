@@ -1,8 +1,11 @@
 package br.com.arguments.manager;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +15,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import br.com.arguments.entity.DebateCursoEntity;
 import br.com.arguments.entity.DebateEntity;
 import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.entity.TimeLineEntity;
@@ -19,6 +23,7 @@ import br.com.arguments.entity.TipoConteudoDebateEntity;
 import br.com.arguments.entity.TipoConteudoEventoEntity;
 import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.filter.TimeLineFilter;
+import br.com.arguments.service.DebateService;
 import br.com.arguments.service.TimeLineService;
 import br.com.arguments.util.jsf.SessionUtil;
 
@@ -31,11 +36,16 @@ public class TimeLineManager implements Serializable {
 	@EJB
 	private TimeLineService timeLineService;
 	
+	@EJB
+	private DebateService debateService;
+	
 	private LoginEntity login;
 
 	private UsuarioEntity user;
 	
 	private List<TimeLineEntity> timeLineLista;
+	
+	private List<TimeLineEntity> timeLineListaFinal;
 	
 	private List<TimeLineFilter> listaFilter;
 	
@@ -60,10 +70,9 @@ public class TimeLineManager implements Serializable {
 		TimeLineFilter time = null;
 		
 		if(timeLineLista != null){
-			
-			for(TimeLineEntity item : timeLineLista){
-				
-//				SimpleDateFormat formatado = new SimpleDateFormat("dd/MM/yyyy");
+			timeLineListaFinal = new ArrayList<>();
+			updateList();
+			for(TimeLineEntity item : timeLineListaFinal){
 				
 				key = new SimpleDateFormat("dd/MM/yyyy").format(item.getDataCriacao());
 				
@@ -103,9 +112,57 @@ public class TimeLineManager implements Serializable {
 			
 			listaFilter = new ArrayList<TimeLineFilter>(map.values());
 			
+			Collections.sort(listaFilter, new Comparator<TimeLineFilter>() {
+				@Override
+				public int compare(TimeLineFilter o1, TimeLineFilter o2) {
+					if(o1.getData() != null && o2.getData() != null){
+						return o1.getData().compareTo(o2.getData());
+					}else{
+						return 0;
+					}
+				}
+			});
+			
 		}
 		
 		
+	}
+	
+	private void updateList(){
+		
+		for(int x = 0; x < timeLineLista.size(); x++){
+			if(timeLineLista.get(x).getIdTipoConteudoDebate() != null){
+				if(!timeLineLista.get(x).getIdTipoConteudoDebate().getDataFechamento().before(dataAtual()) ||
+						timeLineLista.get(x).getIdTipoConteudoDebate().getDataFechamento().equals(dataAtual())){
+					timeLineListaFinal.add(timeLineLista.get(x));
+				}
+			}
+			if(timeLineLista.get(x).getIdTipoConteudoEvento() != null){
+				timeLineListaFinal.add(timeLineLista.get(x));
+			}
+				
+		}
+	}
+	
+	public Timestamp dataAtual(){
+		try{
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			String dataAtual = format.format(new Date());
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		    Date parsedDate = dateFormat.parse(dataAtual.toString());
+		    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+		    return timestamp;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Long qtdComentariosDebate(DebateEntity id){
+		
+		List<DebateCursoEntity> ls = new ArrayList<>(debateService.findAllDebatesByDebate(id));
+		
+		return ls != null ? ls.size() : new Long(0);
 	}
 	
 	public String comentarDebate(DebateEntity debate){
@@ -185,6 +242,14 @@ public class TimeLineManager implements Serializable {
 
 	public void setListaFilter(List<TimeLineFilter> listaFilter) {
 		this.listaFilter = listaFilter;
+	}
+
+	public List<TimeLineEntity> getTimeLineListaFinal() {
+		return timeLineListaFinal;
+	}
+
+	public void setTimeLineListaFinal(List<TimeLineEntity> timeLineListaFinal) {
+		this.timeLineListaFinal = timeLineListaFinal;
 	}
 
 }

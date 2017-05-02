@@ -117,14 +117,14 @@
 												id="idBotaCadEvento" value="Cadastrar"
 												action="#{eventoManager.cadastrarEvento}"
 												rendered="#{eventoManager.edit == false}"
-												update="form1 :form1:idTabelaGroup" ajax="false" />
+												update="form1 :form:idTabelaGroup" ajax="false" />
 
 											<!-- BOTAO SALVAR UM EVENTO QUANDO EDITADO -->
 											<p:commandButton styleClass="btn btn-info pull-right"
-												id="idBotaEditEvento" value="Salvarr"
+												id="idBotaEditEvento" value="Salvar"
 												action="#{eventoManager.saveEventoEdit}"
 												rendered="#{eventoManager.edit == true}"
-												update=":form1:idCadastroGroup" ajax="false" />
+												update="form1 :form:idTabelaGroup" ajax="false" />
 
 										</div>
 
@@ -135,6 +135,10 @@
 						</div>
 					</div>
 				</div>
+			</section>
+		</h:form>
+		<h:form id="form" enctype="multipart/form-data">
+			<section class="content">
 
 				<div class="box box-default">
 
@@ -174,11 +178,12 @@
 												<td>#{evento.numCurso.nome}</td>
 												<td>#{eventoManager.convertTimestampToString(evento.dataInicio)}</td>
 												<td><p:commandButton icon="fa fa-edit" title="Edit"
-														update="form1" ajax="true" process=":form1:idTabelaGroup"
+														process="@form idTabelaGroup" update="form1" ajax="false"
 														action="#{eventoManager.editEvent(evento)}" /></td>
-												<td><p:commandButton process="@this"
+												<td><p:commandButton
 														oncomplete="PF('eventDialogDelWid').show();"
-														icon="fa fa-remove" title="Remove" ajax="true"
+														process="@this" icon="fa fa-remove" title="Remove"
+														ajax="true"
 														action="#{eventoManager.setSelectedEvent(evento)}">
 													</p:commandButton></td>
 
@@ -189,7 +194,7 @@
 								</table>
 							</h:panelGroup>
 						</div>
-						
+
 						<!-- MODAL PARA EXCLUSÃO DO EVENTO -->
 						<p:dialog header="Exclusão do Evento"
 							widgetVar="eventDialogDelWid" id="eventDialogDel" modal="true"
@@ -200,23 +205,18 @@
 										value=" Deseja excluir o evento #{eventoManager.selectedEvent.nome}" />
 								</div>
 								<div>
-									<p:commandButton styleClass="btn btn-info pull-lefth"
-										id="idBotaRemEven" value="Sim"
-										ajax="false" update=":form1:idTabelaGroup"
-										action="#{eventoManager.setRemoveEvent}" >
+
+									<p:commandButton styleClass="btn btn-info" id="idBotaRemEven"
+										value="Sim" action="#{eventoManager.removeEvent}"
+										update="idTabelaGroup" ajax="false">
 									</p:commandButton>
-									
-									<p:commandLink styleClass="btn btn-info pull-lefth"
-										update=":form1:idTabelaGroup" value="g" ajax="false"
-										action="#{eventoManager.setRemoveEvent}">
-									</p:commandLink>
-									
+
 									<p:commandButton styleClass="btn btn-info pull-lefth"
 										value="Não" onclick="PF('eventDialogDelWid').hide();" />
 								</div>
 							</p:outputPanel>
 						</p:dialog>
-						
+
 					</div>
 				</div>
 				<script>

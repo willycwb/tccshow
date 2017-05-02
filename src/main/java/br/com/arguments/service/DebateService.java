@@ -73,7 +73,7 @@ public class DebateService {
 	public List<DebateCursoEntity> findAllDebatesByDebate(DebateEntity debate) {
 		return debateDao.findAllDebatesByDebate(debate);
 	}
-	
+
 //	public void remove(DebateEntity debate){
 //		debateDao.remove(debate);
 //	}

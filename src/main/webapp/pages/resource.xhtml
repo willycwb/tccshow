@@ -50,19 +50,35 @@
 	<!-- bootstrap wysihtml5 - text editor -->
 	<link rel="stylesheet"
 		href="../resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" />
-		
+
+	<style type="text/css">
+#user-feedback_container {
+	z-index: 3000 !important;
+}
+
+.ui-growl-message-blue {
+	font: 20px "Lucida Console", Monaco, monospace !important;
+	letter-spacing: -1px !important;
+	width: 310px !important;
+	float: center !important;
+	text-align: center !important;
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2) !important;
+	color: blue !important;
+}
+</style>
+
 </h:head>
 <f:view contentType="text/html" />
 <h:body>
 
-	<p:growl id="mensagens" showDetail="false" sticky="false" globalOnly="true" autoUpdate="false"
-                     life="15000" />
-	
-<!-- 	<p:growl id="user-feedback" -->
-<!--                      globalOnly="false" -->
-<!--                      autoUpdate="true" -->
-<!--                      life="30000" /> -->
-                     
+	<p:growl id="user-feedback" styleClass="ui-growl-message-blue" showDetail="false" sticky="false"
+		globalOnly="true" autoUpdate="false" life="15000" />
+
+	<!-- 	<p:growl id="user-feedback" -->
+	<!--                      globalOnly="false" -->
+	<!--                      autoUpdate="true" -->
+	<!--                      life="30000" /> -->
+
 	<ui:insert name="main" />
 
 	<!-- jQuery 2.2.3 -->
@@ -105,7 +121,8 @@
 	<script src="../resources/dist/js/demo.js"></script>
 	<!-- DataTables -->
 	<script src="../resources/plugins/datatables/jquery.dataTables.min.js"></script>
-	<script src="../resources/plugins/datatables/dataTables.bootstrap.min.js"></script>
+	<script
+		src="../resources/plugins/datatables/dataTables.bootstrap.min.js"></script>
 
 </h:body>
 </html>

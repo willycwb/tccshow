@@ -39,10 +39,12 @@ public class EventoDAO extends BaseDAO {
 	}
 //	
 	public void update(EventoEntity entity) {
-		Query query = getManager().createQuery("UPDATE EventoEntity SET nome = :nome, descricao = :desc, dataInicio = :dataInicio " + " WHERE id = :id ");
+		Query query = getManager().createQuery("UPDATE EventoEntity SET nome = :nome, descricao = :desc, dataInicio = :dataInicio, numCurso = :numCurso " + 
+					" WHERE id = :id ");
 		query.setParameter("id", entity.getId());
 		query.setParameter("nome", entity.getNome());
 		query.setParameter("desc", entity.getDescricao());
+		query.setParameter("numCurso", entity.getNumCurso());
 		query.setParameter("dataInicio", entity.getDataInicio());
 		query.executeUpdate();
 	}

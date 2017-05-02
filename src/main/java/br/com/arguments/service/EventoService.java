@@ -43,8 +43,8 @@ public class EventoService {
 		evento.setId(dto.getId());
 		evento.setNome(dto.getNome());
 		evento.setDescricao(dto.getDescricao());
+		evento.setNumCurso(dto.getCurso());
 		evento.setDataInicio(dto.getDataInicioStamp());
-		evento.setDataCriacao(dataAtual());
 		evento.setAtivo(true);
 		eventoDAO.update(evento);
 	}

@@ -69,16 +69,6 @@ public class DebateDAO extends BaseDAO {
 		
 		List<DebateCursoEntity> itens = query.getResultList();
 
-//		List<CursosEntity> cursos = null;
-//
-//		if(itens != null){
-//			cursos = new ArrayList<>();
-//			for(InstituicaoCursosEntity item : itens){
-//				cursos.add(item.getIdCursosEntity());
-//			}
-//			
-//		}
-		
 		return itens;
 		
 		
@@ -100,5 +90,6 @@ public class DebateDAO extends BaseDAO {
 		
 		return itens;
 	}
+
 	
 }

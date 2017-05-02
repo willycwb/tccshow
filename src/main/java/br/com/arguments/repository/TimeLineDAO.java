@@ -23,7 +23,8 @@ public class TimeLineDAO extends BaseDAO {
 	public List<TimeLineEntity> findTimeLineByCurso(int id) {
 
 			TypedQuery<TimeLineEntity> query = getManager()
-					.createQuery("FROM TimeLineEntity L WHERE L.idCurso = :idCurso", TimeLineEntity.class);
+					.createQuery("FROM TimeLineEntity L WHERE L.idCurso = :idCurso "
+							+ " ORDER BY L.dataCriacao ASC", TimeLineEntity.class);
 			query.setParameter("idCurso", id);
 			List<TimeLineEntity> ls = query.getResultList();
 			
