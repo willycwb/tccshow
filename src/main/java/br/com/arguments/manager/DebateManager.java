@@ -19,6 +19,7 @@ import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.DebateEntity;
 import br.com.arguments.entity.InstituicaoEntity;
 import br.com.arguments.entity.LoginEntity;
+import br.com.arguments.entity.TipoConteudoDebateEntity;
 import br.com.arguments.service.DebateService;
 import br.com.arguments.service.InstituicaoService;
 import br.com.arguments.service.TimeLineService;
@@ -27,144 +28,184 @@ import br.com.arguments.util.jsf.SessionUtil;
 @ManagedBean
 @ViewScoped
 public class DebateManager implements Serializable {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOG = Logger.getLogger(DebateManager.class.getName());
-	
+
 	private static final String ERRO_01 = "ERRO";
-	
+
 	private static final String SUCESSO_01 = "SUCESSO";
-	
+
 	@EJB
 	private DebateService debateService;
-	
+
 	@EJB
 	private TimeLineService timeLineService;
-	
+
 	@EJB
 	private InstituicaoService instituicaoService;
-	
+
 	private List<DebateEntity> listaDebate;
-	
+
 	private List<CursosEntity> listaCursos;
-	
+
 	private Integer cursoSelecionado;
-	
+
 	private DebateDTO debateDTO;
-	
+
 	private LoginEntity user;
-	
+
 	private boolean edit;
-	
-	DebateEntity debate;
-	
+
+	private DebateEntity selectDebate;
+
 	private Long selectedarea;
-	
+
 	private Long selectedclassif;
-	
+
 	private Integer instituicaoSelecionada;
-	
+
 	private List<InstituicaoEntity> listaInstituicao;
-	
+
 	private boolean verifica;
-	
+
 	@PostConstruct
-	public void init(){		
+	public void init() {
 		user = (LoginEntity) SessionUtil.getParam("UserLoged");
-//		listaInstituicao = instituicaoService.findAllInstituicao();
+		// listaInstituicao = instituicaoService.findAllInstituicao();
 		listaCursos = instituicaoService.findAllCursos();
 		posInit();
 	}
-	
-	private void posInit(){
+
+	private void posInit() {
 		debateDTO = new DebateDTO();
 		edit = false;
 	}
-	
-	public void CriaDebate(){
+
+	public void criaDebate() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		DebateEntity debate = new DebateEntity();
-		
-		if((!debateDTO.getNomeDebate().isEmpty() && debateDTO.getNomeDebate() != null) || debateDTO.getDataCriacao() != null
-				|| debateDTO.getDataFechamento() != null){
-			if(validData()){
-				
+
+		if ((!debateDTO.getNomeDebate().isEmpty() && debateDTO.getNomeDebate() != null)
+				|| debateDTO.getDataCriacao() != null || debateDTO.getDataFechamento() != null) {
+			if (validData()) {
+
 				buscaCursoInstutuicao();
 				debate = debateService.insert(debateDTO, user.getIdUsuario());
-				
-				timeLineService.insertDebate(debate,user.getIdUsuario());
-				
+
+				timeLineService.insertDebate(debate, user.getIdUsuario());
+
 				posInit();
 				carregaLista();
 				context.addMessage(null, new FacesMessage(SUCESSO_01, "Cadastro com Sucesso"));
-			}else{
+			} else {
 				LOG.warning(ERRO_01 + " Data Invalida! ");
 				context.addMessage(null, new FacesMessage(ERRO_01, "Data Invalida!"));
 			}
-		}else{
+		} else {
 			LOG.warning(ERRO_01 + " Campo sem preencher! ");
 			context.addMessage(null, new FacesMessage(ERRO_01, "Campo sem preencher!"));
 		}
 	}
-	
-	private boolean validData(){
-		if(debateDTO.getDataCriacao() != null && debateDTO.getDataFechamento() != null){
-			try{
-			    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-			    
-			    Date parsedDateIni = dateFormat.parse(debateDTO.getDataCriacao());
-			    Date parsedDateFim = dateFormat.parse(debateDTO.getDataFechamento());
-			    
-			    Timestamp timestampIni = new java.sql.Timestamp(parsedDateIni.getTime());
-			    Timestamp timestampFim = new java.sql.Timestamp(parsedDateFim.getTime());
-			    
-			    debateDTO.setDataCriacaoStamp(timestampIni);
-			    debateDTO.setDataFechamentoStamp(timestampFim);
-			    
-			    return true;
-			}catch(Exception e){
+
+	private boolean validData() {
+		if (debateDTO.getDataCriacao() != null && debateDTO.getDataFechamento() != null) {
+			try {
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+
+				Date parsedDateIni = dateFormat.parse(debateDTO.getDataCriacao());
+				Date parsedDateFim = dateFormat.parse(debateDTO.getDataFechamento());
+
+				Timestamp timestampIni = new java.sql.Timestamp(parsedDateIni.getTime());
+				Timestamp timestampFim = new java.sql.Timestamp(parsedDateFim.getTime());
+
+				debateDTO.setDataCriacaoStamp(timestampIni);
+				debateDTO.setDataFechamentoStamp(timestampFim);
+
+				return true;
+			} catch (Exception e) {
 				e.printStackTrace();
 				return false;
 			}
-		}else{
+		} else {
 			return false;
 		}
-		
+
 	}
 
-	private void carregaLista(){
-		listaDebate = debateService.findAllDebates();		
+	private void carregaLista() {
+		listaDebate = debateService.findAllDebates();
 	}
-	
-	public void editaDebate(DebateEntity debatentidade){
-		if(debatentidade != null){
+
+	public void editDebate(DebateEntity debatentidade) {
+		if (debatentidade != null) {
 			debateDTO = new DebateDTO();
 			debateDTO.setId(Long.valueOf(debatentidade.getId()));
 			debateDTO.setNomeDebate(debatentidade.getNome());
 			debateDTO.setTemaDebate(debatentidade.getTema());
-//			debateDTO.setCurso(debatentidade.getCurso());
-//			debateDTO.setIdInstituicaoCursos(debatentidade.getIdInstituicaoCursos());
-//			debateDTO.setDataCriacao(debatentidade.getData_abertura().toString());
-//			debateDTO.setDataFechamento(debatentidade.getData_fechamento().toString());
+			debateDTO.setAssunto(debatentidade.getAssunto());
+			debateDTO.setStatus(debatentidade.getStatus());
+			cursoSelecionado = debatentidade.getIdCurso().getId().intValue();
+			debateDTO.setDataCriacao(convertoCompleteTimestampToString(debatentidade.getDataAbertura()));
+			debateDTO.setDataFechamento(convertoCompleteTimestampToString(debatentidade.getDataFechamento()));
 			edit = true;
-		}else{
+		} else {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null, new FacesMessage("ERRO", "Debate está em branco"));
 		}
 	}
-	
-	public void buscaCursoInstutuicao(){
-		for(CursosEntity item : listaCursos){
-			if(item.getId().equals(new Long(cursoSelecionado))){
-				debateDTO.setIdCursos(item);
+
+	public void saveEdit() {
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		if (edit) {
+			if ((!debateDTO.getNomeDebate().isEmpty() && debateDTO.getNomeDebate() != null)
+					|| debateDTO.getDataCriacao() != null || debateDTO.getDataFechamento() != null) {
+				if (validData()) {
+
+					buscaCursoInstutuicao();
+					debateService.update(debateDTO);
+					posInit();
+					carregaLista();
+					context.addMessage(null, new FacesMessage(SUCESSO_01, "Editado com Sucesso"));
+				} else {
+					LOG.warning(ERRO_01 + " Data Invalida! ");
+					context.addMessage(null, new FacesMessage(ERRO_01, "Data Invalida!"));
+				}
+			} else {
+				LOG.warning(ERRO_01 + " Campo sem preencher! ");
+				context.addMessage(null, new FacesMessage(ERRO_01, "Campo sem preencher!"));
 			}
 		}
 	}
 	
+	public String removeDebate() {
+		debateService.removeComentariosDebate(selectDebate);
+		TipoConteudoDebateEntity tcd = debateService.findTipoConteudoDebate(selectDebate);
+		debateService.removeTimeLine(tcd);
+		debateService.removeTipoConteudo(selectDebate);
+		debateService.remove(selectDebate);
+		carregaLista();
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.addMessage(null, new FacesMessage("Sucesso", "Debate Removido"));
+		return "debate.xhtml?faces-redirect=true";
+	}
+
+	public String convertoCompleteTimestampToString(Timestamp data) {
+		return new SimpleDateFormat("dd/MM/yyyy hh:mm").format(data);
+	}
+
+	public void buscaCursoInstutuicao() {
+		for (CursosEntity item : listaCursos) {
+			if (item.getId().equals(new Long(cursoSelecionado))) {
+				debateDTO.setIdCursos(item);
+			}
+		}
+	}
 
 	public DebateService getDebateService() {
 		return debateService;
@@ -263,6 +304,14 @@ public class DebateManager implements Serializable {
 
 	public void setListaInstituicao(List<InstituicaoEntity> listaInstituicao) {
 		this.listaInstituicao = listaInstituicao;
+	}
+
+	public DebateEntity getSelectDebate() {
+		return selectDebate;
+	}
+
+	public void setSelectDebate(DebateEntity selectDebate) {
+		this.selectDebate = selectDebate;
 	}
 
 }

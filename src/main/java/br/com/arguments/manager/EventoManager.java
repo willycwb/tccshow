@@ -162,7 +162,7 @@ public class EventoManager implements Serializable {
 		return data != null ? new SimpleDateFormat("dd/MM/yyyy").format(data) : "dd/MM/yyyy";
 	}
 
-	private String convertoCompleteTimestampToString(Timestamp data) {
+	public String convertoCompleteTimestampToString(Timestamp data) {
 		return new SimpleDateFormat("dd/MM/yyyy hh:mm").format(data);
 	}
 

@@ -75,14 +75,15 @@
 										</div>
 
 									</h:panelGroup>
-									
+
 									<h:panelGroup>
 
 										<div class="form-horizontal">
 											<div class="box-body">
 												<div class="form-group">
 													<p:outputLabel for="idAssunto"
-														class="col-sm-2 form-control-prime" value="Assunto do Debate" />
+														class="col-sm-2 form-control-prime"
+														value="Assunto do Debate" />
 
 													<div class="col-sm-7">
 														<p:inputText class="form-control" id="idAssunto"
@@ -107,9 +108,6 @@
 														value="Data de Abertura" />
 
 													<div class="col-sm-7">
-
-
-
 														<p:inputMask id="idDataAbertura" mask="99/99/9999 99:99"
 															required="true"
 															value="#{debateManager.debateDTO.dataCriacao}" />
@@ -133,7 +131,6 @@
 														<p:inputMask id="idDataFechamento" mask="99/99/9999 99:99"
 															required="true"
 															value="#{debateManager.debateDTO.dataFechamento}" />
-
 
 													</div>
 												</div>
@@ -167,83 +164,106 @@
 						<div class="box-footer">
 							<p:commandButton styleClass="btn btn-info pull-right"
 								id="idBotaCadEvento" value="Cadastrar"
-								action="#{debateManager.CriaDebate()}"
-								update="form1 idTabelaGroup" ajax="false" />
+								action="#{debateManager.criaDebate}"
+								rendered="#{debateManager.edit == false}"
+								update="formRegister idTabelaGroup" ajax="false" />
+
+							<!-- BOTAO SALVAR UM EVENTO QUANDO EDITADO -->
+							<p:commandButton styleClass="btn btn-info pull-right"
+								id="idBotaEditDebate" value="Salvar"
+								action="#{debateManager.saveEdit}"
+								rendered="#{debateManager.edit == true}"
+								update="formRegister :formT:idTabelaGroup" ajax="false" />
+
 						</div>
 
 					</div>
 				</div>
+			</section>
+		</h:form>
+
+		<h:form id="formT">
+			<section class="content">
+
 				<div class="box box-default">
 
-					<div class="box-body">
+					<div class="box-header with-border">
+						<h3 class="box-title">Tabela de Debate</h3>
 
-						<div class="box">
-							<div class="box-header">
-								<h3 class="box-title">Tabela de Debate</h3>
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body">
-								<h:panelGroup id="idTabelaGroup">
-									<table id="tabelaArtigo"
-										class="table table-bordered table-striped">
-										<thead>
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"
+								data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
+					<div class="box-body">
+						<div class="box-body">
+							<h:panelGroup id="idTabelaGroup">
+								<table id="tabelaArtigo"
+									class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th>Nome Debate</th>
+											<th>Tema</th>
+											<th>Assunto</th>
+											<th>Curso</th>
+											<th>Data Abertura</th>
+											<th>Data Finalizacao</th>
+											<th>Visualizar</th>
+
+										</tr>
+									</thead>
+									<tbody>
+										<ui:repeat value="#{debateManager.listaDebate}" var="debate">
 											<tr>
-												<th>Nome Debate</th>
-												<th>Tema</th>
-												<th>Curso</th>
-												<th>Data Abertura</th>
-												<th>Data Finalizacao</th>
-												<th>Visualizar</th>
+												<td>#{debate.nome}</td>
+												<td>#{debate.tema}</td>
+												<td>#{debate.assunto}</td>
+												<td>#{debate.idCurso.nome}</td>
+												<td>#{debateManager.convertoCompleteTimestampToString(debate.dataAbertura)}</td>
+												<td>#{debateManager.convertoCompleteTimestampToString(debate.dataFechamento)}</td>
+												<td><p:commandButton icon="fa fa-edit" title="Edit"
+														process="@form idTabelaGroup" update="formRegister"
+														ajax="false" action="#{debateManager.editDebate(debate)}" /></td>
+												<td><p:commandButton
+														oncomplete="PF('eventDialogDelWid').show();"
+														process="@this" icon="fa fa-remove" title="Remove"
+														ajax="true"
+														action="#{debateManager.setSelectDebate(debate)}">
+													</p:commandButton></td>
 
 											</tr>
-										</thead>
-										<tbody>
-											<ui:repeat value="#{debateManager.listaDebate}" var="debate">
-												<tr>
-													<td>#{debate.nome}</td>
-													<td>#{debate.tema}</td>
-													<td>#{debate.idCurso.nome}</td>
-													<td>#{debate.dataAbertura}</td>
-													<td>#{debate.dataFechamento}</td>
-													<td><p:commandButton styleClass="btn btn-primary"
-															oncomplete="PF('artigoDialogInfoWid').show();"
-															icon="fa fa-search" title="Search" ajax="true"
-															action="#{artigoManager.setSelectedArtigo(debate)}">
-														</p:commandButton></td>
+										</ui:repeat>
+									</tbody>
 
-												</tr>
-											</ui:repeat>
-										</tbody>
-
-									</table>
-								</h:panelGroup>
-							</div>
-
-							<!-- MODAL PARA VISUALIZAR ARTIGO -->
-							<p:dialog header="Informações do Artigo"
-								widgetVar="artigoDialogInfoWid" id="artigoDialogInfo"
-								modal="true" width="300" height="200" showEffect="fade"
-								hideEffect="fade" resizable="false">
-								<p:outputPanel id="artigoDetailInfo" style="text-align:lefth;">
-									<p:panelGrid columns="2">
-										<f:facet name="header">
-											<h:outputText value="#{artigoManager.selectedArtigo.nome}" />
-										</f:facet>
-
-										<h:outputText value="Data Inicio" />
-										<h:outputText
-											value="#{artigoManager.selectedArtigo.descricao}" />
-
-										<h:outputText value="Data Termino" />
-										<h:outputText value="#{artigoManager.selectedArtigo.status}" />
-
-									</p:panelGrid>
-								</p:outputPanel>
-							</p:dialog>
-
+								</table>
+							</h:panelGroup>
 						</div>
 
+						<!-- MODAL PARA EXCLUSÃO DO EVENTO -->
+						<p:dialog header="Exclusão do Evento"
+							widgetVar="eventDialogDelWid" id="eventDialogDel" modal="true"
+							showEffect="fade" hideEffect="fade" resizable="true">
+							<p:outputPanel id="eventDetailDel" style="text-align:lefth;">
+								<div>
+									<h:outputText
+										value=" Deseja excluir o debate #{debateManager.selectDebate.nome}" />
+								</div>
+								<div>
+
+									<p:commandButton styleClass="btn btn-info" id="idBotaRemEven"
+										value="Sim" action="#{debateManager.removeDebate}"
+										update="idTabelaGroup" ajax="false">
+									</p:commandButton>
+
+									<p:commandButton styleClass="btn btn-info pull-lefth"
+										value="Não" onclick="PF('eventDialogDelWid').hide();" />
+								</div>
+							</p:outputPanel>
+						</p:dialog>
 					</div>
+
 				</div>
 				<script>
 					$(function() {

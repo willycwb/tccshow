@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.DebateCursoEntity;
 import br.com.arguments.entity.DebateEntity;
+import br.com.arguments.entity.TipoConteudoDebateEntity;
 
 @Stateless
 public class DebateDAO extends BaseDAO {
@@ -50,13 +51,16 @@ public class DebateDAO extends BaseDAO {
 	}
 	
 	public void update(DebateEntity entity){
-		Query query = getManager().createQuery("UPDATE DebateEntity SET nome = :nome, tema = :tema, curso = :curso, data_abertura = :data_abertura, data_fechamento = :data_fechamento" + "WHERE id = :id");
+		Query query = getManager().createQuery("UPDATE DebateEntity SET nome = :nome, tema = :tema, idCurso = :curso, "
+					+ "dataAbertura = :dataAbertura, dataFechamento = :dataFechamento, assunto = :assunto " 
+					+ "WHERE id = :id");
 		query.setParameter("id", entity.getId());
 		query.setParameter("nome", entity.getNome());
 		query.setParameter("tema", entity.getTema());
-//		query.setParameter("curso", entity.getCurso());		
-//		query.setParameter("data_abertura", entity.getData_abertura());
-//		query.setParameter("data_fechamento", entity.getData_fechamento());
+		query.setParameter("assunto", entity.getAssunto());
+		query.setParameter("curso", entity.getIdCurso());		
+		query.setParameter("dataAbertura", entity.getDataAbertura());
+		query.setParameter("dataFechamento", entity.getDataFechamento());
 		query.executeUpdate();
 	}
 
@@ -89,6 +93,37 @@ public class DebateDAO extends BaseDAO {
 		List<DebateCursoEntity> itens = query.getResultList();
 		
 		return itens;
+	}
+
+	public void removeTipoConteudo(DebateEntity debate) {
+		Query query = getManager().createQuery("DELETE TipoConteudoDebateEntity WHERE debate = :debate");
+		query.setParameter("debate", debate);
+		query.executeUpdate();
+		
+	}
+
+	public void removeComentariosDebate(DebateEntity debate) {
+		Query query = getManager().createQuery("DELETE DebateCursoEntity WHERE idDebateEntity = :debate");
+		query.setParameter("debate", debate);
+		query.executeUpdate();
+	}
+
+	public void removeTimeLine(TipoConteudoDebateEntity tcd) {
+		Query query = getManager().createQuery("DELETE TimeLineEntity WHERE idTipoConteudoDebate = :tcd");
+		query.setParameter("tcd", tcd);
+		query.executeUpdate();
+	}
+
+	public TipoConteudoDebateEntity findTipoConteudoDebate(DebateEntity debate) {
+		
+		TypedQuery<TipoConteudoDebateEntity> query = getManager()
+				.createQuery("SELECT L FROM TipoConteudoDebateEntity L JOIN L.debate "
+						+ "WHERE L.debate = :debate ", TipoConteudoDebateEntity.class);
+		query.setParameter("debate", debate);
+		
+		List<TipoConteudoDebateEntity> itens = query.getResultList();
+		
+		return itens.get(0);
 	}
 
 	
