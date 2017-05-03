@@ -7,232 +7,230 @@
 	<ui:define name="menu">
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
-			<h1>Trabalho</h1>
+			<h1>Cadastro de Trabalhos</h1>
 			<ol class="breadcrumb">
 				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
-				<li class="active">Trabalho</li>
+				<li class="active">Trabalhos</li>
 			</ol>
 		</section>
+		<h:form id="form1" enctype="multipart/form-data">
+			<section class="content">
 
-		<section class="content">
+				<div class="box box-default">
 
-			<div class="box box-default">
+					<div class="box-header with-border">
+						<h3 class="box-title">Cadastro de Trabalhos</h3>
 
-				<div class="box-header with-border">
-					<h3 class="box-title">Criar Trabalho</h3>
-
-					<div class="box-tools pull-right">
-						<button type="button" class="btn btn-box-tool"
-							data-widget="collapse">
-							<i class="fa fa-minus"></i>
-						</button>
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"
+								data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
 					</div>
-				</div>
-				<h:form id="form" enctype="multipart/form-data">
-					<p:growl id="mensagens" showDetail="true" sticky="true" />
+
 					<div class="box-body">
 						<div class="row">
 							<div class="col-md-12">
 								<div class="form-group">
 
-										<p:tab title="Criar Trabalho">
+									<h:form id="idCadastroGroup">
+										<div class="form-horizontal">
+											<div class="box-body">
 
-											<h:panelGroup id="idCadastroGroup">
+												<!-- NOME TRABALHO -->
+												<div class="form-group">
+													<p:outputLabel for="idNome"
+														class="col-sm-2 form-control-prime" value="Nome do Trabalho" />
 
-												<div class="form-horizontal">
-													<div class="box-body">
-														<div class="form-group">
-															<p:outputLabel for="idNome"
+													<div class="col-sm-7">
+														<p:inputText class="form-control" id="idNome"
+															placeholder="Nome do Trabalho" required="true"
+															requiredMessage="Campo Nome Obrigatório."
+															title="Nome do Trabalho a ser cadastrado"
+															value="#{trabalhoManager.dto.nome}" />
+														<p:tooltip id="toolTipFocus" for="idNome"
+															showEvent="focus" hideEvent="blur" />
+													</div>
+												</div>
+
+												<!-- DESCRICAO TRABALHO -->
+												<div class="form-group">
+													<p:outputLabel for="idDesc"
+														class="col-sm-2 form-control-prime"
+														value="Descrição do Trabalho" />
+
+													<div class="col-sm-7">
+														<p:inputTextarea id="idDesc" rows="4" cols="50"
+															value="#{trabalhoManager.dto.descricao}" autoResize="true" />
+														<br />
+														<h:outputText id="display" />
+													</div>
+												</div>
+
+												<!-- 												CURSO -->
+												<div class="form-group has-feedback">
+													<p:outputLabel for="idDesc"
+														class="col-sm-2 form-control-prime" value="Curso" />
+
+													<div class="col-sm-7">
+														<h:selectOneMenu id="idCursos" styleClass="form-control"
+															required="true"
+															requiredMessage="Ao menos um curso precisa ser selecionado."
+															value="#{trabalhoManager.cursoSelecionado}">
+															<f:selectItem itemLabel="-- Selecione --" itemValue=""
+																noSelectionOption="" />
+															<f:selectItems var="curso" itemLabel="#{curso.nome}"
+																itemValue="#{curso.id}"
+																value="#{trabalhoManager.listaCursos}" />
+														</h:selectOneMenu>
+													</div>
+												</div>
+												
+												<!-- UPLOAD DE ARQUIVOS -->
+												<div class="form-group">
+															<p:outputLabel for="file"
 																class="col-sm-2 form-control-prime"
-																value="Título do Trabalho" />
-
+																value="Upload do Trabalho" />
 															<div class="col-sm-7">
-																<p:inputText class="form-control" id="idNome"
-																	placeholder="Título do Trabalho" required="true"
-																	requiredMessage="Campo Nome Obrigatório."
-																	value="#{trabalhoManager.trabalhoDTO.nomeTrabalho}" />
-
+																<p:fileUpload id="file" value="#{trabalhoManager.file}"
+																	mode="simple" skinSimple="true" required="true"
+																	label="Escolher Arquivo" sizeLimit="2097152"
+																	allowTypes="/(\.|\/)(pdf)$/"
+																	requiredMessage="Faça o upload do arquivo" />
 															</div>
 														</div>
-													</div>
-												</div>
+												
+												
 
-											</h:panelGroup>
+											</div>
+
+										</div>
+
+										<div class="box-footer">
+
+											<!-- BOTAO CADASTRAR TRABALHO -->
+											<p:commandButton styleClass="btn btn-info pull-right"
+												id="idBotaCadTrabalho" value="Cadastrar"
+												action="#{trabalhoManager.cadastrarTrabalho}"												
+												ajax="false" />
+												
+											<!-- BOTAO SALVAR UM EVENTO QUANDO EDITADO -->
+											<p:commandButton styleClass="btn btn-info pull-right"
+												id="idBotaEditTrabalho" value="Salvar"
+												action="#{trabalhoManager.saveTrabalhoEdit}"
+												rendered="#{trabalhoManager.edit == true}"
+												update="form1 :form:idTabelaGroup" ajax="false" />
 
 
-											<h:panelGroup>
 
-												<div class="form-group">
-													<div class="form-group">
-														<p:outputLabel for="idNome"
-															class="col-sm-2 form-control-prime" value=" Curso " />
+										</div>
 
-													</div>
-													<div class="col-sm-4">
-														<h:selectOneMenu id="menu" label="CURSO" filter="true"
-															filterMatchMode="startsWith"
-															value="#{trabalhoManager.trabalhoDTO.curso}"
-															style="width:183%;height:30px;">
-															<f:selectItem itemLabel="Selecione..."
-																noSelectionOption="" itemValue="" />
-															<f:selectItems var="area" itemLabel="#{area.nome}"
-																itemValue="#{area.id}" value="#{trabalhoManager.trabalhoDTO.curso}" />
-														</h:selectOneMenu>
-
-													</div>
-												</div>
-
-											</h:panelGroup>
-
-											<br></br>
-											<br></br>
-											<br></br>
-											<br></br>
-
-											<h:panelGrid width="100%" style="text-align:center">
-												<h3 Rstyle="margin-top: 0"></h3>
-												<p:inputTextarea rows="10" cols="50" queryDelay="750"
-													minQueryLength="4" required="true" maxlength="70"
-													requiredMessage="Campo Nome Obrigatório."
-													placeholder="Coloque aqui sua descrição"
-													counterTemplate="{0} Quantidade restante."
-													autoResize="false" value="#{trabalhoManager.trabalhoDTO.comentario}"
-													counter="display" />
-												<h:outputText id="display" />
-											</h:panelGrid>
-											<h:panelGrid width="100%" style="text-align:center">
-												<div class="box-footer">
-													<p:fileUpload id="file" value="#{trabalhoManager.file}"
-														mode="simple" skinSimple="true" required="true"
-														label="Escolher Arquivo" sizeLimit="2097152"
-														allowTypes="/(\.|\/)(pdf)$/"
-														requiredMessage="Faça o upload do arquivo" />
-
-													<p:growl id="messages" showDetail="true" />
-
-													<p:commandButton value="Salvar"
-														process="@this file" ajax="false"
-														actionListener="#{trabalhoManager.CriaTrabalho()}" />
-
-												</div>
-											</h:panelGrid>
-										</p:tab>
-									
+									</h:form>
 
 								</div>
 							</div>
 						</div>
 					</div>
+				</div>
+				</section>
+			</h:form>
+			<h:form id="form" enctype="multipart/form-data">
+			<section class="content">
 
-					<div class="box">
-						<div class="box-header">
-							<h3 class="box-title">Trabalhos Cadastrados</h3>
+				<div class="box box-default">
+
+					<div class="box-header with-border">
+						<h3 class="box-title">Tabela de Trabalhos</h3>
+
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"
+								data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
 						</div>
-						<!-- /.box-header -->
+					</div>
+
+					<div class="box-body">
+
 						<div class="box-body">
-							<table id="tabelaArtigo"
-								class="table table-bordered table-striped">
-								<thead>
-									<tr>
-										<th>Nome Trabalho</th>
-										<th>Curso</th>
-										<th><center>Comentario</center></th>										
-
-									</tr>
-								</thead>
-								<tbody>
-									<ui:repeat value="#{artigoManager.listArtigo}" var="artigo">
+							<h:panelGroup id="idTabelaGroup">
+								<table id="tabelaEvento"
+									class="table table-bordered table-striped">
+									<thead>
 										<tr>
-											<td>#{artigo.nome}</td>
-											<td>#{artigo.curso}</td>
-											<td>#{artigo.comentario}</td>
-											<td>
-												<center>
-													<h4>
-														<p:outputLabel rendered="#{artigo.status eq '1'}">
-															<span class="label label-success">Aprovado</span>
-														</p:outputLabel>
-
-														<p:outputLabel rendered="#{artigo.status eq '2'}">
-															<span class="label label-warning">Pendente</span>
-														</p:outputLabel>
-
-														<p:outputLabel rendered="#{artigo.status eq '3'}">
-															<span class="label label-danger">Reprovado</span>
-														</p:outputLabel>
-													</h4>
-												</center>
-											</td>
-											<td>
-												<center>
-													<p:commandButton styleClass="btn btn-primary"
-														update=":form:artigoDetailInfo"
-														oncomplete="PF('artigoDialogInfoWid').show();"
-														icon="fa fa-search" title="Search" ajax="true"
-														action="#{artigoManager.setSelectedArtigo(artigo)}">
-													</p:commandButton>
-												</center>
-											</td>
-
+											<th>Nome do Trabalho</th>
+											<th>Descricao</th>
+											<th>Curso</th>
+											<th>Nome Arquivo</th>
+											<th>Editar</th>
+											<th>Remover</th>
 										</tr>
-									</ui:repeat>
-								</tbody>
+									</thead>
+									<tbody>
+										<ui:repeat value="#{trabalhoManager.listTrabalho}" var="trabalho">
+											<tr>
+												<td>#{trabalho.nome}</td>
+												<td>#{trabalho.descricao}</td>												
+												<td>#{trabalho.numCurso.nome}</td>
+												<td>#{trabalho.nomearq}</td>												
+												<td><p:commandButton icon="fa fa-edit" title="Edit"
+														process="@form idTabelaGroup" update="form1" ajax="false"
+														action="#{trabalhoManager.editaTrabalho(trabalho)}" /></td>
+												<td><p:commandButton
+														oncomplete="PF('eventDialogDelWid').show();"
+														process="@this" icon="fa fa-remove" title="Remove"
+														ajax="true"
+														action="#{trabalhoManager.setSelectedTrabalho(trabalho)}">
+													</p:commandButton></td>
 
-								<tfoot>
-									<tr>
-									<td>#{artigo.nome}</td>
-									<td>#{artigo.curso}</td>
-									<td>#{artigo.comentario}</td>
+											</tr>
+										</ui:repeat>
+									</tbody>
 
-									</tr>
-								</tfoot>
-							</table>
+								</table>
+							</h:panelGroup>
 						</div>
 
+						<!-- MODAL PARA EXCLUSÃO DO EVENTO -->
+						<p:dialog header="Exclusão do Trabalho"
+							widgetVar="eventDialogDelWid" id="eventDialogDel" modal="true"
+							showEffect="fade" hideEffect="fade" resizable="true">
+							<p:outputPanel id="eventDetailDel" style="text-align:lefth;">
+								<div>
+									<h:outputText
+										value=" Deseja excluir o Trabalho #{trabalhoManager.selectedTrabalho.nome}" />
+								</div>
+								<div>
 
-						<!-- MODAL PARA VISUALIZAR ARTIGO -->
-						<p:dialog header="Informações do Artigo"
-							widgetVar="artigoDialogInfoWid" id="artigoDialogInfo"
-							modal="true" width="300" height="200" showEffect="fade"
-							hideEffect="fade" resizable="false">
-							<p:outputPanel id="artigoDetailInfo" style="text-align:lefth;">
-								<p:panelGrid columns="2">
-									<f:facet name="header">
-										<h:outputText value="#{artigoManager.selectedArtigo.nome}" />
-									</f:facet>
+									<p:commandButton styleClass="btn btn-info" id="idBotaRemTrab"
+										value="Sim" action="#{trabalhoManager.removeTrabalho}"
+										update="idTabelaGroup" ajax="false">
+									</p:commandButton>
 
-									<h:outputText value="Data Inicio" />
-									<h:outputText value="#{artigoManager.selectedArtigo.descricao}" />
-
-									<h:outputText value="Data Termino" />
-									<h:outputText value="#{artigoManager.selectedArtigo.status}" />
-
-								</p:panelGrid>
+									<p:commandButton styleClass="btn btn-info pull-lefth"
+										value="Não" onclick="PF('eventDialogDelWid').hide();" />
+								</div>
 							</p:outputPanel>
 						</p:dialog>
 
-
-
-
 					</div>
-				</h:form>
-			</div>
-			<script>
-				$(function() {
-					$('#tabelaArtigo').DataTable({
-						"paging" : true,
-						"lengthChange" : true,
-						"searching" : true,
-						"ordering" : true,
-						"info" : true,
-						"autoWidth" : true
+				</div>
+				<script>
+					$(function() {
+						$('#tabelaEvento').DataTable({
+							"paging" : true,
+							"lengthChange" : true,
+							"searching" : true,
+							"ordering" : true,
+							"info" : true,
+							"autoWidth" : true
+						});
 					});
-				});
-			</script>
-		</section>
+				</script>
+			</section>
+		</h:form>
+
 	</ui:define>
 
 </ui:composition>
-
-
-

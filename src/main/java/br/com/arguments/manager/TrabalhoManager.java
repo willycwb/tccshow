@@ -20,11 +20,12 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.model.UploadedFile;
 
-
-
 import br.com.arguments.dto.TrabalhoDTO;
+import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.entity.TrabalhoEntity;
+import br.com.arguments.entity.UsuarioEntity;
+import br.com.arguments.service.TimeLineService;
 import br.com.arguments.service.TrabalhoService;
 import br.com.arguments.util.jsf.SessionUtil;
 
@@ -32,145 +33,207 @@ import br.com.arguments.util.jsf.SessionUtil;
 @ViewScoped
 public class TrabalhoManager implements Serializable{
 	
-	private static final String SUCESSO_01 = "SUCESSO";
+	private static final long serialVersionUID = 1L;
 	
-	private static final Logger LOG = Logger.getLogger(TrabalhoManager.class.getName());
+	private static final Logger LOG = Logger.getLogger(CadastroManager.class.getName());
 	
 	private static final String ERRO_01 = "ERRO";
 	
 	@EJB
 	private TrabalhoService trabalhoService;
 	
-	private List<TrabalhoEntity> listaTrabalho;
+//	@EJB
+//	private TimeLineService timeLineService;
 	
-	private TrabalhoDTO trabalhoDTO;
+	private List<TrabalhoEntity> listTrabalho;
 	
-	private LoginEntity user;
+	private TrabalhoEntity selectedTrabalho;
+	
+	private TrabalhoDTO dto;
 	
 	private boolean edit;
 	
-	TrabalhoEntity trabalho;
+	private LoginEntity login;
+
+	private UsuarioEntity user;
+	
+	private UploadedFile file;	
+	
+	private String destinonome;
 	
 	private boolean verifica;
 	
-	private UploadedFile file;
-	
-	private String destino;
+	byte[] bytes = new byte[2*1024*1024];
 	
 	private File dir;
 	
-	byte[] bytes = new byte[2*1024*1024];
-		
+	private List<CursosEntity> listaCursos;
+
+	private Integer cursoSelecionado;
+	
 	@PostConstruct
-	public void init(){		
-		user = (LoginEntity) SessionUtil.getParam("UserLoged");
+	public void init() {
+		login = (LoginEntity) SessionUtil.getParam("UserLoged");
+		user = login.getIdUsuario();
+		listaCursos = buscaListaCursos();
+		destinonome = "C:\\Develop\\Arguments\\workspace\\tccshow\\src\\main\\Trabalhos\\" + user.getId() + "\\";
 		posInit();
-		destino = "C:\\Develop\\Arguments\\workspace\\Arguments\\src\\main\\Trabalhos\\" + user.getId() + "\\";
 	}
 	
-	private void posInit(){
-		trabalhoDTO = new TrabalhoDTO();
-		trabalho = new TrabalhoEntity();
+	private void posInit() {
+		dto = new TrabalhoDTO();
 		edit = false;
+		cursoSelecionado = null;
 	}
 	
-	public String CriaTrabalho(){
+	private List<CursosEntity> buscaListaCursos() {
+		return trabalhoService.findAllCursos();
+	}
+	
+	public void cadastrarTrabalho() {
 		FacesContext context = FacesContext.getCurrentInstance();
-		GregorianCalendar calendar = new GregorianCalendar();
 		TrabalhoEntity trabalho = new TrabalhoEntity();
-		DateFormat formatador = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss");
-		String tempo = formatador.format(calendar.getTimeInMillis());
 		int read = 0;
 		
-		if((!trabalhoDTO.getNomeTrabalho().isEmpty() && trabalhoDTO.getNomeTrabalho() != null)){
+		if((!dto.getNome().isEmpty() && dto.getNome() != null)){
 			if(valida(file)){
-				if(!(verifica = (new File(destino + "\\").exists()))){
-					dir = new File(destino + "\\");
+				if(!(verifica = (new File(destinonome + "\\").exists()))){
+					dir = new File(destinonome + "\\");
 					dir.mkdir();
 				}
-				
 				try(InputStream is = file.getInputstream();
-						OutputStream out = new FileOutputStream(destino + user.getId() + "_" + tempo + ".pdf")){
-					while((read = is.read(bytes)) != -1){
-						out.write(bytes, 0, read);
+						OutputStream out = new FileOutputStream(destinonome + user.getId() + "_"
+								+ ".pdf")){
+							
+							while((read = is.read(bytes)) != -1){
+								out.write(bytes, 0, read);
+							}
+							
+							dto.setCaminho(destinonome);
+							dto.setNomearq(user.getId() + "_" + ".pdf");
+						}catch(Exception e){
+							LOG.warning(ERRO_01 + " Erro ");
+							context.addMessage(null, new FacesMessage(ERRO_01, "Erro cath"));
+							e.printStackTrace();
+						}
+				if(cursoSelecionado != null){
+					for(CursosEntity item : listaCursos){
+						if(item.getId().equals(new Long(cursoSelecionado))){
+							dto.setCurso(item);
+						}
 					}
 					
-					trabalhoDTO.setCaminho(destino);
-					trabalhoDTO.setUsuario(user.getIdUsuario());
-					trabalhoDTO.setNomearquivo(user.getId() + "_" + tempo + ".pdf");
-					trabalho = trabalhoService.insert(trabalhoDTO);
-					context.addMessage(null, new FacesMessage(ERRO_01, "Cadastrado com Sucesso"));
-				}catch(Exception e){
-					LOG.warning(ERRO_01 + " Erro ");
-					context.addMessage(null, new FacesMessage(ERRO_01, "Erro cath"));
-					e.printStackTrace();
-					return "trabalho.xhtml?faces-redirect=true";
-				}
+					trabalho = trabalhoService.insert(dto);
+					
+					posInit();
+					carregaLista();
+					context.addMessage(null, new FacesMessage("Sucesso", "Cadastrado com Sucesso"));
+					}
+			}else{
+				LOG.warning(ERRO_01 + " Nenhum curso selecionado! ");
+				context.addMessage(null, new FacesMessage(ERRO_01, "Nenhum curso selecionado!"));
 			}
-			trabalho = trabalhoService.insert(trabalhoDTO);
-			
-			posInit();
-			carregaLista();
-			context.addMessage(null, new FacesMessage(SUCESSO_01, "Cadastro com Sucesso"));
+		}else{
+			LOG.warning(ERRO_01 + " Campos Sem preencher! ");
+			context.addMessage(null, new FacesMessage(ERRO_01, "Campos Sem preencher!"));
 		}
-		
-		return "artigo.xhtml?faces-redirect=true";
 	}
 	
-	public boolean valida(UploadedFile newFile){
-		final int MAX_SIZE = 2 * 1024 * 1024;
+	public String removeTrabalho(){
+		trabalhoService.remove(selectedTrabalho);
+		carregaLista();
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.addMessage(null, new FacesMessage("Sucesso", "Trabalho Removido"));
+		return "trabalho.xhtml?faces-redirect=true";
+	}
+	
+	public void editaTrabalho(TrabalhoEntity entity){
+		if(entity != null){
+			dto = new TrabalhoDTO();
+			dto.setId(entity.getId());
+			dto.setNome(entity.getNome());
+			dto.setDescricao(entity.getDescricao());
+			cursoSelecionado = entity.getNumCurso().getId().intValue();
+			dto.setAtivo(true);
+			edit = true;
+		}else{
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage("ERRO", "Trabalho em branco"));
+		}
+	}
+	
+	public void saveTrabalhoEdit(){
+		FacesContext context = FacesContext.getCurrentInstance();
+		if(edit){
+			if(cursoSelecionado != null){
+				for(CursosEntity item : listaCursos){
+					if(item.getId().equals(new Long(cursoSelecionado))){
+						dto.setCurso(item);
+					}
+				}
+			}
+			
+			trabalhoService.update(dto);
+			posInit();
+			carregaLista();
+			context.addMessage(null, new FacesMessage("Sucesso" + ": Trabalho alterado."));
+		}
+	}
+	
+	private boolean valida(UploadedFile newFile){
+		
+		final int Tam = 2 * 1024 * 1024;
+		Long valTrab = new Long(5);
 		UploadedFile val = newFile;
 		
-		if(val.getSize() > MAX_SIZE){
+		if(val.getSize() > Tam){
 			FacesContext context = FacesContext.getCurrentInstance();
-			context.addMessage(null, new FacesMessage("ARQUIVO grande demais", "Tamanho maximo de 2MB"));
+			context.addMessage(null, new FacesMessage("Arquivo muito grande", "O arquivo deve ter o tamanho maximo de 2MB"));
 			return false;
-		}else if(!val.getFileName().endsWith(".pdf")){
-			FacesContext context = FacesContext.getCurrentInstance();
-			context.addMessage(null, new FacesMessage( "TIPO DO ARQUIVO INVALIDO", "O Arquivo deve ser .PDF"));
+		}else{
+			if(!val.getFileName().endsWith(".pdf")){
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage("Tipo de Arquivo Errado", "Somente Arquvios .PDF"));
 			return false;
+			}			
 		}
-		
 		return true;
 	}
 	
-	public boolean getSize2() {
-
-		if (file == null) {
-			return true;
-		} else {
-
-			return false;
-
-		}
-	}
-	
 	private void carregaLista(){
-		listaTrabalho = trabalhoService.findAllTrabalhos();
+		listTrabalho = trabalhoService.findAllActive();
 	}
 
-	public List<TrabalhoEntity> getListaTrabalho() {
-		return listaTrabalho;
+	public Integer getCursoSelecionado() {
+		return cursoSelecionado;
 	}
 
-	public void setListaTrabalho(List<TrabalhoEntity> listaTrabalho) {
-		this.listaTrabalho = listaTrabalho;
+	public void setCursoSelecionado(Integer cursoSelecionado) {
+		this.cursoSelecionado = cursoSelecionado;
 	}
 
-	public TrabalhoDTO getTrabalhoDTO() {
-		return trabalhoDTO;
+	public List<CursosEntity> getListaCursos() {
+		return listaCursos;
 	}
 
-	public void setTrabalhoDTO(TrabalhoDTO trabalhoDTO) {
-		this.trabalhoDTO = trabalhoDTO;
+	public void setListaCursos(List<CursosEntity> listaCursos) {
+		this.listaCursos = listaCursos;
 	}
 
-	public LoginEntity getUser() {
+	public UsuarioEntity getUser() {
 		return user;
 	}
 
-	public void setUser(LoginEntity user) {
+	public void setUser(UsuarioEntity user) {
 		this.user = user;
+	}
+
+	public LoginEntity getLogin() {
+		return login;
+	}
+
+	public void setLogin(LoginEntity login) {
+		this.login = login;
 	}
 
 	public boolean isEdit() {
@@ -181,20 +244,31 @@ public class TrabalhoManager implements Serializable{
 		this.edit = edit;
 	}
 
-	public boolean isVerifica() {
-		return verifica;
+	public TrabalhoDTO getDto() {
+		return dto;
 	}
 
-	public void setVerifica(boolean verifica) {
-		this.verifica = verifica;
+	public void setDto(TrabalhoDTO dto) {
+		this.dto = dto;
 	}
 
-	public TrabalhoService getTrabalhoService() {
-		return trabalhoService;
+	public TrabalhoEntity getSelectedTrabalho() {
+		return selectedTrabalho;
 	}
 
-	public void setTrabalhoService(TrabalhoService trabalhoService) {
-		this.trabalhoService = trabalhoService;
+	public void setSelectedTrabalho(TrabalhoEntity selectedTrabalho) {
+		this.selectedTrabalho = selectedTrabalho;
+	}
+
+	public List<TrabalhoEntity> getListTrabalho() {
+		if(listTrabalho == null){
+			carregaLista();
+		}
+		return listTrabalho;
+	}
+
+	public void setListTrabalho(List<TrabalhoEntity> listTrabalho) {
+		this.listTrabalho = listTrabalho;
 	}
 
 	public UploadedFile getFile() {
@@ -204,5 +278,4 @@ public class TrabalhoManager implements Serializable{
 	public void setFile(UploadedFile file) {
 		this.file = file;
 	}
-
 }

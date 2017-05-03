@@ -4,48 +4,47 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="TRABALHOS")
 public class TrabalhoEntity implements Serializable{
 	
-	private static final long serialVersionUID = 1L;
-
 	@Id
 	@Column(name="ID_TRABALHO")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 	
 	@Column(name="NOME_TRABALHO")
 	private String nome;
 	
-	@Column(name="CURSO")
-	private String curso;
+	@Column(name="DESCRICAO", nullable=true)
+	private String descricao;
 	
-	@Column(name="COMENTARIO")
-	private String comentario;
+	@ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="NUM_CURSO")
+	private CursosEntity numCurso;
+	
+	@Column(name="ATIVO")
+	private boolean ativo;
 	
 	@Column(name="CAMINHO")
 	private String caminho;
 	
 	@Column(name="NOME_ARQUIVO")
 	private String nomearq;
-	
-	@Column(name="STATUS") // 1-publicado(alunos podem ver) 2-postado(alunos nao podem ver) -0 rejeitado
-	private int status;
-	
-	@Column(name="ID_USUARIO")
-	private UsuarioEntity idUsuarioEntity;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -57,36 +56,28 @@ public class TrabalhoEntity implements Serializable{
 		this.nome = nome;
 	}
 
-	public String getCurso() {
-		return curso;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setCurso(String curso) {
-		this.curso = curso;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
-	public int getStatus() {
-		return status;
+	public CursosEntity getNumCurso() {
+		return numCurso;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public void setNumCurso(CursosEntity numCurso) {
+		this.numCurso = numCurso;
 	}
 
-	public UsuarioEntity getIdUsuarioEntity() {
-		return idUsuarioEntity;
+	public boolean isAtivo() {
+		return ativo;
 	}
 
-	public void setIdUsuarioEntity(UsuarioEntity idUsuarioEntity) {
-		this.idUsuarioEntity = idUsuarioEntity;
-	}
-
-	public String getComentario() {
-		return comentario;
-	}
-
-	public void setComentario(String comentario) {
-		this.comentario = comentario;
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	public String getCaminho() {
