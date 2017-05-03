@@ -13,166 +13,334 @@
 				<li class="active">Grupos</li>
 			</ol>
 		</section>
+		<h:form id="form1" enctype="multipart/form-data">
+			<section class="content">
 
-		<section class="content">
+				<div class="box box-default">
 
-			<div class="box box-default">
+					<div class="box-header with-border">
+						<h3 class="box-title">Cadastro de Grupos</h3>
 
-				<div class="box-header with-border">
-					<h3 class="box-title">Criar Grupo</h3>
-
-					<div class="box-tools pull-right">
-						<button type="button" class="btn btn-box-tool"
-							data-widget="collapse">
-							<i class="fa fa-minus"></i>
-						</button>
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"
+								data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
 					</div>
-				</div>
-				<h:form id="form" enctype="multipart/form-data">
-					<p:growl id="mensagens" showDetail="true" sticky="true" />
+
 					<div class="box-body">
 						<div class="row">
 							<div class="col-md-12">
 								<div class="form-group">
 
-										<p:tab title="Criar Grupo">
+									<h:form id="idCadastroGroup">
+										<div class="form-horizontal">
+											<div class="box-body">
 
-											<h:panelGroup id="idCadastroGroup">
+												<!-- NOME EVENTO -->
+												<div class="form-group">
+													<p:outputLabel for="idNome"
+														class="col-sm-2 form-control-prime" value="Nome do Grupo" />
 
-												<div class="form-horizontal">
-													<div class="box-body">
-														<div class="form-group">
-															<p:outputLabel for="idNome"
-																class="col-sm-2 form-control-prime"
-																value="Nome do Grupo" />
-
-															<div class="col-sm-7">
-																<p:inputText class="form-control" id="idNome"
-																	placeholder="Nome do Grupo" required="true"
-																	requiredMessage="Campo Nome Obrigatório."
-																	value="#{gruposManager.gruposDTO.nomeGrupo}" />
-
-															</div>
-														</div>
+													<div class="col-sm-7">
+														<p:inputText class="form-control" id="idNome"
+															placeholder="Nome do Grupo" required="true"
+															requiredMessage="Campo Nome Obrigatório."
+															title="Nome do Grupo a ser cadastrado"
+															value="#{gruposManager.gruposDTO.nomeGrupo}" />
+														<p:tooltip id="toolTipFocus" for="idNome"
+															showEvent="focus" hideEvent="blur" />
 													</div>
 												</div>
 
-											</h:panelGroup>
-											
-											<h:panelGroup>
+												<!-- DESCRICAO EVENTO -->
+												<div class="form-group">
+													<p:outputLabel for="idDesc"
+														class="col-sm-2 form-control-prime"
+														value="Descrição do Evento" />
 
-												<div class="form-horizontal">
-													<div class="box-body">
-														<div class="form-group">
-															<p:outputLabel for="idNome"
-																class="col-sm-2 form-control-prime"
-																value="Privacidade" />
-
-															<div class="col-sm-7">
-																<p:inputText class="form-control" id="idPrivacidae"
-																	placeholder="Privacidade do Grupo" required="true"
-																	requiredMessage="Campo Privacidade Obrigatório."
-																	value="#{gruposManager.gruposDTO.privacidade}" />
-
-															</div>
-														</div>
+													<div class="col-sm-7">
+														<p:inputTextarea id="idDesc" rows="4" cols="50"
+															value="#{eventoManager.dto.descricao}" autoResize="true" />
+														<br />
+														<h:outputText id="display" />
 													</div>
 												</div>
 
-											</h:panelGroup>
+												<!-- 												CURSO -->
+												<div class="form-group has-feedback">
+													<p:outputLabel for="idDesc"
+														class="col-sm-2 form-control-prime" value="Curso" />
 
+													<div class="col-sm-7">
+														<h:selectOneMenu id="idCursos" styleClass="form-control"
+															required="true"
+															requiredMessage="Ao menos um curso precisa ser selecionado."
+															value="#{gruposManager.cursoSelecionado}">
+															<f:selectItem itemLabel="-- Selecione --" itemValue=""
+																noSelectionOption="" />
+															<f:selectItems var="curso" itemLabel="#{curso.nome}"
+																itemValue="#{curso.id}"
+																value="#{gruposManager.listaCursos}" />
+														</h:selectOneMenu>
+													</div>
+												</div>
 
-											<h:panelGroup>
+												<!-- DATA INICIAL EVENTO -->
+												<div class="form-group">
+
+													<p:outputLabel for="idDataInicial"
+														class="col-sm-2 form-control-prime"
+														value="Data Inicio do Evento *" />
+
+													<div class="col-sm-4">
+														<div class="input-group">
+															<div class="input-group-addon">
+																<i class="fa fa-calendar"></i>
+															</div>
+															<p:inputMask id="idDataInicial" mask="99/99/9999 99:99"
+																value="#{gruposManager.gruposDTO.dataInicial}" />
+														</div>
+
+													</div>
+												</div>
 
 												<div class="form-group">
-													<div class="form-group">
-														<p:outputLabel for="idNome"
-															class="col-sm-2 form-control-prime" value=" Curso " />
 
-													</div>
+													<p:outputLabel for="idDataInicial"
+														class="col-sm-2 form-control-prime"
+														value="Tipo de Grupo(s) *" />
+
 													<div class="col-sm-4">
-														<h:selectOneMenu id="menu" label="CURSO" filter="true"
-															filterMatchMode="startsWith"
-															value="#{gruposManager.gruposDTO.curso}"
-															style="width:183%;height:30px;">
-															<f:selectItem itemLabel="Selecione..."
-																noSelectionOption="" itemValue="" />
-															<f:selectItems var="area" itemLabel="#{area.nome}"
-																itemValue="#{area.id}" value="#{gruposManager.gruposDTO.curso}" />
-														</h:selectOneMenu>														
+														<h:panelGrid columns="2" style="margin-bottom:10px"
+															cellpadding="5">
+															<p:selectOneButton style="border-radius: 3px;" value="#{gruposManager.tipoGrupo}">
+																<f:selectItem itemLabel="Público" itemValue="1" />
+																<f:selectItem itemLabel="Privado" itemValue="2" />
+															</p:selectOneButton>
 
+														</h:panelGrid>
+													</div>
+												</div>
+
+												<div class="form-group">
+
+													<p:outputLabel for="idDataInicial"
+														class="col-sm-2 form-control-prime"
+														value="Localização do grupo *" />
+
+													<div class="col-sm-4">
+														<p:commandButton id="btn" type="button"
+															icon="ui-icon-pin-s" value="Show Map"
+															onclick="PF('openMap').show();" />
 
 													</div>
-												</div>																						
 
-											</h:panelGroup>
+													<p:dialog id="gmapDialog" widgetVar="openMap" width="625"
+														height="400" modal="true">
+
+														<p:gmap id="gmap" center="36.890257,30.707417" zoom="13"
+															type="HYBRID" style="width:100%;height:400px"
+															model="#{gruposManager.emptyModel}"
+															onPointClick="handlePointClick(event);" widgetVar="map" />
+
+													</p:dialog>
+
+													<p:dialog widgetVar="dlg" showEffect="fade">
+														<h:form prependId="false">
+															<h:panelGrid columns="2">
+																<h:outputLabel for="title" value="Tituloxxx: " />
+																<h:inputText id="title" value="#{gruposManager.title}" />
+
+																<h:inputHidden id="lat" value="#{gruposManager.lat}" />
+																<h:inputHidden id="lng" value="#{gruposManager.lng}" />
+
+																<f:facet name="footer">
+																	<p:commandButton value="Add" process="@form"
+																		action="#{gruposManager.addMarker}"
+																		oncomplete="markerAddComplete()" />
+																	<p:commandButton value="Cancel"
+																		onclick="return cancel()" />
+																</f:facet>
+															</h:panelGrid>
+
+														</h:form>
+													</p:dialog>
+												</div>
+
+											</div>
+
+										</div>
+
+										<div class="box-footer">
 											
-									</p:tab>	
-									
-									<p:commandButton styleClass="btn btn-info pull-right"
+											<p:commandLink action="#{gruposManager.cadastrarGrupos}" >asd</p:commandLink>
+											
+											<!-- BOTAO CADASTRAR EVENTO -->
+											<p:commandButton styleClass="btn btn-info pull-right"
 												id="idBotaCadEvento" value="Cadastrar"
-												action="#{gruposManager.criaGrupo()}"
-												update="form1 idTabelaGroup" ajax="false" />								
+												action="#{gruposManager.cadastrarGrupos}"
+												rendered="#{gruposManager.edit == false}"
+												update="form1 :form:idTabelaGroup" ajax="false" />
+
+											<!-- BOTAO SALVAR UM EVENTO QUANDO EDITADO -->
+											<p:commandButton styleClass="btn btn-info pull-right"
+												id="idBotaEditEvento" value="Salvar"
+												action="#{eventoManager.saveEventoEdit}"
+												rendered="#{eventoManager.edit == true}"
+												update="form1 :form:idTabelaGroup" ajax="false" />
+
+										</div>
+
+									</h:form>
 
 								</div>
 							</div>
 						</div>
 					</div>
+				</div>
+			</section>
+		</h:form>
+		<h:form id="form" enctype="multipart/form-data">
+			<section class="content">
 
-					<div class="box">
-						<div class="box-header">
-							<h3 class="box-title">Grupos Cadastrados</h3>
-						</div>
-						<!-- /.box-header -->
-						<div class="box-body">
-							<table id="tabelaArtigo"
-								class="table table-bordered table-striped">
-								<thead>
-									<tr>
-										<th>Nome Grupo</th>
-										<th>Privacidade</th>
-										<th><center>Curso</center></th>										
+				<div class="box box-default">
 
-									</tr>
-								</thead>
-								<tbody>
-									<ui:repeat value="#{gruposManager.listaGrupos}" var="artigo">
-										<tr>
-											<td>#{artigo.nome}</td>
-											<td>#{artigo.privacidade}</td>
-											<td>#{artigo.curso}</td>
-											
+					<div class="box-header with-border">
+						<h3 class="box-title">Tabela de Evento</h3>
 
-										</tr>
-									</ui:repeat>
-								</tbody>
-
-								<tfoot>
-									<tr>
-									<td>#{artigo.nome}</td>
-									<td>#{artigo.privacidade}</td>
-									<td>#{artigo.curso}</td>
-
-									</tr>
-								</tfoot>
-							</table>
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"
+								data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
 						</div>
 					</div>
-				</h:form>
-			</div>
-			<script>
-				$(function() {
-					$('#tabelaArtigo').DataTable({
-						"paging" : true,
-						"lengthChange" : true,
-						"searching" : true,
-						"ordering" : true,
-						"info" : true,
-						"autoWidth" : true
+
+					<div class="box-body">
+
+						<div class="box-body">
+							<h:panelGroup id="idTabelaGroup">
+								<table id="tabelaEvento"
+									class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th>Nome do Evento</th>
+											<th>Descricao</th>
+											<th>Curso</th>
+											<th>Data de Inicio</th>
+											<th>Editar</th>
+											<th>Remover</th>
+
+										</tr>
+									</thead>
+									<tbody>
+										<ui:repeat value="#{eventoManager.listEvento}" var="evento">
+											<tr>
+												<td>#{evento.nome}</td>
+												<td>#{evento.descricao}</td>
+												<td>#{evento.numCurso.nome}</td>
+												<td>#{eventoManager.convertoCompleteTimestampToString(evento.dataInicio)}</td>
+												<td><p:commandButton icon="fa fa-edit" title="Edit"
+														process="@form idTabelaGroup" update="form1" ajax="false"
+														action="#{eventoManager.editEvent(evento)}" /></td>
+												<td><p:commandButton
+														oncomplete="PF('eventDialogDelWid').show();"
+														process="@this" icon="fa fa-remove" title="Remove"
+														ajax="true"
+														action="#{eventoManager.setSelectedEvent(evento)}">
+													</p:commandButton></td>
+
+											</tr>
+										</ui:repeat>
+									</tbody>
+
+								</table>
+							</h:panelGroup>
+						</div>
+
+						<!-- MODAL PARA EXCLUSÃO DO EVENTO -->
+						<p:dialog header="Exclusão do Evento"
+							widgetVar="eventDialogDelWid" id="eventDialogDel" modal="true"
+							showEffect="fade" hideEffect="fade" resizable="true">
+							<p:outputPanel id="eventDetailDel" style="text-align:lefth;">
+								<div>
+									<h:outputText
+										value=" Deseja excluir o evento #{eventoManager.selectedEvent.nome}" />
+								</div>
+								<div>
+
+									<p:commandButton styleClass="btn btn-info" id="idBotaRemEven"
+										value="Sim" action="#{eventoManager.removeEvent}"
+										update="idTabelaGroup" ajax="false">
+									</p:commandButton>
+
+									<p:commandButton styleClass="btn btn-info pull-lefth"
+										value="Não" onclick="PF('eventDialogDelWid').hide();" />
+								</div>
+							</p:outputPanel>
+						</p:dialog>
+
+					</div>
+				</div>
+				<script>
+					$(function() {
+						$('#tabelaEvento').DataTable({
+							"paging" : true,
+							"lengthChange" : true,
+							"searching" : true,
+							"ordering" : true,
+							"info" : true,
+							"autoWidth" : true
+						});
 					});
-				});
-			</script>
-		</section>
+				</script>
+				<script type="text/javascript">
+					var currentMarker = null;
+
+					function handlePointClick(event) {
+
+						if (currentMarker == null) {
+
+							document
+									.getElementById("form1:idCadastroGroup:lat").value = event.latLng
+									.lat();
+							document
+									.getElementById("form1:idCadastroGroup:lng").value = event.latLng
+									.lng();
+
+							currentMarker = new google.maps.Marker({
+								position : new google.maps.LatLng(event.latLng
+										.lat(), event.latLng.lng())
+							});
+
+							PF('map').addOverlay(currentMarker);
+
+							PF('dlg').show();
+						}
+					}
+
+					function markerAddComplete() {
+						var title = document
+								.getElementById('form1:idCadastroGroup:title');
+						currentMarker.setTitle(title.value);
+						title.value = "";
+						currentMarker = null;
+						PF('dlg').hide();
+					}
+
+					function cancel() {
+						PF('dlg').hide();
+						currentMarker.setMap(null);
+						currentMarker = null;
+
+						return false;
+					}
+				</script>
+			</section>
+		</h:form>
+
 	</ui:define>
 
 </ui:composition>

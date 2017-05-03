@@ -1,20 +1,22 @@
 package br.com.arguments.dto;
 
-import br.com.arguments.entity.UsuarioEntity;
+import java.util.Date;
+
+import br.com.arguments.entity.CursosEntity;
 
 public class GruposDTO {
-	
+
 	private Long id;
-	
+
 	private String nomeGrupo;
-	
-	private String privacidade;
-	
-	private String membros;
-	
-	private String curso;
-	
-	private UsuarioEntity usuario;
+
+	private CursosEntity curso;
+
+	private String dataInicial;
+
+	private Date data;
+
+	private int qtdMaximaMembros;
 
 	public Long getId() {
 		return id;
@@ -32,36 +34,36 @@ public class GruposDTO {
 		this.nomeGrupo = nomeGrupo;
 	}
 
-	public String getPrivacidade() {
-		return privacidade;
-	}
-
-	public void setPrivacidade(String privacidade) {
-		this.privacidade = privacidade;
-	}
-
-	public String getMembros() {
-		return membros;
-	}
-
-	public void setMembros(String membros) {
-		this.membros = membros;
-	}
-
-	public UsuarioEntity getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(UsuarioEntity usuario) {
-		this.usuario = usuario;
-	}
-
-	public String getCurso() {
+	public CursosEntity getCurso() {
 		return curso;
 	}
 
-	public void setCurso(String curso) {
+	public int getQtdMaximaMembros() {
+		return qtdMaximaMembros;
+	}
+
+	public void setCurso(CursosEntity curso) {
 		this.curso = curso;
 	}
-	
+
+	public void setQtdMaximaMembros(int qtdMaximaMembros) {
+		this.qtdMaximaMembros = qtdMaximaMembros;
+	}
+
+	public String getDataInicial() {
+		return dataInicial;
+	}
+
+	public void setDataInicial(String dataInicial) {
+		this.dataInicial = dataInicial;
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
 }

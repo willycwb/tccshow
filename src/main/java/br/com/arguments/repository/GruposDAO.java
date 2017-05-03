@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.GruposEntity;
 
 @Stateless
@@ -34,6 +35,19 @@ public class GruposDAO extends BaseDAO {
 		Query query = getManager().createQuery("DELETE GruposEntity WHERE id = :id");
 		query.setParameter("id", grupo.getId());
 		query.executeUpdate();
+	}
+
+	public List<CursosEntity> findAllCursos() {
+		TypedQuery<CursosEntity> query = getManager()
+				.createQuery("FROM CursosEntity", CursosEntity.class);
+		
+		List<CursosEntity> ls = query.getResultList();
+		
+		if(ls.isEmpty()){
+			return null;
+		}
+		
+		return ls;
 	}
 
 }
