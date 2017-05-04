@@ -11,7 +11,9 @@ import javax.ejb.Stateless;
 import br.com.arguments.dto.GruposDTO;
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.GruposEntity;
+import br.com.arguments.entity.InstituicaoEntity;
 import br.com.arguments.entity.LoginEntity;
+import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.repository.GruposDAO;
 
 @Stateless
@@ -61,6 +63,14 @@ public class GruposService {
 
 	public List<CursosEntity> findAllCursos() {
 		return grupoDAO.findAllCursos();
+	}
+
+	public List<InstituicaoEntity> findAllInstituicaoById(CursosEntity curso) {
+		return grupoDAO.findAllInstituicaoById(curso);
+	}
+
+	public List<UsuarioEntity> findAllAlunosByInstituicao(Integer instituicaoSelecionado) {
+		return grupoDAO.findAllAlunosByInstituicao(instituicaoSelecionado);
 	}
 
 }

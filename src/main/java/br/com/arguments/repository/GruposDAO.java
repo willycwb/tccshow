@@ -1,5 +1,6 @@
 package br.com.arguments.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -8,6 +9,9 @@ import javax.persistence.TypedQuery;
 
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.GruposEntity;
+import br.com.arguments.entity.InstituicaoCursosEntity;
+import br.com.arguments.entity.InstituicaoEntity;
+import br.com.arguments.entity.UsuarioEntity;
 
 @Stateless
 public class GruposDAO extends BaseDAO {
@@ -48,6 +52,43 @@ public class GruposDAO extends BaseDAO {
 		}
 		
 		return ls;
+	}
+
+	public List<InstituicaoEntity> findAllInstituicaoById(CursosEntity curso) {
+		
+		TypedQuery<InstituicaoCursosEntity> query = getManager()
+				.createQuery("SELECT L FROM InstituicaoCursosEntity L JOIN L.idInstituicaoEntity "
+						+ "WHERE L.idCursosEntity = :idCursosEntity ", InstituicaoCursosEntity.class);
+		query.setParameter("idCursosEntity", curso);
+		
+		List<InstituicaoCursosEntity> itens = query.getResultList();
+		
+		if(itens != null){
+			List<InstituicaoEntity> inst = new ArrayList<>();
+			for(InstituicaoCursosEntity um : itens){
+				inst.add(um.getIdInstituicaoEntity());
+			}
+			if(inst != null){
+				return inst;
+			}
+		}
+		return null;
+	}
+
+	public List<UsuarioEntity> findAllAlunosByInstituicao(Integer instituicaoSelecionado) {
+
+		TypedQuery<UsuarioEntity> query = getManager()
+				.createQuery("SELECT L FROM UsuarioEntity L JOIN L.idInstituicaoCursos J JOIN J.idInstituicaoEntity M "
+						+ "WHERE M.id = :id ", UsuarioEntity.class);
+		query.setParameter("id", new Long(instituicaoSelecionado));
+		
+		List<UsuarioEntity> ls = query.getResultList();
+		
+		if(ls != null){
+			return ls;
+		}
+		
+		return null;
 	}
 
 }

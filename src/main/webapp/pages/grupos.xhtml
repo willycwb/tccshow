@@ -68,25 +68,6 @@
 													</div>
 												</div>
 
-												<!-- 												CURSO -->
-												<div class="form-group has-feedback">
-													<p:outputLabel for="idDesc"
-														class="col-sm-2 form-control-prime" value="Curso" />
-
-													<div class="col-sm-7">
-														<h:selectOneMenu id="idCursos" styleClass="form-control"
-															required="true"
-															requiredMessage="Ao menos um curso precisa ser selecionado."
-															value="#{gruposManager.cursoSelecionado}">
-															<f:selectItem itemLabel="-- Selecione --" itemValue=""
-																noSelectionOption="" />
-															<f:selectItems var="curso" itemLabel="#{curso.nome}"
-																itemValue="#{curso.id}"
-																value="#{gruposManager.listaCursos}" />
-														</h:selectOneMenu>
-													</div>
-												</div>
-
 												<!-- DATA INICIAL EVENTO -->
 												<div class="form-group">
 
@@ -119,11 +100,102 @@
 																value="#{gruposManager.gruposDTO.tipoGrupo}">
 																<f:selectItem itemLabel="Público" itemValue="1" />
 																<f:selectItem itemLabel="Privado" itemValue="2" />
+																<p:ajax event="change" update="lsCursos"
+																	listener="#{gruposManager.buscaCursosInstituicao()}"
+																	resetValues="true" />
 															</p:selectOneButton>
 
 														</h:panelGrid>
 													</div>
 												</div>
+
+												<!-- 												CURSO -->
+												<h:panelGroup id="lsCursos">
+													<h:panelGroup
+														rendered="#{gruposManager.gruposDTO.tipoGrupo ne 0}">
+														<div class="form-group has-feedback">
+															<p:outputLabel for="idDesc"
+																class="col-sm-2 form-control-prime" value="Curso" />
+
+															<div class="col-sm-7">
+																<h:selectOneMenu id="idCursos" styleClass="form-control"
+																	required="true"
+																	requiredMessage="Ao menos um curso precisa ser selecionado."
+																	value="#{gruposManager.cursoSelecionado}">
+																	<f:selectItem itemLabel="-- Selecione --" itemValue=""
+																		noSelectionOption="" />
+																	<f:selectItems var="curso" itemLabel="#{curso.nome}"
+																		itemValue="#{curso.id}"
+																		value="#{gruposManager.listaCursos}" />
+																	<p:ajax event="change" update="lsInst"
+																		listener="#{gruposManager.buscaInstituicaoCursos()}"
+																		resetValues="true" />
+																</h:selectOneMenu>
+															</div>
+														</div>
+													</h:panelGroup>
+												</h:panelGroup>
+
+												<!-- 												INSTITUICAO -->
+												<h:panelGroup id="lsInst">
+													<h:panelGroup
+														rendered="#{gruposManager.cursoSelecionado ne null}">
+														<div class="form-group has-feedback">
+															<p:outputLabel for="idDesc"
+																class="col-sm-2 form-control-prime" value="Instituição" />
+
+															<div class="col-sm-7">
+																<h:selectOneMenu id="idInstituicao"
+																	styleClass="form-control" required="true"
+																	requiredMessage="Ao menos um curso precisa ser selecionado."
+																	value="#{gruposManager.instituicaoSelecionado}">
+																	<f:selectItem itemLabel="-- TODAS --" itemValue=""
+																		noSelectionOption="" />
+																	<f:selectItems var="inst" itemLabel="#{inst.nome}"
+																		itemValue="#{inst.id}"
+																		value="#{gruposManager.listaInstituicao}" />
+																	<p:ajax event="change" update="lsAlunos"
+																		listener="#{gruposManager.buscaAlunos()}"
+																		resetValues="true" />
+																</h:selectOneMenu>
+															</div>
+														</div>
+													</h:panelGroup>
+												</h:panelGroup>
+
+												<!-- 												ALUNOS -->
+												<h:panelGroup id="lsAlunos">
+													<h:panelGroup
+														rendered="#{gruposManager.instituicaoSelecionado ne null}">
+
+														<div class="form-group">
+
+															<p:outputLabel for="idDataInicial"
+																class="col-sm-2 form-control-prime" value="Aluno(s) " />
+
+															<div class="col-sm-4">
+
+																<p:selectManyMenu id="advanced"  scrollHeight="200"
+																	value="#{gruposManager.listaAlunosSelecionados}"
+																	var="t" filter="true"
+																	filterMatchMode="contains" showCheckbox="true">
+																	<f:selectItems value="#{gruposManager.listaAlunos}"
+																		var="aluno" itemLabel="#{aluno.nome}"
+																		itemValue="#{aluno}" />
+
+																	<p:column>
+																		<h:outputText value="#{t.nome}" />
+																	</p:column>
+																</p:selectManyMenu>
+
+
+															</div>
+
+														</div>
+
+													</h:panelGroup>
+												</h:panelGroup>
+
 
 												<div class="form-group">
 
@@ -133,7 +205,8 @@
 
 													<div class="col-sm-4">
 														<h:panelGrid columns="1" style="margin-bottom: 10px">
-															<p:inputText id="txt1" value="#{gruposManager.gruposDTO.qtdMaximaMembros}" />
+															<p:inputText id="txt1"
+																value="#{gruposManager.gruposDTO.qtdMaximaMembros}" />
 															<p:slider for="txt1" />
 														</h:panelGrid>
 													</div>
@@ -183,7 +256,6 @@
 														</h:form>
 													</p:dialog>
 												</div>
-
 											</div>
 
 										</div>
@@ -254,8 +326,7 @@
 										<ui:repeat value="#{gruposManager.listaGrupos}" var="grupos">
 											<tr>
 												<td>#{grupos.nome}</td>
-												<td>
-													<p:outputLabel rendered="#{grupos.tipoGrupo == 1}">Público</p:outputLabel>
+												<td><p:outputLabel rendered="#{grupos.tipoGrupo == 1}">Público</p:outputLabel>
 													<p:outputLabel rendered="#{grupos.tipoGrupo == 2}">Privado</p:outputLabel>
 												</td>
 												<td>#{grupos.qtdMaximaMembros}</td>

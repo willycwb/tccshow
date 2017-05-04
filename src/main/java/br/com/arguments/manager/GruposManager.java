@@ -21,9 +21,10 @@ import org.primefaces.model.map.Marker;
 
 import br.com.arguments.dto.GruposDTO;
 import br.com.arguments.entity.CursosEntity;
-import br.com.arguments.entity.EventoEntity;
 import br.com.arguments.entity.GruposEntity;
+import br.com.arguments.entity.InstituicaoEntity;
 import br.com.arguments.entity.LoginEntity;
+import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.service.GruposService;
 import br.com.arguments.util.jsf.SessionUtil;
 
@@ -51,8 +52,16 @@ public class GruposManager implements Serializable {
 	private GruposEntity gruposEntity;
 
 	private Integer cursoSelecionado;
+	
+	private Integer instituicaoSelecionado;
 
 	private List<CursosEntity> listaCursos;
+	
+	private List<InstituicaoEntity> listaInstituicao;
+	
+	private List<UsuarioEntity> listaAlunos;
+	
+	private List<UsuarioEntity> listaAlunosSelecionados;
 	
 	/** TESTE **/
 	private MapModel emptyModel;
@@ -67,7 +76,8 @@ public class GruposManager implements Serializable {
 	public void init() {
 		user = (LoginEntity) SessionUtil.getParam("UserLoged");
 		cursoSelecionado = null;
-		carregaListaCurso();
+		instituicaoSelecionado = null;
+//		carregaListaCurso();
 		carregaListaGrupos();
 		posInit();
 	}
@@ -129,6 +139,24 @@ public class GruposManager implements Serializable {
 		}
 
 	}
+	
+	public void buscaInstituicaoCursos(){
+		if(listaInstituicao == null){
+			carregaListaInstituicao();
+		}
+	}
+	
+	public void buscaCursosInstituicao(){
+		if(listaCursos == null){
+			carregaListaCurso();
+		}
+	}
+	
+	public void buscaAlunos(){
+		if(instituicaoSelecionado != null){
+			carregaListaAlunos();
+		}
+	}
 
 	public void addMarker() {
 		emptyModel = new DefaultMapModel();
@@ -141,6 +169,20 @@ public class GruposManager implements Serializable {
 	
 	private void carregaListaCurso(){
 		listaCursos = gruposService.findAllCursos();
+	}
+	
+	private void carregaListaAlunos(){
+		listaAlunos = gruposService.findAllAlunosByInstituicao(instituicaoSelecionado);
+	}
+	
+	private void carregaListaInstituicao(){
+		if(cursoSelecionado != null){
+			for(CursosEntity curso : listaCursos){
+				if(curso.getId().equals(new Long(cursoSelecionado))){
+					listaInstituicao = gruposService.findAllInstituicaoById(curso);
+				}
+			}
+		}
 	}
 	
 	private void carregaListaGrupos(){
@@ -234,6 +276,38 @@ public class GruposManager implements Serializable {
 
 	public void setLng(double lng) {
 		this.lng = lng;
+	}
+
+	public List<InstituicaoEntity> getListaInstituicao() {
+		return listaInstituicao;
+	}
+
+	public void setListaInstituicao(List<InstituicaoEntity> listaInstituicao) {
+		this.listaInstituicao = listaInstituicao;
+	}
+
+	public Integer getInstituicaoSelecionado() {
+		return instituicaoSelecionado;
+	}
+
+	public void setInstituicaoSelecionado(Integer instituicaoSelecionado) {
+		this.instituicaoSelecionado = instituicaoSelecionado;
+	}
+
+	public List<UsuarioEntity> getListaAlunos() {
+		return listaAlunos;
+	}
+
+	public void setListaAlunos(List<UsuarioEntity> listaAlunos) {
+		this.listaAlunos = listaAlunos;
+	}
+
+	public List<UsuarioEntity> getListaAlunosSelecionados() {
+		return listaAlunosSelecionados;
+	}
+
+	public void setListaAlunosSelecionados(List<UsuarioEntity> listaAlunosSelecionados) {
+		this.listaAlunosSelecionados = listaAlunosSelecionados;
 	}
 
 }
