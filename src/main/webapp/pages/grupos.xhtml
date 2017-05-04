@@ -115,11 +115,26 @@
 													<div class="col-sm-4">
 														<h:panelGrid columns="2" style="margin-bottom:10px"
 															cellpadding="5">
-															<p:selectOneButton style="border-radius: 3px;" value="#{gruposManager.tipoGrupo}">
+															<p:selectOneButton style="border-radius: 3px;"
+																value="#{gruposManager.gruposDTO.tipoGrupo}">
 																<f:selectItem itemLabel="Público" itemValue="1" />
 																<f:selectItem itemLabel="Privado" itemValue="2" />
 															</p:selectOneButton>
 
+														</h:panelGrid>
+													</div>
+												</div>
+
+												<div class="form-group">
+
+													<p:outputLabel for="idDataInicial"
+														class="col-sm-2 form-control-prime"
+														value="Número maximo de membros " />
+
+													<div class="col-sm-4">
+														<h:panelGrid columns="1" style="margin-bottom: 10px">
+															<p:inputText id="txt1" value="#{gruposManager.gruposDTO.qtdMaximaMembros}" />
+															<p:slider for="txt1" />
 														</h:panelGrid>
 													</div>
 												</div>
@@ -174,22 +189,22 @@
 										</div>
 
 										<div class="box-footer">
-											
-											<p:commandLink action="#{gruposManager.cadastrarGrupos}" >asd</p:commandLink>
-											
+
+											<p:commandLink action="#{gruposManager.cadastrarGrupos}">asd</p:commandLink>
+
 											<!-- BOTAO CADASTRAR EVENTO -->
 											<p:commandButton styleClass="btn btn-info pull-right"
-												id="idBotaCadEvento" value="Cadastrar"
+												id="idBotaCadEvento" value="Cadastrar" process="@form"
 												action="#{gruposManager.cadastrarGrupos}"
 												rendered="#{gruposManager.edit == false}"
-												update="form1 :form:idTabelaGroup" ajax="false" />
+												update="form1 form:idTabelaGroup" ajax="false" />
 
 											<!-- BOTAO SALVAR UM EVENTO QUANDO EDITADO -->
 											<p:commandButton styleClass="btn btn-info pull-right"
 												id="idBotaEditEvento" value="Salvar"
 												action="#{eventoManager.saveEventoEdit}"
 												rendered="#{eventoManager.edit == true}"
-												update="form1 :form:idTabelaGroup" ajax="false" />
+												update="form1 form:idTabelaGroup" ajax="false" />
 
 										</div>
 
@@ -226,22 +241,25 @@
 									class="table table-bordered table-striped">
 									<thead>
 										<tr>
-											<th>Nome do Evento</th>
-											<th>Descricao</th>
+											<th>Nome do Grupo</th>
+											<th>Tipo de Grupo</th>
+											<th>Quantidade Membros Máximo</th>
 											<th>Curso</th>
-											<th>Data de Inicio</th>
 											<th>Editar</th>
 											<th>Remover</th>
 
 										</tr>
 									</thead>
 									<tbody>
-										<ui:repeat value="#{eventoManager.listEvento}" var="evento">
+										<ui:repeat value="#{gruposManager.listaGrupos}" var="grupos">
 											<tr>
-												<td>#{evento.nome}</td>
-												<td>#{evento.descricao}</td>
-												<td>#{evento.numCurso.nome}</td>
-												<td>#{eventoManager.convertoCompleteTimestampToString(evento.dataInicio)}</td>
+												<td>#{grupos.nome}</td>
+												<td>
+													<p:outputLabel rendered="#{grupos.tipoGrupo == 1}">Público</p:outputLabel>
+													<p:outputLabel rendered="#{grupos.tipoGrupo == 2}">Privado</p:outputLabel>
+												</td>
+												<td>#{grupos.qtdMaximaMembros}</td>
+												<td>#{grupos.curso.nome}</td>
 												<td><p:commandButton icon="fa fa-edit" title="Edit"
 														process="@form idTabelaGroup" update="form1" ajax="false"
 														action="#{eventoManager.editEvent(evento)}" /></td>

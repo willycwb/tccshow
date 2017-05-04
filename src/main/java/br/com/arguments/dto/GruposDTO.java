@@ -1,6 +1,6 @@
 package br.com.arguments.dto;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import br.com.arguments.entity.CursosEntity;
 
@@ -14,9 +14,11 @@ public class GruposDTO {
 
 	private String dataInicial;
 
-	private Date data;
+	private Timestamp dataInicialStamp;
 
 	private int qtdMaximaMembros;
+	
+	private int tipoGrupo;
 
 	public Long getId() {
 		return id;
@@ -58,12 +60,20 @@ public class GruposDTO {
 		this.dataInicial = dataInicial;
 	}
 
-	public Date getData() {
-		return data;
+	public Timestamp getDataInicialStamp() {
+		return dataInicialStamp;
 	}
 
-	public void setData(Date data) {
-		this.data = data;
+	public void setDataInicialStamp(Timestamp dataInicialStamp) {
+		this.dataInicialStamp = dataInicialStamp;
+	}
+
+	public int getTipoGrupo() {
+		return tipoGrupo;
+	}
+
+	public void setTipoGrupo(int tipoGrupo) {
+		this.tipoGrupo = tipoGrupo;
 	}
 
 }
