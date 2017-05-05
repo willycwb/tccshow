@@ -27,13 +27,16 @@ public class GruposEntity implements Serializable {
 	@Column(name="NOME_GRUPO")
 	private String nome;
 	
+	@Column(name="DESCRICAO")
+	private String descricao;
+	
 	@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="ID_CURSO")
 	private CursosEntity curso;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="ID_GRUPOS_USUARIO")
-	private GruposUsuarioEntity gruposUsuario;
+    @JoinColumn(name="ID_INSTITUICAO", nullable=true)
+	private InstituicaoEntity instituicao;
 	
 	@Column(name="TIPO_GRUPO")
 	private int tipoGrupo; // 1 - privado; 2 - publico
@@ -48,9 +51,6 @@ public class GruposEntity implements Serializable {
     @Column(name = "DATA_CRIACAO")
     private Timestamp dataCriacao;
     
-    @Column(name = "DATA_INICIAL")
-    private Timestamp dataInicial;
-
 	public Long getId() {
 		return id;
 	}
@@ -107,12 +107,20 @@ public class GruposEntity implements Serializable {
 		this.dataCriacao = dataCriacao;
 	}
 
-	public Timestamp getDataInicial() {
-		return dataInicial;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setDataInicial(Timestamp dataInicial) {
-		this.dataInicial = dataInicial;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public InstituicaoEntity getInstituicao() {
+		return instituicao;
+	}
+
+	public void setInstituicao(InstituicaoEntity instituicao) {
+		this.instituicao = instituicao;
 	}
 
 }

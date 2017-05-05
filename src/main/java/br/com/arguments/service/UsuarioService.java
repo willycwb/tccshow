@@ -14,7 +14,7 @@ public class UsuarioService {
 
 	@EJB
 	private UsuarioDAO usuarioDAO;
-
+	
 	public List<UsuarioEntity> findAllUsers() {
 		return usuarioDAO.findAllUsers();
 	}
@@ -26,6 +26,9 @@ public class UsuarioService {
 	public void updatePermissao(UsuarioEntity usuarioEditado, TipoUsuarioEntity tipoUsuario) {
 		usuarioDAO.updatePermissao(usuarioEditado,tipoUsuario);
 	}
-	
+
+	public UsuarioEntity findUserById(Long id) {
+		return usuarioDAO.findUserById(id);
+	}
 	
 }

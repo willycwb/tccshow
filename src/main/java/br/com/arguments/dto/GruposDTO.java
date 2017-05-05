@@ -1,20 +1,19 @@
 package br.com.arguments.dto;
 
-import java.sql.Timestamp;
-
 import br.com.arguments.entity.CursosEntity;
+import br.com.arguments.entity.InstituicaoEntity;
 
 public class GruposDTO {
 
 	private Long id;
 
 	private String nomeGrupo;
+	
+	private String descricao;
 
 	private CursosEntity curso;
-
-	private String dataInicial;
-
-	private Timestamp dataInicialStamp;
+	
+	private InstituicaoEntity instituicao;
 
 	private int qtdMaximaMembros;
 	
@@ -52,28 +51,28 @@ public class GruposDTO {
 		this.qtdMaximaMembros = qtdMaximaMembros;
 	}
 
-	public String getDataInicial() {
-		return dataInicial;
-	}
-
-	public void setDataInicial(String dataInicial) {
-		this.dataInicial = dataInicial;
-	}
-
-	public Timestamp getDataInicialStamp() {
-		return dataInicialStamp;
-	}
-
-	public void setDataInicialStamp(Timestamp dataInicialStamp) {
-		this.dataInicialStamp = dataInicialStamp;
-	}
-
 	public int getTipoGrupo() {
 		return tipoGrupo;
 	}
 
 	public void setTipoGrupo(int tipoGrupo) {
 		this.tipoGrupo = tipoGrupo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public InstituicaoEntity getInstituicao() {
+		return instituicao;
+	}
+
+	public void setInstituicao(InstituicaoEntity instituicao) {
+		this.instituicao = instituicao;
 	}
 
 }

@@ -62,35 +62,16 @@
 
 													<div class="col-sm-7">
 														<p:inputTextarea id="idDesc" rows="4" cols="50"
-															value="#{eventoManager.dto.descricao}" autoResize="true" />
+															value="#{gruposManager.gruposDTO.descricao}"
+															autoResize="true" />
 														<br />
 														<h:outputText id="display" />
 													</div>
 												</div>
 
-												<!-- DATA INICIAL EVENTO -->
 												<div class="form-group">
 
-													<p:outputLabel for="idDataInicial"
-														class="col-sm-2 form-control-prime"
-														value="Data Inicio do Evento *" />
-
-													<div class="col-sm-4">
-														<div class="input-group">
-															<div class="input-group-addon">
-																<i class="fa fa-calendar"></i>
-															</div>
-															<p:inputMask id="idDataInicial" mask="99/99/9999 99:99"
-																value="#{gruposManager.gruposDTO.dataInicial}" />
-														</div>
-
-													</div>
-												</div>
-
-												<div class="form-group">
-
-													<p:outputLabel for="idDataInicial"
-														class="col-sm-2 form-control-prime"
+													<p:outputLabel class="col-sm-2 form-control-prime"
 														value="Tipo de Grupo(s) *" />
 
 													<div class="col-sm-4">
@@ -100,7 +81,7 @@
 																value="#{gruposManager.gruposDTO.tipoGrupo}">
 																<f:selectItem itemLabel="Público" itemValue="1" />
 																<f:selectItem itemLabel="Privado" itemValue="2" />
-																<p:ajax event="change" update="lsCursos"
+																<p:ajax event="change" update="lsCursos lsInst lsAlunos"
 																	listener="#{gruposManager.buscaCursosInstituicao()}"
 																	resetValues="true" />
 															</p:selectOneButton>
@@ -112,7 +93,7 @@
 												<!-- 												CURSO -->
 												<h:panelGroup id="lsCursos">
 													<h:panelGroup
-														rendered="#{gruposManager.gruposDTO.tipoGrupo ne 0}">
+														rendered="#{gruposManager.gruposDTO.tipoGrupo eq 2}">
 														<div class="form-group has-feedback">
 															<p:outputLabel for="idDesc"
 																class="col-sm-2 form-control-prime" value="Curso" />
@@ -122,14 +103,14 @@
 																	required="true"
 																	requiredMessage="Ao menos um curso precisa ser selecionado."
 																	value="#{gruposManager.cursoSelecionado}">
-																	<f:selectItem itemLabel="-- Selecione --" itemValue=""
+																	<f:selectItem itemLabel="-- Selecione --" itemValue="0"
 																		noSelectionOption="" />
 																	<f:selectItems var="curso" itemLabel="#{curso.nome}"
 																		itemValue="#{curso.id}"
 																		value="#{gruposManager.listaCursos}" />
-																	<p:ajax event="change" update="lsInst"
+																	<p:ajax event="change" update="lsInst lsAlunos"
 																		listener="#{gruposManager.buscaInstituicaoCursos()}"
-																		resetValues="true" />
+																		 />
 																</h:selectOneMenu>
 															</div>
 														</div>
@@ -149,7 +130,7 @@
 																	styleClass="form-control" required="true"
 																	requiredMessage="Ao menos um curso precisa ser selecionado."
 																	value="#{gruposManager.instituicaoSelecionado}">
-																	<f:selectItem itemLabel="-- TODAS --" itemValue=""
+																	<f:selectItem itemLabel="-- TODAS --" itemValue="0"
 																		noSelectionOption="" />
 																	<f:selectItems var="inst" itemLabel="#{inst.nome}"
 																		itemValue="#{inst.id}"
@@ -166,28 +147,29 @@
 												<!-- 												ALUNOS -->
 												<h:panelGroup id="lsAlunos">
 													<h:panelGroup
-														rendered="#{gruposManager.instituicaoSelecionado ne null}">
+														rendered="#{gruposManager.instituicaoSelecionado ne null or gruposManager.cursoSelecionado ne null}">
 
 														<div class="form-group">
 
-															<p:outputLabel for="idDataInicial"
-																class="col-sm-2 form-control-prime" value="Aluno(s) " />
+															<p:outputLabel class="col-sm-2 form-control-prime"
+																value="Aluno(s) " />
 
 															<div class="col-sm-4">
 
-																<p:selectManyMenu id="advanced"  scrollHeight="200"
+																<p:selectManyMenu id="advanced" scrollHeight="130" label="teste" tabindex="-1"
+																	caseSensitive="true" style="width: 200px; height: 170px;"
 																	value="#{gruposManager.listaAlunosSelecionados}"
 																	var="t" filter="true"
-																	filterMatchMode="contains" showCheckbox="true">
+																	converter="usuarioConverter" filterMatchMode="contains"
+																	showCheckbox="true">
 																	<f:selectItems value="#{gruposManager.listaAlunos}"
-																		var="aluno" itemLabel="#{aluno.nome}"
+																		var="aluno" itemLabel="#{aluno.nome}" id="items"
 																		itemValue="#{aluno}" />
 
 																	<p:column>
-																		<h:outputText value="#{t.nome}" />
+																		<h:outputText value="#{t.nome}&#160;#{t.sobrenome}" />
 																	</p:column>
 																</p:selectManyMenu>
-
 
 															</div>
 
@@ -199,8 +181,7 @@
 
 												<div class="form-group">
 
-													<p:outputLabel for="idDataInicial"
-														class="col-sm-2 form-control-prime"
+													<p:outputLabel class="col-sm-2 form-control-prime"
 														value="Número maximo de membros " />
 
 													<div class="col-sm-4">
@@ -214,8 +195,7 @@
 
 												<div class="form-group">
 
-													<p:outputLabel for="idDataInicial"
-														class="col-sm-2 form-control-prime"
+													<p:outputLabel class="col-sm-2 form-control-prime"
 														value="Localização do grupo *" />
 
 													<div class="col-sm-4">
@@ -261,8 +241,6 @@
 										</div>
 
 										<div class="box-footer">
-
-											<p:commandLink action="#{gruposManager.cadastrarGrupos}">asd</p:commandLink>
 
 											<!-- BOTAO CADASTRAR EVENTO -->
 											<p:commandButton styleClass="btn btn-info pull-right"
@@ -314,32 +292,30 @@
 									<thead>
 										<tr>
 											<th>Nome do Grupo</th>
+											<th>Descrição do Grupo</th>
 											<th>Tipo de Grupo</th>
 											<th>Quantidade Membros Máximo</th>
+											<th>Quantidade Membros</th>
 											<th>Curso</th>
-											<th>Editar</th>
-											<th>Remover</th>
-
+											<th>Instituição</th>
 										</tr>
 									</thead>
 									<tbody>
 										<ui:repeat value="#{gruposManager.listaGrupos}" var="grupos">
 											<tr>
 												<td>#{grupos.nome}</td>
-												<td><p:outputLabel rendered="#{grupos.tipoGrupo == 1}">Público</p:outputLabel>
-													<p:outputLabel rendered="#{grupos.tipoGrupo == 2}">Privado</p:outputLabel>
+												<td>#{grupos.descricao}</td>
+												<td><h:outputText rendered="#{grupos.tipoGrupo == 1}" value="Público"></h:outputText>
+													<h:outputText rendered="#{grupos.tipoGrupo == 2}" value="Privado"></h:outputText>
 												</td>
 												<td>#{grupos.qtdMaximaMembros}</td>
-												<td>#{grupos.curso.nome}</td>
-												<td><p:commandButton icon="fa fa-edit" title="Edit"
-														process="@form idTabelaGroup" update="form1" ajax="false"
-														action="#{eventoManager.editEvent(evento)}" /></td>
-												<td><p:commandButton
-														oncomplete="PF('eventDialogDelWid').show();"
-														process="@this" icon="fa fa-remove" title="Remove"
-														ajax="true"
-														action="#{eventoManager.setSelectedEvent(evento)}">
-													</p:commandButton></td>
+												<td>#{gruposManager.qtdMembros(grupos.id)}</td>
+												<td><h:outputText rendered="#{grupos.tipoGrupo == 1}" value="TODOS"></h:outputText>
+													<h:outputText rendered="#{grupos.tipoGrupo == 2}" value="#{grupos.curso.nome}"></h:outputText>
+												</td>
+												<td><h:outputText rendered="#{grupos.tipoGrupo == 1}" value="TODOS"></h:outputText>
+													<h:outputText rendered="#{grupos.tipoGrupo == 2}" value="#{grupos.instituicao.nome}"></h:outputText>
+												</td>
 
 											</tr>
 										</ui:repeat>

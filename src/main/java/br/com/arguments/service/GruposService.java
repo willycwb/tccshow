@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import br.com.arguments.dto.GruposDTO;
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.GruposEntity;
+import br.com.arguments.entity.GruposUsuarioEntity;
 import br.com.arguments.entity.InstituicaoEntity;
 import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.entity.UsuarioEntity;
@@ -29,8 +30,9 @@ public class GruposService {
 	public GruposEntity insert(GruposDTO gruposDTO, LoginEntity usuario){
 		GruposEntity grupos = new GruposEntity();
 		grupos.setNome(gruposDTO.getNomeGrupo());
-		grupos.setDataInicial(gruposDTO.getDataInicialStamp());
+		grupos.setDescricao(gruposDTO.getDescricao());
 		grupos.setCurso(gruposDTO.getCurso());
+		grupos.setInstituicao(gruposDTO.getInstituicao());
 		grupos.setTipoGrupo(gruposDTO.getTipoGrupo());
 		grupos.setQtdMaximaMembros(gruposDTO.getQtdMaximaMembros());
 		grupos.setUsuario(usuario.getIdUsuario());
@@ -71,6 +73,21 @@ public class GruposService {
 
 	public List<UsuarioEntity> findAllAlunosByInstituicao(Integer instituicaoSelecionado) {
 		return grupoDAO.findAllAlunosByInstituicao(instituicaoSelecionado);
+	}
+
+	public List<UsuarioEntity> findAllAlunosByCurso(Integer cursoSelecionado) {
+		return grupoDAO.findAllAlunosByCurso(cursoSelecionado);
+	}
+
+	public void insertGruposCurso(GruposEntity grupo, UsuarioEntity curso) {
+		GruposUsuarioEntity entity = new GruposUsuarioEntity();
+		entity.setUsuario(curso);
+		entity.setGrupo(grupo);
+		grupoDAO.insertGruposCurso(entity);
+	}
+
+	public int findQtdMembrosGruposById(Long id) {
+		return grupoDAO.findQtdMembrosGruposById(id);
 	}
 
 }

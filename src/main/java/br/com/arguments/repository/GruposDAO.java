@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.GruposEntity;
+import br.com.arguments.entity.GruposUsuarioEntity;
 import br.com.arguments.entity.InstituicaoCursosEntity;
 import br.com.arguments.entity.InstituicaoEntity;
 import br.com.arguments.entity.UsuarioEntity;
@@ -89,6 +90,44 @@ public class GruposDAO extends BaseDAO {
 		}
 		
 		return null;
+	}
+
+	public List<UsuarioEntity> findAllAlunosByCurso(Integer cursoSelecionado) {
+
+		TypedQuery<UsuarioEntity> query = getManager()
+				.createQuery("SELECT L FROM UsuarioEntity L JOIN L.idInstituicaoCursos J JOIN J.idCursosEntity M "
+						+ "WHERE M.id = :id ", UsuarioEntity.class);
+		query.setParameter("id", new Long(cursoSelecionado));
+		
+		List<UsuarioEntity> ls = query.getResultList();
+		
+		if(ls != null){
+			return ls;
+		}
+		
+		return null;
+	}
+
+	public void insertGruposCurso(GruposUsuarioEntity entity) {
+		getManager().merge(entity);
+	}
+
+	public int findQtdMembrosGruposById(Long id) {
+
+
+		TypedQuery<GruposUsuarioEntity> query = getManager()
+				.createQuery("SELECT L FROM GruposUsuarioEntity L JOIN L.grupo J "
+						+ "WHERE J.id = :id ", GruposUsuarioEntity.class);
+		query.setParameter("id", id);
+		
+		List<GruposUsuarioEntity> ls = query.getResultList();
+		
+		if(ls != null){
+			return ls.size();
+		}
+		
+		return 0;
+		
 	}
 
 }

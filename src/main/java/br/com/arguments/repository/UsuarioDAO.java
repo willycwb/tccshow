@@ -40,6 +40,10 @@ public class UsuarioDAO extends BaseDAO {
 			query.setParameter("id", usuarioEditado.getId());
 			query.executeUpdate();
 	}
+
+	public UsuarioEntity findUserById(Long id) {
+		return getManager().find(UsuarioEntity.class, id);
+	}
 	
 	
 }

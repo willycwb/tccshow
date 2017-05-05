@@ -1,9 +1,6 @@
 package br.com.arguments.manager;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -32,10 +29,13 @@ import br.com.arguments.util.jsf.SessionUtil;
 @ViewScoped
 public class GruposManager implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private static final Logger LOG = Logger.getLogger(GruposEntity.class.getName());
 
-	private static final String SUCESSO_01 = "SUCESSO";
-	
 	private static final String ERRO_01 = "ERRO";
 
 	@EJB
@@ -52,32 +52,32 @@ public class GruposManager implements Serializable {
 	private GruposEntity gruposEntity;
 
 	private Integer cursoSelecionado;
-	
+
 	private Integer instituicaoSelecionado;
 
 	private List<CursosEntity> listaCursos;
-	
+
 	private List<InstituicaoEntity> listaInstituicao;
-	
+
 	private List<UsuarioEntity> listaAlunos;
-	
+
 	private List<UsuarioEntity> listaAlunosSelecionados;
-	
+
 	/** TESTE **/
 	private MapModel emptyModel;
-	
-    private String title;
-    
-    private double lat;
-      
-    private double lng;
+
+	private String title;
+
+	private double lat;
+
+	private double lng;
 
 	@PostConstruct
 	public void init() {
 		user = (LoginEntity) SessionUtil.getParam("UserLoged");
 		cursoSelecionado = null;
 		instituicaoSelecionado = null;
-//		carregaListaCurso();
+		// carregaListaCurso();
 		carregaListaGrupos();
 		posInit();
 	}
@@ -88,73 +88,110 @@ public class GruposManager implements Serializable {
 	}
 
 	public void cadastrarGrupos() {
-		System.out.println("hi");
 		FacesContext context = FacesContext.getCurrentInstance();
-		GruposEntity grupos = new GruposEntity();
+		GruposEntity grupo = new GruposEntity();
 		if ((!gruposDTO.getNomeGrupo().isEmpty() && gruposDTO.getNomeGrupo() != null)) {
-			if (validData()) {
-				if (cursoSelecionado != null) {
-					for (CursosEntity item : listaCursos) {
-						if (item.getId().equals(new Long(cursoSelecionado))) {
-							gruposDTO.setCurso(item);
+
+			if (cursoSelecionado != null) {
+				for (CursosEntity item : listaCursos) {
+					if (item.getId().equals(new Long(cursoSelecionado))) {
+						gruposDTO.setCurso(item);
+					}
+				}
+			}
+
+			if (instituicaoSelecionado != null) {
+				for (InstituicaoEntity item : listaInstituicao) {
+					if (item.getId().equals(new Long(instituicaoSelecionado))) {
+						gruposDTO.setInstituicao(item);
+					}
+				}
+			}
+
+			if(listaAlunosSelecionados != null){
+				if (listaAlunosSelecionados.size() > gruposDTO.getQtdMaximaMembros()) {
+					LOG.warning(
+							ERRO_01 + " Numero de alunos selecionados maior que numero maximo permitido para o grupo! ");
+					context.addMessage(null, new FacesMessage(
+							"Numero de alunos selecionados maior que numero maximo permitido para o grupo!"));
+				} else {
+					
+//					grupo = gruposService.insert(gruposDTO, user);
+					grupo = saveGrupos();
+					
+					if (listaAlunosSelecionados != null) {
+						for (UsuarioEntity item : listaAlunosSelecionados) {
+							gruposService.insertGruposCurso(grupo, item);
 						}
 					}
 					
-					grupos = gruposService.insert(gruposDTO,user);
-
-//					timeLineService.insertEvent(event, user);
-
-					posInit();
-					carregaListaCurso();
 					context.addMessage(null, new FacesMessage("Sucesso", "Cadastrado com Sucesso"));
-				} else {
-					LOG.warning(ERRO_01 + " Nenhum curso selecionado! ");
-					context.addMessage(null, new FacesMessage(ERRO_01, "Nenhum curso selecionado!"));
+					posInit();
+					cleanVariaveis();
 				}
-			} else {
-				LOG.warning(ERRO_01 + " Erro de data! "); 
-				context.addMessage(null, new FacesMessage(ERRO_01, "Data errada!"));
+				
+				carregaListaGrupos();
+			}else{
+				grupo = saveGrupos();
+				
+				context.addMessage(null, new FacesMessage("Sucesso", "Cadastrado com Sucesso"));
+				posInit();
+				cleanVariaveis();
+				carregaListaGrupos();
 			}
+			
 		} else {
 			LOG.warning(ERRO_01 + " Campos Sem preencher! ");
 			context.addMessage(null, new FacesMessage(ERRO_01, "Campos Sem preencher!"));
 		}
 	}
 	
-	private boolean validData() {
-		if (gruposDTO.getDataInicial() != null) {
-			try {
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-				Date parsedDate = dateFormat.parse(gruposDTO.getDataInicial());
-				Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
-				gruposDTO.setDataInicialStamp(timestamp);
-				return true;
-			} catch (Exception e) {// this generic but you can control another
-									// types of exception
-				e.printStackTrace();
-				return false;
-			}
-		} else {
-			return false;
-		}
+	private GruposEntity saveGrupos(){
+		return gruposService.insert(gruposDTO, user);
+	}
 
+	private void cleanVariaveis() {
+		listaAlunos = null;
+		listaAlunosSelecionados = null;
+		listaCursos = null;
+		listaInstituicao = null;
+		cursoSelecionado = null;
+		instituicaoSelecionado = null;
 	}
-	
-	public void buscaInstituicaoCursos(){
-		if(listaInstituicao == null){
+
+	public void buscaInstituicaoCursos() {
+		if (cursoSelecionado != null && cursoSelecionado != 0) {
+			listaInstituicao = null;
 			carregaListaInstituicao();
+			listaAlunos = null;
+			carregaListaAlunosCurso();
+		}else{
+			listaAlunos = null;
+			listaAlunosSelecionados = null;
+			listaInstituicao = null;
+			cursoSelecionado = null;
+			instituicaoSelecionado = null;
 		}
 	}
-	
-	public void buscaCursosInstituicao(){
-		if(listaCursos == null){
+
+	public void buscaCursosInstituicao() {
+		if (gruposDTO.getTipoGrupo() != 1) {
 			carregaListaCurso();
+		} else {
+			cleanVariaveis();
 		}
 	}
-	
-	public void buscaAlunos(){
-		if(instituicaoSelecionado != null){
+
+	public void buscaAlunos() {
+		if (instituicaoSelecionado != null && instituicaoSelecionado != 0) {
+			listaAlunos = null;
+			listaAlunosSelecionados = null;
 			carregaListaAlunos();
+		}else{
+			listaAlunos = null;
+			carregaListaAlunosCurso();
+			listaAlunosSelecionados = null;
+			instituicaoSelecionado = null;
 		}
 	}
 
@@ -163,30 +200,47 @@ public class GruposManager implements Serializable {
 		Marker marker = new Marker(new LatLng(lat, lng), title);
 		emptyModel.addOverlay(marker);
 
-//		FacesContext.getCurrentInstance().addMessage(null,
-//				new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Lat:" + lat + ", Lng:" + lng));
+		// FacesContext.getCurrentInstance().addMessage(null,
+		// new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Lat:" +
+		// lat + ", Lng:" + lng));
 	}
-	
-	private void carregaListaCurso(){
-		listaCursos = gruposService.findAllCursos();
+
+	public int qtdMembros(Long id) {
+		return gruposService.findQtdMembrosGruposById(id);
 	}
-	
-	private void carregaListaAlunos(){
-		listaAlunos = gruposService.findAllAlunosByInstituicao(instituicaoSelecionado);
+
+	private void carregaListaCurso() {
+		if(listaCursos == null){
+			listaCursos = gruposService.findAllCursos();
+		}
 	}
-	
-	private void carregaListaInstituicao(){
-		if(cursoSelecionado != null){
-			for(CursosEntity curso : listaCursos){
-				if(curso.getId().equals(new Long(cursoSelecionado))){
+
+	private void carregaListaAlunos() {
+		if(listaAlunos == null){
+			listaAlunos = gruposService.findAllAlunosByInstituicao(instituicaoSelecionado);
+		}
+		SessionUtil.setParam("listaAlunosSelecionados", listaAlunos);
+	}
+
+	private void carregaListaAlunosCurso() {
+		if(listaAlunos == null){
+			listaAlunos = gruposService.findAllAlunosByCurso(cursoSelecionado);
+		}
+		SessionUtil.setParam("listaAlunosSelecionados", listaAlunos);
+	}
+
+	private void carregaListaInstituicao() {
+		if (listaInstituicao == null) {
+			for (CursosEntity curso : listaCursos) {
+				if (curso.getId().equals(new Long(cursoSelecionado))) {
 					listaInstituicao = gruposService.findAllInstituicaoById(curso);
 				}
 			}
 		}
 	}
-	
-	private void carregaListaGrupos(){
-//		listaCursos = gruposService.findAllCursos();
+
+	private void carregaListaGrupos() {
+		// listaCursos = gruposService.findAllCursos();
 		listaGrupos = gruposService.findAllGrupos();
 	}
 
