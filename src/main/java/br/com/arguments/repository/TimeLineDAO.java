@@ -8,6 +8,7 @@ import javax.persistence.TypedQuery;
 import br.com.arguments.entity.TimeLineEntity;
 import br.com.arguments.entity.TipoConteudoDebateEntity;
 import br.com.arguments.entity.TipoConteudoEventoEntity;
+import br.com.arguments.entity.TipoConteudoGrupoEntity;
 
 @Stateless
 public class TimeLineDAO extends BaseDAO {
@@ -53,6 +54,10 @@ public class TimeLineDAO extends BaseDAO {
 
 	public TipoConteudoDebateEntity insertTipoConteudoDebate(TipoConteudoDebateEntity tpd) {
 		return getManager().merge(tpd);
+	}
+
+	public TipoConteudoGrupoEntity insertTipoConteudoGrupo(TipoConteudoGrupoEntity tcg) {
+		return getManager().merge(tcg);
 	}
 	
 }

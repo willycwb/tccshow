@@ -122,6 +122,7 @@ public class GruposManager implements Serializable {
 					
 //					grupo = gruposService.insert(gruposDTO, user);
 					grupo = saveGrupos();
+					saveTimeLine(grupo);
 					
 					if (listaAlunosSelecionados != null) {
 						for (UsuarioEntity item : listaAlunosSelecionados) {
@@ -137,6 +138,7 @@ public class GruposManager implements Serializable {
 				carregaListaGrupos();
 			}else{
 				grupo = saveGrupos();
+				saveTimeLine(grupo);
 				
 				context.addMessage(null, new FacesMessage("Sucesso", "Cadastrado com Sucesso"));
 				posInit();

@@ -15,6 +15,7 @@ import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.entity.TimeLineEntity;
 import br.com.arguments.entity.TipoConteudoDebateEntity;
 import br.com.arguments.entity.TipoConteudoEventoEntity;
+import br.com.arguments.entity.TipoConteudoGrupoEntity;
 import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.repository.TimeLineDAO;
 
@@ -76,8 +77,28 @@ public class TimeLineService {
 		return tlEntity;
 	}
 	
-	public void insertGrupo(GruposEntity grupo, LoginEntity user) {
-		// TODO Auto-generated method stub
+	public TimeLineEntity insertGrupo(GruposEntity grupo, LoginEntity user) {
+		TipoConteudoGrupoEntity tcg = new TipoConteudoGrupoEntity();
+		tcg.setNomeGrupo(grupo.getNome());
+		tcg.setDescricaoGrupo(grupo.getDescricao());
+		tcg.setQtdMaximaMembros(grupo.getQtdMaximaMembros());
+		tcg.setTipoGrupo(grupo.getTipoGrupo());
+		tcg.setCurso(grupo.getCurso());
+		tcg.setGrupo(grupo);
+		tcg.setInstituicao(grupo.getInstituicao());
+		tcg.setUsuario(user.getIdUsuario());
+		
+		TipoConteudoGrupoEntity tpEntity = timeLineDAO.insertTipoConteudoGrupo(tcg);
+		
+		TimeLineEntity tl = new TimeLineEntity();
+		tl.setIdCurso(grupo.getCurso().getId().intValue());
+		tl.setIdTipoConteudoGrupo(tpEntity);
+		tl.setDataCriacao(dataAtual());
+		tl.setTipoConteudo(3);
+		
+		TimeLineEntity tlEntity = timeLineDAO.insert(tl);
+		
+		return tlEntity;
 		
 	}
 	

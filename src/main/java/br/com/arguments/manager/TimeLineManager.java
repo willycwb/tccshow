@@ -21,6 +21,7 @@ import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.entity.TimeLineEntity;
 import br.com.arguments.entity.TipoConteudoDebateEntity;
 import br.com.arguments.entity.TipoConteudoEventoEntity;
+import br.com.arguments.entity.TipoConteudoGrupoEntity;
 import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.filter.TimeLineFilter;
 import br.com.arguments.service.DebateService;
@@ -67,6 +68,7 @@ public class TimeLineManager implements Serializable {
 		
 		List<TipoConteudoEventoEntity> evento = new ArrayList<>(); 
 		List<TipoConteudoDebateEntity> debate = new ArrayList<>();
+		List<TipoConteudoGrupoEntity> grupo = new ArrayList<>();
 		TimeLineFilter time = null;
 		
 		if(timeLineLista != null){
@@ -90,6 +92,11 @@ public class TimeLineManager implements Serializable {
 							map.get(key).setListaDebate(new ArrayList<>());
 						}
 						map.get(key).getListaDebate().add(item.getIdTipoConteudoDebate());
+					}else if(item.getTipoConteudo() == 3){
+						if(map.get(key).getListaGrupo() == null){
+							map.get(key).setListaGrupo(new ArrayList<>());
+						}
+						map.get(key).getListaGrupo().add(item.getIdTipoConteudoGrupo());
 					}
 					
 				}else{
@@ -102,6 +109,10 @@ public class TimeLineManager implements Serializable {
 						debate = new ArrayList<>();
 						debate.add(item.getIdTipoConteudoDebate());
 						time.setListaDebate(debate);
+					}else if(item.getTipoConteudo() == 3){
+						grupo = new ArrayList<>();
+						grupo.add(item.getIdTipoConteudoGrupo());
+						time.setListaGrupo(grupo);
 					}
 					
 					time.setData(item.getDataCriacao());
@@ -138,6 +149,9 @@ public class TimeLineManager implements Serializable {
 				}
 			}
 			if(timeLineLista.get(x).getIdTipoConteudoEvento() != null){
+				timeLineListaFinal.add(timeLineLista.get(x));
+			}
+			if(timeLineLista.get(x).getIdTipoConteudoGrupo() != null){
 				timeLineListaFinal.add(timeLineLista.get(x));
 			}
 				

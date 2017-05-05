@@ -25,47 +25,76 @@
 
 							<li class="time-label"><span class="bg-blue">
 									#{timeLineManager.convertDateToString(filter.data)} </span></li>
-							
+
 							<ui:repeat value="#{filter.listaEvento}" var="evento">
-									<li><i class="fa fa-calendar bg-red"></i>
-	
-										<div class="timeline-item">
-											<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
-	
-											<h3 class="timeline-header">
-												<i class="fa fa-user"></i>&#160;#{evento.usuario.nome} #{evento.usuario.sobrenome}&#160;|&#160;
-												<i class="fa fa-graduation-cap"></i>&#160;#{evento.usuario.idInstituicaoCursos.idInstituicaoEntity.nome}
-											</h3>
-	
-											<div class="timeline-body">Nome do evento: #{evento.nome}</div>
-											<div class="timeline-body">Descrição: #{evento.descricao}</div>
-											<div class="timeline-footer">
-												<a class="btn btn-primary btn-xs">Read more</a> <a
-													class="btn btn-danger btn-xs">Delete</a>
-											</div>
-										</div></li>
+								<li><i class="fa fa-calendar bg-red"></i>
+
+									<div class="timeline-item">
+										<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
+
+										<h3 class="timeline-header">
+											<i class="fa fa-user"></i>&#160;#{evento.usuario.nome}
+											#{evento.usuario.sobrenome}&#160;|&#160; <i
+												class="fa fa-graduation-cap"></i>&#160;#{evento.usuario.idInstituicaoCursos.idInstituicaoEntity.nome}
+										</h3>
+
+										<div class="timeline-body">Nome do evento:
+											#{evento.nome}</div>
+										<div class="timeline-body">Descrição:
+											#{evento.descricao}</div>
+										<div class="timeline-footer">
+											<a class="btn btn-primary btn-xs">Read more</a> <a
+												class="btn btn-danger btn-xs">Delete</a>
+										</div>
+									</div></li>
 							</ui:repeat>
 
 							<ui:repeat value="#{filter.listaDebate}" var="debate">
-									<li><i class="fa fa-comments bg-green"></i>
-	
-										<div class="timeline-item">
-											<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
-											
-											
-											<h3 class="timeline-header no-border">
-												<i class="fa fa-bookmark"></i>&#160;#{debate.nome}&#160;|&#160;
-												<i class="fa fa-tags"></i>&#160;#{debate.tema}
-											</h3>
-											
-											<div class="timeline-body"><i class="fa fa-calendar-plus-o"></i>&#160;#{timeLineManager.convertDateToStringFull(debate.dataAbertura)}</div>
-											<div class="timeline-body"><i class="fa fa-calendar-minus-o"></i>&#160;#{timeLineManager.convertDateToStringFull(debate.dataFechamento)}</div>
-											
-											<div class="timeline-body"><i class="fa fa-comment"></i>&#160; #{timeLineManager.qtdComentariosDebate(debate.debate)}</div>
-											<div class="timeline-footer">
-												<p:commandButton class="btn btn-primary btn-xs" value="Comentar" action="#{timeLineManager.comentarDebate(debate.debate)}" ></p:commandButton> 
-											</div>
-										</div></li>
+								<li><i class="fa fa-comments bg-green"></i>
+
+									<div class="timeline-item">
+										<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
+
+
+										<h3 class="timeline-header no-border">
+											<i class="fa fa-bookmark"></i>&#160;#{debate.nome}&#160;|&#160;
+											<i class="fa fa-tags"></i>&#160;#{debate.tema}
+										</h3>
+
+										<div class="timeline-body">
+											<i class="fa fa-calendar-plus-o"></i>&#160;#{timeLineManager.convertDateToStringFull(debate.dataAbertura)}
+										</div>
+										<div class="timeline-body">
+											<i class="fa fa-calendar-minus-o"></i>&#160;#{timeLineManager.convertDateToStringFull(debate.dataFechamento)}
+										</div>
+
+										<div class="timeline-body">
+											<i class="fa fa-comment"></i>&#160;
+											#{timeLineManager.qtdComentariosDebate(debate.debate)}
+										</div>
+										<div class="timeline-footer">
+											<p:commandButton class="btn btn-primary btn-xs"
+												value="Comentar"
+												action="#{timeLineManager.comentarDebate(debate.debate)}"></p:commandButton>
+										</div>
+									</div></li>
+							</ui:repeat>
+
+							<ui:repeat value="#{filter.listaGrupo}" var="grupo">
+								<li><i class="fa fa-comments bg-yellow"></i>
+
+									<div class="timeline-item">
+										<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
+
+										<h3 class="timeline-header">
+											<a href="#">Grupo</a> #{grupo.nomeGrupo}
+										</h3>
+
+										<div class="timeline-body">#{grupo.descricaoGrupo}</div>
+										<div class="timeline-footer">
+											<a class="btn btn-warning btn-flat btn-xs">View comment</a>
+										</div>
+									</div></li>
 							</ui:repeat>
 
 
