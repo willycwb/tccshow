@@ -314,6 +314,7 @@
 													<h:outputText rendered="#{grupos.tipoGrupo == 2}" value="#{grupos.curso.nome}"></h:outputText>
 												</td>
 												<td><h:outputText rendered="#{grupos.tipoGrupo == 1}" value="TODOS"></h:outputText>
+													<h:outputText rendered="#{grupos.tipoGrupo == 2 and grupos.instituicao.nome == null}" value="TODOS"></h:outputText>
 													<h:outputText rendered="#{grupos.tipoGrupo == 2}" value="#{grupos.instituicao.nome}"></h:outputText>
 												</td>
 

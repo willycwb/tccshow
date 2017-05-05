@@ -23,6 +23,7 @@ import br.com.arguments.entity.InstituicaoEntity;
 import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.service.GruposService;
+import br.com.arguments.service.TimeLineService;
 import br.com.arguments.util.jsf.SessionUtil;
 
 @ManagedBean
@@ -40,6 +41,9 @@ public class GruposManager implements Serializable {
 
 	@EJB
 	private GruposService gruposService;
+	
+	@EJB
+	private TimeLineService timeLineService;
 
 	private List<GruposEntity> listaGrupos;
 
@@ -148,6 +152,11 @@ public class GruposManager implements Serializable {
 	
 	private GruposEntity saveGrupos(){
 		return gruposService.insert(gruposDTO, user);
+	}
+	
+	private void saveTimeLine(GruposEntity grupo){
+		timeLineService.insertGrupo(grupo, user);
+//		timeLineService.insertEvent(event, user);
 	}
 
 	private void cleanVariaveis() {

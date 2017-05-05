@@ -10,6 +10,8 @@ import javax.ejb.Stateless;
 
 import br.com.arguments.entity.DebateEntity;
 import br.com.arguments.entity.EventoEntity;
+import br.com.arguments.entity.GruposEntity;
+import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.entity.TimeLineEntity;
 import br.com.arguments.entity.TipoConteudoDebateEntity;
 import br.com.arguments.entity.TipoConteudoEventoEntity;
@@ -72,6 +74,11 @@ public class TimeLineService {
 		TimeLineEntity tlEntity = timeLineDAO.insert(tl);
 		
 		return tlEntity;
+	}
+	
+	public void insertGrupo(GruposEntity grupo, LoginEntity user) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	public Timestamp dataAtual(){

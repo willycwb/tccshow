@@ -39,6 +39,7 @@
 		<class>br.com.arguments.entity.TimeLineEntity</class>
 		<class>br.com.arguments.entity.TipoConteudoEventoEntity</class>
 		<class>br.com.arguments.entity.GruposUsuarioEntity</class>
+		<class>br.com.arguments.entity.TipoConteudoGrupoEntity</class>
 		
 		<properties>
 
