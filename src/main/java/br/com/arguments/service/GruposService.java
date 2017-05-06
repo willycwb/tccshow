@@ -90,4 +90,8 @@ public class GruposService {
 		return grupoDAO.findQtdMembrosGruposById(id);
 	}
 
+	public boolean validaParticipacao(GruposEntity grupo, UsuarioEntity user) {
+		return grupoDAO.validaParticipacao(grupo,user);
+	}
+
 }

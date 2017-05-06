@@ -16,6 +16,8 @@ import br.com.arguments.entity.TimeLineEntity;
 import br.com.arguments.entity.TipoConteudoDebateEntity;
 import br.com.arguments.entity.TipoConteudoEventoEntity;
 import br.com.arguments.entity.TipoConteudoGrupoEntity;
+import br.com.arguments.entity.TipoConteudoTrabalhoEntity;
+import br.com.arguments.entity.TrabalhoEntity;
 import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.repository.TimeLineDAO;
 
@@ -102,6 +104,27 @@ public class TimeLineService {
 		
 	}
 	
+	public TimeLineEntity insertTrabalho(TrabalhoEntity trabalho, UsuarioEntity user) {
+		TipoConteudoTrabalhoEntity tct = new TipoConteudoTrabalhoEntity();
+		tct.setNome(trabalho.getNome());
+		tct.setDescricao(trabalho.getDescricao());
+		tct.setNumCurso(trabalho.getNumCurso());
+		tct.setTrabalho(trabalho);
+		
+		TipoConteudoTrabalhoEntity tpEntity = timeLineDAO.insertTipoConteudoTrabalho(tct);
+		
+		TimeLineEntity tl = new TimeLineEntity();
+		tl.setIdCurso(trabalho.getNumCurso().getId().intValue());
+		tl.setIdTipoConteudoTrabalho(tpEntity);
+		tl.setDataCriacao(dataAtual());
+		tl.setTipoConteudo(4);
+		
+		TimeLineEntity tlEntity = timeLineDAO.insert(tl);
+		
+		return tlEntity;
+		
+	}
+	
 	public Timestamp dataAtual(){
 		try{
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -115,5 +138,7 @@ public class TimeLineService {
 			return null;
 		}
 	}
+
+
 
 }

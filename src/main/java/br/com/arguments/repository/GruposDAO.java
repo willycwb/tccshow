@@ -130,4 +130,22 @@ public class GruposDAO extends BaseDAO {
 		
 	}
 
+	public boolean validaParticipacao(GruposEntity grupo, UsuarioEntity user) {
+
+		TypedQuery<GruposUsuarioEntity> query = getManager()
+				.createQuery("SELECT L FROM GruposUsuarioEntity L " //JOIN L.grupo J JOIN L.usuario M "
+						//+ "WHERE J.id = :idGroup AND M.id = :idUsuario ", GruposUsuarioEntity.class);
+						+ "WHERE L.grupo = :grupo AND L.usuario = :usuario ", GruposUsuarioEntity.class);
+		query.setParameter("grupo", grupo);
+		query.setParameter("usuario", user);
+		
+		List<GruposUsuarioEntity> ls = query.getResultList();
+		
+		if(ls.size() > 0){
+			return true;
+		}
+		
+		return false;
+	}
+
 }

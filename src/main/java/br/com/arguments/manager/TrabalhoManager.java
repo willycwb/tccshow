@@ -42,8 +42,8 @@ public class TrabalhoManager implements Serializable{
 	@EJB
 	private TrabalhoService trabalhoService;
 	
-//	@EJB
-//	private TimeLineService timeLineService;
+	@EJB
+	private TimeLineService timeLineService;
 	
 	private List<TrabalhoEntity> listTrabalho;
 	
@@ -124,6 +124,8 @@ public class TrabalhoManager implements Serializable{
 					}
 					
 					trabalho = trabalhoService.insert(dto);
+					
+					timeLineService.insertTrabalho(trabalho, user);
 					
 					posInit();
 					carregaLista();

@@ -16,158 +16,197 @@
 		<section class="content">
 
 			<!-- row -->
-			<div class="row">
-				<div class="col-md-12">
-					<!-- The time line -->
-					<ul class="timeline">
+			<h:form id="form">
+				<div class="row">
+					<div class="col-md-12">
+						<!-- The time line -->
+						<ul class="timeline">
+							<ui:repeat value="#{timeLineManager.listaFilter}" var="filter">
 
-						<ui:repeat value="#{timeLineManager.listaFilter}" var="filter">
+								<li class="time-label"><span class="bg-blue">
+										#{timeLineManager.convertDateToString(filter.data)} </span></li>
 
-							<li class="time-label"><span class="bg-blue">
-									#{timeLineManager.convertDateToString(filter.data)} </span></li>
+								<ui:repeat value="#{filter.listaEvento}" var="evento">
+									<li><i class="fa fa-calendar bg-red"></i>
 
-							<ui:repeat value="#{filter.listaEvento}" var="evento">
-								<li><i class="fa fa-calendar bg-red"></i>
+										<div class="timeline-item">
+											<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
 
-									<div class="timeline-item">
-										<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
+											<h3 class="timeline-header">
+												<i class="fa fa-user"></i>&#160;#{evento.usuario.nome}
+												#{evento.usuario.sobrenome}&#160;|&#160; <i
+													class="fa fa-graduation-cap"></i>&#160;#{evento.usuario.idInstituicaoCursos.idInstituicaoEntity.nome}
+											</h3>
 
-										<h3 class="timeline-header">
-											<i class="fa fa-user"></i>&#160;#{evento.usuario.nome}
-											#{evento.usuario.sobrenome}&#160;|&#160; <i
-												class="fa fa-graduation-cap"></i>&#160;#{evento.usuario.idInstituicaoCursos.idInstituicaoEntity.nome}
-										</h3>
+											<div class="timeline-body">Nome do evento:
+												#{evento.nome}</div>
+											<div class="timeline-body">Descrição:
+												#{evento.descricao}</div>
+											<div class="timeline-footer">
+												<a class="btn btn-primary btn-xs">Read more</a> <a
+													class="btn btn-danger btn-xs">Delete</a>
+											</div>
+										</div></li>
+								</ui:repeat>
 
-										<div class="timeline-body">Nome do evento:
-											#{evento.nome}</div>
-										<div class="timeline-body">Descrição:
-											#{evento.descricao}</div>
-										<div class="timeline-footer">
-											<a class="btn btn-primary btn-xs">Read more</a> <a
-												class="btn btn-danger btn-xs">Delete</a>
-										</div>
-									</div></li>
+								<ui:repeat value="#{filter.listaDebate}" var="debate">
+									<li><i class="fa fa-comments bg-green"></i>
+
+										<div class="timeline-item">
+											<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
+
+
+											<h3 class="timeline-header no-border">
+												<i class="fa fa-bookmark"></i>&#160;#{debate.nome}&#160;|&#160;
+												<i class="fa fa-tags"></i>&#160;#{debate.tema}
+											</h3>
+
+											<div class="timeline-body">
+												<i class="fa fa-calendar-plus-o"></i>&#160;#{timeLineManager.convertDateToStringFull(debate.dataAbertura)}
+											</div>
+											<div class="timeline-body">
+												<i class="fa fa-calendar-minus-o"></i>&#160;#{timeLineManager.convertDateToStringFull(debate.dataFechamento)}
+											</div>
+
+											<div class="timeline-body">
+												<i class="fa fa-comment"></i>&#160;
+												#{timeLineManager.qtdComentariosDebate(debate.debate)}
+											</div>
+											<div class="timeline-footer">
+												<p:commandButton class="btn btn-primary btn-xs"
+													value="Comentar"
+													action="#{timeLineManager.comentarDebate(debate.debate)}"></p:commandButton>
+											</div>
+										</div></li>
+								</ui:repeat>
+
+								<ui:repeat value="#{filter.listaGrupo}" var="grupo">
+									<li><i class="fa fa-users bg-yellow"></i>
+
+										<div class="timeline-item">
+											<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
+
+											<h3 class="timeline-header">
+												<i class="fa fa-info"></i>&#160;#{grupo.nomeGrupo}&#160;
+											</h3>
+
+											<div class="timeline-body">Descrição:&#160;#{grupo.descricaoGrupo}</div>
+											<div class="timeline-footer">
+												<i class="fa fa-user"></i>&#160;Max:&#160;#{grupo.qtdMaximaMembros}&#160;&#160;Total:&#160;#{timeLineManager.qtdMembros(grupo.grupo.id)}
+												<br />
+												<h:commandLink
+													rendered="#{timeLineManager.getValidaParticipacaoEmGrupos(grupo.grupo) eq false}"
+													styleClass="btn btn-warning btn-flat btn-xs"
+													value="Participar" />
+												<h:commandLink
+													rendered="#{timeLineManager.getValidaParticipacaoEmGrupos(grupo.grupo) eq true}"
+													styleClass="btn btn-warning btn-flat btn-xs"
+													value="Cancelar Participação" />
+											</div>
+										</div></li>
+								</ui:repeat>
+
+								<ui:repeat value="#{filter.listaTrabalho}" var="trabalho">
+									<li><i class="fa fa-file bg-purple"></i>
+
+										<div class="timeline-item">
+											<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
+
+											<h3 class="timeline-header">
+												<a href="#">#{trabalho.nome}</a> uploaded new photos
+											</h3>
+
+											<div class="timeline-body">
+												<img src="http://placehold.it/150x100" alt="..."
+													class="margin" /> <img src="http://placehold.it/150x100"
+													alt="..." class="margin" /> <img
+													src="http://placehold.it/150x100" alt="..." class="margin" />
+												<img src="http://placehold.it/150x100" alt="..."
+													class="margin" />
+												<br/>
+												<p:commandButton value="Download" ajax="false" class="btn btn-primary btn-xs"
+													onclick="PrimeFaces.monitorDownload(start, stop);"
+													icon="ui-icon-arrowthick-1-s">
+													<p:fileDownload
+														value="#{timeLineManager.getDownload(trabalho.trabalho)}" />
+												</p:commandButton>
+												<br/>
+												<i class="fa fa-thumbs-up"></i>&#160;<p:commandLink value="Curtir" />
+											</div>
+										</div></li>
+								</ui:repeat>
+
+
+
+								<!-- 						<li><i class="fa fa-comments bg-yellow"></i> -->
+
+								<!-- 							<div class="timeline-item"> -->
+								<!-- 								<span class="time"><i class="fa fa-clock-o"></i> 27 mins -->
+								<!-- 									ago</span> -->
+
+								<!-- 								<h3 class="timeline-header"> -->
+								<!-- 									<a href="#">Jay White</a> commented on your post -->
+								<!-- 								</h3> -->
+
+								<!-- 								<div class="timeline-body">Take me to your leader! -->
+								<!-- 									Switzerland is small and neutral! We are more like Germany, -->
+								<!-- 									ambitious and misunderstood!</div> -->
+								<!-- 								<div class="timeline-footer"> -->
+								<!-- 									<a class="btn btn-warning btn-flat btn-xs">View comment</a> -->
+								<!-- 								</div> -->
+								<!-- 							</div></li> -->
+
+								<!-- 						<li class="time-label"><span class="bg-green"> 3 Jan. -->
+								<!-- 								2014 </span></li> -->
+
+								<!-- 						<li><i class="fa fa-camera bg-purple"></i> -->
+
+								<!-- 							<div class="timeline-item"> -->
+								<!-- 								<span class="time"><i class="fa fa-clock-o"></i> 2 days -->
+								<!-- 									ago</span> -->
+
+								<!-- 								<h3 class="timeline-header"> -->
+								<!-- 									<a href="#">Mina Lee</a> uploaded new photos -->
+								<!-- 								</h3> -->
+
+								<!-- 								<div class="timeline-body"> -->
+								<!-- 									<img src="http://placehold.it/150x100" alt="..." class="margin" /> -->
+								<!-- 									<img src="http://placehold.it/150x100" alt="..." class="margin" /> -->
+								<!-- 									<img src="http://placehold.it/150x100" alt="..." class="margin" /> -->
+								<!-- 									<img src="http://placehold.it/150x100" alt="..." class="margin" /> -->
+								<!-- 								</div> -->
+								<!-- 							</div></li> -->
+
+								<!-- 						<li><i class="fa fa-video-camera bg-maroon"></i> -->
+
+								<!-- 							<div class="timeline-item"> -->
+								<!-- 								<span class="time"><i class="fa fa-clock-o"></i> 5 days -->
+								<!-- 									ago</span> -->
+
+								<!-- 								<h3 class="timeline-header"> -->
+								<!-- 									<a href="#">Mr. Doe</a> shared a video -->
+								<!-- 								</h3> -->
+
+								<!-- 								<div class="timeline-body"> -->
+								<!-- 									<div class="embed-responsive embed-responsive-16by9"> -->
+								<!-- 										<iframe class="embed-responsive-item" -->
+								<!-- 											src="https://www.youtube.com/embed/tMWkeBIohBs" -->
+								<!-- 											frameborder="0"></iframe> -->
+								<!-- 									</div> -->
+								<!-- 								</div> -->
+								<!-- 								<div class="timeline-footer"> -->
+								<!-- 									<a href="#" class="btn btn-xs bg-maroon">See comments</a> -->
+								<!-- 								</div> -->
+								<!-- 							</div></li> -->
+
+								<!-- 						<li><i class="fa fa-clock-o bg-gray"></i></li> -->
+
 							</ui:repeat>
-
-							<ui:repeat value="#{filter.listaDebate}" var="debate">
-								<li><i class="fa fa-comments bg-green"></i>
-
-									<div class="timeline-item">
-										<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
-
-
-										<h3 class="timeline-header no-border">
-											<i class="fa fa-bookmark"></i>&#160;#{debate.nome}&#160;|&#160;
-											<i class="fa fa-tags"></i>&#160;#{debate.tema}
-										</h3>
-
-										<div class="timeline-body">
-											<i class="fa fa-calendar-plus-o"></i>&#160;#{timeLineManager.convertDateToStringFull(debate.dataAbertura)}
-										</div>
-										<div class="timeline-body">
-											<i class="fa fa-calendar-minus-o"></i>&#160;#{timeLineManager.convertDateToStringFull(debate.dataFechamento)}
-										</div>
-
-										<div class="timeline-body">
-											<i class="fa fa-comment"></i>&#160;
-											#{timeLineManager.qtdComentariosDebate(debate.debate)}
-										</div>
-										<div class="timeline-footer">
-											<p:commandButton class="btn btn-primary btn-xs"
-												value="Comentar"
-												action="#{timeLineManager.comentarDebate(debate.debate)}"></p:commandButton>
-										</div>
-									</div></li>
-							</ui:repeat>
-
-							<ui:repeat value="#{filter.listaGrupo}" var="grupo">
-								<li><i class="fa fa-comments bg-yellow"></i>
-
-									<div class="timeline-item">
-										<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
-
-										<h3 class="timeline-header">
-											<a href="#">Grupo</a> #{grupo.nomeGrupo}
-										</h3>
-
-										<div class="timeline-body">#{grupo.descricaoGrupo}</div>
-										<div class="timeline-footer">
-											<a class="btn btn-warning btn-flat btn-xs">View comment</a>
-										</div>
-									</div></li>
-							</ui:repeat>
-
-
-
-							<!-- 						<li><i class="fa fa-comments bg-yellow"></i> -->
-
-							<!-- 							<div class="timeline-item"> -->
-							<!-- 								<span class="time"><i class="fa fa-clock-o"></i> 27 mins -->
-							<!-- 									ago</span> -->
-
-							<!-- 								<h3 class="timeline-header"> -->
-							<!-- 									<a href="#">Jay White</a> commented on your post -->
-							<!-- 								</h3> -->
-
-							<!-- 								<div class="timeline-body">Take me to your leader! -->
-							<!-- 									Switzerland is small and neutral! We are more like Germany, -->
-							<!-- 									ambitious and misunderstood!</div> -->
-							<!-- 								<div class="timeline-footer"> -->
-							<!-- 									<a class="btn btn-warning btn-flat btn-xs">View comment</a> -->
-							<!-- 								</div> -->
-							<!-- 							</div></li> -->
-
-							<!-- 						<li class="time-label"><span class="bg-green"> 3 Jan. -->
-							<!-- 								2014 </span></li> -->
-
-							<!-- 						<li><i class="fa fa-camera bg-purple"></i> -->
-
-							<!-- 							<div class="timeline-item"> -->
-							<!-- 								<span class="time"><i class="fa fa-clock-o"></i> 2 days -->
-							<!-- 									ago</span> -->
-
-							<!-- 								<h3 class="timeline-header"> -->
-							<!-- 									<a href="#">Mina Lee</a> uploaded new photos -->
-							<!-- 								</h3> -->
-
-							<!-- 								<div class="timeline-body"> -->
-							<!-- 									<img src="http://placehold.it/150x100" alt="..." class="margin" /> -->
-							<!-- 									<img src="http://placehold.it/150x100" alt="..." class="margin" /> -->
-							<!-- 									<img src="http://placehold.it/150x100" alt="..." class="margin" /> -->
-							<!-- 									<img src="http://placehold.it/150x100" alt="..." class="margin" /> -->
-							<!-- 								</div> -->
-							<!-- 							</div></li> -->
-
-							<!-- 						<li><i class="fa fa-video-camera bg-maroon"></i> -->
-
-							<!-- 							<div class="timeline-item"> -->
-							<!-- 								<span class="time"><i class="fa fa-clock-o"></i> 5 days -->
-							<!-- 									ago</span> -->
-
-							<!-- 								<h3 class="timeline-header"> -->
-							<!-- 									<a href="#">Mr. Doe</a> shared a video -->
-							<!-- 								</h3> -->
-
-							<!-- 								<div class="timeline-body"> -->
-							<!-- 									<div class="embed-responsive embed-responsive-16by9"> -->
-							<!-- 										<iframe class="embed-responsive-item" -->
-							<!-- 											src="https://www.youtube.com/embed/tMWkeBIohBs" -->
-							<!-- 											frameborder="0"></iframe> -->
-							<!-- 									</div> -->
-							<!-- 								</div> -->
-							<!-- 								<div class="timeline-footer"> -->
-							<!-- 									<a href="#" class="btn btn-xs bg-maroon">See comments</a> -->
-							<!-- 								</div> -->
-							<!-- 							</div></li> -->
-
-							<!-- 						<li><i class="fa fa-clock-o bg-gray"></i></li> -->
-
-						</ui:repeat>
-
-					</ul>
+						</ul>
+					</div>
+					<!-- /.col -->
 				</div>
-				<!-- /.col -->
-			</div>
+			</h:form>
 			<!-- /.row -->
 
 		</section>

@@ -6,6 +6,7 @@ import java.util.List;
 import br.com.arguments.entity.TipoConteudoDebateEntity;
 import br.com.arguments.entity.TipoConteudoEventoEntity;
 import br.com.arguments.entity.TipoConteudoGrupoEntity;
+import br.com.arguments.entity.TipoConteudoTrabalhoEntity;
 
 public class TimeLineFilter {
 	
@@ -17,6 +18,8 @@ public class TimeLineFilter {
 	
 	private List<TipoConteudoGrupoEntity> listaGrupo;
 
+	private List<TipoConteudoTrabalhoEntity> listaTrabalho;
+	
 	public Timestamp getData() {
 		return data;
 	}
@@ -47,6 +50,14 @@ public class TimeLineFilter {
 
 	public void setListaGrupo(List<TipoConteudoGrupoEntity> listaGrupo) {
 		this.listaGrupo = listaGrupo;
+	}
+
+	public List<TipoConteudoTrabalhoEntity> getListaTrabalho() {
+		return listaTrabalho;
+	}
+
+	public void setListaTrabalho(List<TipoConteudoTrabalhoEntity> listaTrabalho) {
+		this.listaTrabalho = listaTrabalho;
 	}
 
 }
