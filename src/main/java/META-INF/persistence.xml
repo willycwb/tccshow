@@ -40,6 +40,8 @@
 		<class>br.com.arguments.entity.TipoConteudoEventoEntity</class>
 		<class>br.com.arguments.entity.GruposUsuarioEntity</class>
 		<class>br.com.arguments.entity.TipoConteudoGrupoEntity</class>
+		<class>br.com.arguments.entity.TrabalhoUsuarioEntity</class>
+		<class>br.com.arguments.entity.TipoConteudoTrabalhoEntity</class>
 		
 		<properties>
 

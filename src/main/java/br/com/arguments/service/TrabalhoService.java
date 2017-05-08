@@ -8,6 +8,8 @@ import javax.ejb.Stateless;
 import br.com.arguments.dto.TrabalhoDTO;
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.TrabalhoEntity;
+import br.com.arguments.entity.TrabalhoUsuarioEntity;
+import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.repository.TrabalhoDAO;
 
 @Stateless
@@ -49,6 +51,27 @@ public class TrabalhoService {
 		trabalho.setNumCurso(dto.getCurso());
 		trabalho.setAtivo(true);
 		trabalhoDAO.update(trabalho);
+	}
+
+	public void curtirTrabalho(TrabalhoEntity trabalho, UsuarioEntity user) {
+		TrabalhoUsuarioEntity entity = new TrabalhoUsuarioEntity();
+		entity.setTrabalho(trabalho);
+		entity.setUsuario(user);
+		entity.setCurtir(true);
+		
+		trabalhoDAO.curtirTrabalho(entity);
+	}
+
+	public void descurtirTrabalho(TrabalhoEntity trabalho, UsuarioEntity user) {
+		trabalhoDAO.descurtirTrabalho(trabalho,user);
+	}
+
+	public boolean ValidaCurtir(TrabalhoEntity trabalho, UsuarioEntity user) {
+		return trabalhoDAO.ValidaCurtir(trabalho,user);
+	}
+
+	public int qtdCurtidas(TrabalhoEntity trabalho) {
+		return trabalhoDAO.qtdCurtidas(trabalho);
 	}
 	
 

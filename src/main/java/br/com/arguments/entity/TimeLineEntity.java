@@ -40,6 +40,10 @@ public class TimeLineEntity implements Serializable {
     @JoinColumn(name="ID_TIPO_CONTEUDO_GRUPO")
 	private TipoConteudoGrupoEntity idTipoConteudoGrupo;
 	
+	@ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="ID_TIPO_CONTEUDO_TRABALHO")
+	private TipoConteudoTrabalhoEntity idTipoConteudoTrabalho;
+	
 	@Column(name="ID_CURSO", nullable=true)
 	private int idCurso;
 	
@@ -100,6 +104,14 @@ public class TimeLineEntity implements Serializable {
 
 	public void setIdTipoConteudoGrupo(TipoConteudoGrupoEntity idTipoConteudoGrupo) {
 		this.idTipoConteudoGrupo = idTipoConteudoGrupo;
+	}
+
+	public TipoConteudoTrabalhoEntity getIdTipoConteudoTrabalho() {
+		return idTipoConteudoTrabalho;
+	}
+
+	public void setIdTipoConteudoTrabalho(TipoConteudoTrabalhoEntity idTipoConteudoTrabalho) {
+		this.idTipoConteudoTrabalho = idTipoConteudoTrabalho;
 	}
 	
 }

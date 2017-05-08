@@ -9,6 +9,7 @@ import br.com.arguments.entity.TimeLineEntity;
 import br.com.arguments.entity.TipoConteudoDebateEntity;
 import br.com.arguments.entity.TipoConteudoEventoEntity;
 import br.com.arguments.entity.TipoConteudoGrupoEntity;
+import br.com.arguments.entity.TipoConteudoTrabalhoEntity;
 
 @Stateless
 public class TimeLineDAO extends BaseDAO {
@@ -58,6 +59,10 @@ public class TimeLineDAO extends BaseDAO {
 
 	public TipoConteudoGrupoEntity insertTipoConteudoGrupo(TipoConteudoGrupoEntity tcg) {
 		return getManager().merge(tcg);
+	}
+
+	public TipoConteudoTrabalhoEntity insertTipoConteudoTrabalho(TipoConteudoTrabalhoEntity tct) {
+		return getManager().merge(tct);
 	}
 	
 }

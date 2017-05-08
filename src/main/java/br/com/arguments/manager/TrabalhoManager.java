@@ -42,8 +42,8 @@ public class TrabalhoManager implements Serializable{
 	@EJB
 	private TrabalhoService trabalhoService;
 	
-//	@EJB
-//	private TimeLineService timeLineService;
+	@EJB
+	private TimeLineService timeLineService;
 	
 	private List<TrabalhoEntity> listTrabalho;
 	
@@ -76,7 +76,7 @@ public class TrabalhoManager implements Serializable{
 		login = (LoginEntity) SessionUtil.getParam("UserLoged");
 		user = login.getIdUsuario();
 		listaCursos = buscaListaCursos();
-		destinonome = "C:\\Develop\\Arguments\\workspace\\tccshow\\src\\main\\Trabalhos\\" + user.getId() + "\\";
+		destinonome = "C:\\Develop\\Arguments\\workspace\\Arguments\\src\\main\\Trabalhos\\" + user.getId() + "\\";
 		posInit();
 	}
 	
@@ -124,6 +124,8 @@ public class TrabalhoManager implements Serializable{
 					}
 					
 					trabalho = trabalhoService.insert(dto);
+					
+					timeLineService.insertTrabalho(trabalho, user);
 					
 					posInit();
 					carregaLista();
