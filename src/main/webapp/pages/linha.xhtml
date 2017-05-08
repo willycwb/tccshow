@@ -93,13 +93,18 @@
 											<div class="timeline-body">Descrição:&#160;#{grupo.descricaoGrupo}</div>
 											<div class="timeline-footer">
 												<i class="fa fa-user"></i>&#160;Max:&#160;#{grupo.qtdMaximaMembros}&#160;&#160;Total:&#160;#{timeLineManager.qtdMembros(grupo.grupo.id)}
-												<br />
-												<h:commandLink
+												<br /> <br />
+												<p:commandLink
 													rendered="#{timeLineManager.getValidaParticipacaoEmGrupos(grupo.grupo) eq false}"
+													action="#{timeLineManager.participarGrupos(grupo.grupo)}"
+													ajax="true" update="@form"
 													styleClass="btn btn-warning btn-flat btn-xs"
 													value="Participar" />
-												<h:commandLink
+
+												<p:commandLink
 													rendered="#{timeLineManager.getValidaParticipacaoEmGrupos(grupo.grupo) eq true}"
+													action="#{timeLineManager.cancelarPparticipacaoGrupos(grupo.grupo)}"
+													ajax="true" update="@form"
 													styleClass="btn btn-warning btn-flat btn-xs"
 													value="Cancelar Participação" />
 											</div>
@@ -112,26 +117,30 @@
 										<div class="timeline-item">
 											<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
 
-											<h3 class="timeline-header">
-												<a href="#">#{trabalho.nome}</a> uploaded new photos
-											</h3>
+											<h3 class="timeline-header">#{trabalho.nome}</h3>
 
 											<div class="timeline-body">
-												<img src="http://placehold.it/150x100" alt="..."
-													class="margin" /> <img src="http://placehold.it/150x100"
-													alt="..." class="margin" /> <img
-													src="http://placehold.it/150x100" alt="..." class="margin" />
-												<img src="http://placehold.it/150x100" alt="..."
-													class="margin" />
-												<br/>
-												<p:commandButton value="Download" ajax="false" class="btn btn-primary btn-xs"
+												Descrição:&#160;#{trabalho.descricao} <br /> <br />
+												<p:commandButton value="Download" ajax="false"
+													class="btn btn-primary btn-xs"
 													onclick="PrimeFaces.monitorDownload(start, stop);"
 													icon="ui-icon-arrowthick-1-s">
 													<p:fileDownload
 														value="#{timeLineManager.getDownload(trabalho.trabalho)}" />
 												</p:commandButton>
-												<br/>
-												<i class="fa fa-thumbs-up"></i>&#160;<p:commandLink value="Curtir" />
+												<br /> <br /> <i class="fa fa-thumbs-up"></i>&#160;
+												<p:commandLink
+													rendered="#{timeLineManager.getValidaCurtirEmTrabalhos(trabalho.trabalho) eq false}"
+													value="Curtir"
+													action="#{timeLineManager.curtirTrabalho(trabalho.trabalho)}"
+													update="@form" ajax="true" />
+												<p:commandLink
+													rendered="#{timeLineManager.getValidaCurtirEmTrabalhos(trabalho.trabalho) eq true}"
+													value="Descurtir"
+													action="#{timeLineManager.descurtirTrabalho(trabalho.trabalho)}"
+													update="@form" ajax="true" />
+													
+												&#160;#{timeLineManager.qtdCurtidas(trabalho.trabalho)}
 											</div>
 										</div></li>
 								</ui:repeat>

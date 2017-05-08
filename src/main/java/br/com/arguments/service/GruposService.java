@@ -94,4 +94,19 @@ public class GruposService {
 		return grupoDAO.validaParticipacao(grupo,user);
 	}
 
+	public GruposUsuarioEntity participarGrupos(GruposEntity grupo, UsuarioEntity user) {
+		
+		GruposUsuarioEntity entity = new GruposUsuarioEntity();
+		entity.setGrupo(grupo);
+		entity.setUsuario(user);
+		
+		return grupoDAO.participarGrupos(entity);
+		
+	}
+
+	public void cancelarPparticipacaoGrupos(GruposEntity grupo, UsuarioEntity user) {
+		grupoDAO.cancelarPparticipacaoGrupos(grupo,user);
+		
+	}
+
 }

@@ -7,7 +7,10 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import br.com.arguments.entity.CursosEntity;
+import br.com.arguments.entity.GruposUsuarioEntity;
 import br.com.arguments.entity.TrabalhoEntity;
+import br.com.arguments.entity.TrabalhoUsuarioEntity;
+import br.com.arguments.entity.UsuarioEntity;
 
 @Stateless
 public class TrabalhoDAO extends BaseDAO{
@@ -57,4 +60,51 @@ public class TrabalhoDAO extends BaseDAO{
 		query.setParameter("id", entity.getId());
 		query.executeUpdate();
 	}
+
+	public void curtirTrabalho(TrabalhoUsuarioEntity entity) {
+		getManager().merge(entity);
+	}
+
+	public void descurtirTrabalho(TrabalhoEntity trabalho, UsuarioEntity user) {
+		Query query = getManager().createQuery("DELETE TrabalhoUsuarioEntity L WHERE L.usuario = :usuario AND L.trabalho = :trabalho");
+		query.setParameter("trabalho", trabalho);
+		query.setParameter("usuario", user);
+		query.executeUpdate();
+	}
+
+	public boolean ValidaCurtir(TrabalhoEntity trabalho, UsuarioEntity user) {
+		
+		TypedQuery<TrabalhoUsuarioEntity> query = getManager()
+				.createQuery("SELECT L FROM TrabalhoUsuarioEntity L " //JOIN L.grupo J JOIN L.usuario M "
+						//+ "WHERE J.id = :idGroup AND M.id = :idUsuario ", GruposUsuarioEntity.class);
+						+ "WHERE L.trabalho = :trabalho AND L.usuario = :usuario ", TrabalhoUsuarioEntity.class);
+		query.setParameter("trabalho", trabalho);
+		query.setParameter("usuario", user);
+		
+		List<TrabalhoUsuarioEntity> ls = query.getResultList();
+		
+		if(ls.size() > 0){
+			return true;
+		}
+		
+		return false;
+	}
+
+	public int qtdCurtidas(TrabalhoEntity trabalho) {
+		
+		TypedQuery<TrabalhoUsuarioEntity> query = getManager()
+				.createQuery("SELECT L FROM TrabalhoUsuarioEntity L "
+						+ "WHERE L.trabalho = :trabalho", TrabalhoUsuarioEntity.class);
+		query.setParameter("trabalho", trabalho);
+		
+		List<TrabalhoUsuarioEntity> ls = query.getResultList();
+		
+		if(ls != null){
+			return ls.size();
+		}
+		
+		return 0;
+	}
+	
+	
 }

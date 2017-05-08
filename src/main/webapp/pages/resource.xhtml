@@ -77,12 +77,29 @@
 		showDetail="false" sticky="false" globalOnly="true" autoUpdate="false"
 		life="15000" />
 
-	<!-- 	<p:growl id="user-feedback" -->
-	<!--                      globalOnly="false" -->
-	<!--                      autoUpdate="true" -->
-	<!--                      life="30000" /> -->
+	<p:ajaxStatus onstart="showModalLoading()"
+		onsuccess="hideModalLoading()" />
+
+	<p:dialog id="loading" widgetVar="statusDialog" modal="true"
+		draggable="false" closable="false" resizable="false"
+		showHeader="false">
+		<img src="http://direct2farm.org/images/progressbar.gif"></img>
+	</p:dialog>
 
 	<ui:insert name="main" />
+
+	<script>
+		function showModalLoading() {
+			$(':input').attr('readonly', true);
+			PF('statusDialog').show();
+		}
+
+		function hideModalLoading() {
+			$(':input').attr('readonly', false);
+			PF('statusDialog').hide();
+		}
+	</script>
+
 
 	<!-- jQuery 2.2.3 -->
 	<script src="../resources/plugins/jQuery/jquery-2.2.3.min.js"></script>

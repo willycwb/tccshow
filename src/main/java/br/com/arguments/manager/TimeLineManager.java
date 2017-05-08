@@ -39,6 +39,7 @@ import br.com.arguments.filter.TimeLineFilter;
 import br.com.arguments.service.DebateService;
 import br.com.arguments.service.GruposService;
 import br.com.arguments.service.TimeLineService;
+import br.com.arguments.service.TrabalhoService;
 import br.com.arguments.util.jsf.SessionUtil;
 
 @ManagedBean
@@ -59,6 +60,9 @@ public class TimeLineManager implements Serializable {
 
 	@EJB
 	private GruposService gruposService;
+	
+	@EJB
+	private TrabalhoService trabalhoService;
 
 	private LoginEntity login;
 
@@ -208,10 +212,36 @@ public class TimeLineManager implements Serializable {
 	public int qtdMembros(Long id) {
 		return gruposService.findQtdMembrosGruposById(id);
 	}
+	
+	public int qtdCurtidas(TrabalhoEntity trabalho) {
+		return trabalhoService.qtdCurtidas(trabalho);
+	}
 
 	public boolean getValidaParticipacaoEmGrupos(GruposEntity grupo) {
 
 		return gruposService.validaParticipacao(grupo, user);
+
+	}
+	
+	public void participarGrupos(GruposEntity grupo){
+		gruposService.participarGrupos(grupo,user);
+	}
+	
+	public void cancelarPparticipacaoGrupos(GruposEntity grupo){
+		gruposService.cancelarPparticipacaoGrupos(grupo,user);
+	}
+	
+	public void curtirTrabalho(TrabalhoEntity trabalho){
+		trabalhoService.curtirTrabalho(trabalho,user);
+	}
+	
+	public void descurtirTrabalho(TrabalhoEntity trabalho){
+		trabalhoService.descurtirTrabalho(trabalho,user);
+	}
+	
+	public boolean getValidaCurtirEmTrabalhos(TrabalhoEntity trabalho) {
+
+		return trabalhoService.ValidaCurtir(trabalho, user);
 
 	}
 

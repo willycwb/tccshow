@@ -148,4 +148,16 @@ public class GruposDAO extends BaseDAO {
 		return false;
 	}
 
+	public GruposUsuarioEntity participarGrupos(GruposUsuarioEntity entity) {
+		return getManager().merge(entity);
+	}
+
+	public void cancelarPparticipacaoGrupos(GruposEntity grupo, UsuarioEntity user) {
+		Query query = getManager().createQuery("DELETE GruposUsuarioEntity L WHERE L.usuario = :usuario AND L.grupo = :grupo");
+		query.setParameter("grupo", grupo);
+		query.setParameter("usuario", user);
+		query.executeUpdate();
+	}
+
+
 }
