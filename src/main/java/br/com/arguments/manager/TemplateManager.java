@@ -72,30 +72,14 @@ public class TemplateManager implements Serializable {
 			return false;
 		}
 	}
-//	
-//	public boolean permissaoMediador(){
-//		if(user.getIdUsuario().getTipoUsuario().getTipoUsuario() == 2){
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
-//	
-//	public boolean permissaoAvaliador(){
-//		if(user.getIdUsuario().getTipoUsuario().getTipoUsuario() == 3){
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
-//	
-//	public boolean permissaoParticipante(){
-//		if(user.getIdUsuario().getTipoUsuario().getTipoUsuario() == 4){
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
+	
+	public boolean getIsEspecialista(){
+		if(user.getIdUsuario().getTipoUsuario().getId() == 3){
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	/** GETTERS E SETTERS */
 

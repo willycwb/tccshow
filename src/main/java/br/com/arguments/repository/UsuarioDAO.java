@@ -45,5 +45,21 @@ public class UsuarioDAO extends BaseDAO {
 		return getManager().find(UsuarioEntity.class, id);
 	}
 	
+	public boolean ativeUser(UsuarioEntity usuario) {
+		Query query = getManager()
+			 .createQuery("UPDATE UsuarioEntity SET ativo = true" + " WHERE id = :id ");
+			query.setParameter("id", usuario.getId());
+			int x = query.executeUpdate();
+			return x > 0 ? true : false;
+	}
+
+	public boolean inativeUser(UsuarioEntity usuario) {
+		Query query = getManager()
+				 .createQuery("UPDATE UsuarioEntity SET ativo = false" + " WHERE id = :id ");
+				query.setParameter("id", usuario.getId());
+				int x = query.executeUpdate();
+				return x > 0 ? true : false;
+	}
+	
 	
 }

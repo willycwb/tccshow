@@ -31,4 +31,12 @@ public class UsuarioService {
 		return usuarioDAO.findUserById(id);
 	}
 	
+	public boolean ativeUser(UsuarioEntity usuario) {
+		return usuarioDAO.ativeUser(usuario);
+	}
+
+	public boolean inativeUser(UsuarioEntity usuario) {
+		return usuarioDAO.inativeUser(usuario);
+	}
+	
 }

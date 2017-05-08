@@ -3,6 +3,7 @@ package br.com.arguments.manager;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -14,11 +15,17 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
+
 import br.com.arguments.dto.EventoDTO;
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.EventoEntity;
 import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.entity.UsuarioEntity;
+import br.com.arguments.filter.EventoFilter;
 import br.com.arguments.service.EventoService;
 import br.com.arguments.service.TimeLineService;
 import br.com.arguments.util.jsf.SessionUtil;
@@ -54,6 +61,17 @@ public class EventoManager implements Serializable {
 	private List<CursosEntity> listaCursos;
 
 	private Integer cursoSelecionado;
+	
+//	TESTE
+	private MapModel localizacao;
+
+	private String titulo;
+
+	private double latutude;
+
+	private double longitude;
+	
+	private List<MapModel> listaLocalizacao;
 
 	@PostConstruct
 	public void init() {
@@ -148,6 +166,18 @@ public class EventoManager implements Serializable {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null, new FacesMessage("ERRO", "Evento em branco"));
 		}
+	}
+	
+	public void addMarker() {
+		this.localizacao = new DefaultMapModel();
+		Marker marker = new Marker(new LatLng(this.latutude, this.longitude), this.titulo);
+		this.localizacao.addOverlay(marker);
+		
+		if(this.listaLocalizacao == null){
+			this.listaLocalizacao = new ArrayList<>();
+		}
+		
+		listaLocalizacao.add(this.localizacao);
 	}
 
 	public String convertDateToString(Date data) {
@@ -260,6 +290,46 @@ public class EventoManager implements Serializable {
 
 	public void setCursoSelecionado(Integer cursoSelecionado) {
 		this.cursoSelecionado = cursoSelecionado;
+	}
+
+	public MapModel getLocalizacao() {
+		return localizacao;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public double getLatutude() {
+		return latutude;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public List<MapModel> getListaLocalizacao() {
+		return listaLocalizacao;
+	}
+
+	public void setLocalizacao(MapModel localizacao) {
+		this.localizacao = localizacao;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public void setLatutude(double latutude) {
+		this.latutude = latutude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	public void setListaLocalizacao(List<MapModel> listaLocalizacao) {
+		this.listaLocalizacao = listaLocalizacao;
 	}
 
 }
