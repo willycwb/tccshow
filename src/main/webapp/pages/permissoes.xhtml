@@ -5,7 +5,6 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
 	<ui:define name="menu">
-		<!-- Content Header (Page header) -->
 		<section class="content-header">
 			<h1>Permissões</h1>
 			<ol class="breadcrumb">
@@ -29,27 +28,6 @@
 				</div>
 
 				<h:form id="form1">
-					<p:growl id="mensagens" showDetail="true" sticky="true" />
-					<div class="box-body">
-						<div class="row">
-							<div class="col-sm-5 col-md-8">
-								<div class="input-group">
-									<p:inputText value="#{permissoesManager.usuarioPesquisa}"
-										placeholder="Pesquisar..." styleClass="form-control" />
-									<span class="input-group-btn"> <p:commandLink update=""
-											ajax="false"
-											action="#{permissoesManager.pesquisaUsuariobyNome()}"
-											styleClass="btn btn-flat">
-											<i class="fa fa-search"></i>
-										</p:commandLink>
-
-									</span>
-								</div>
-							</div>
-						</div>
-
-						<hr></hr>
-					</div>
 					<div class="box-body">
 						<table id="tabelaUsuarios"
 							class="table table-bordered table-striped">
@@ -60,7 +38,6 @@
 									<th>E-mail</th>
 									<th>RA</th>
 									<th><center>Editar Permissão</center></th>
-									<th><center>Inativar</center></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -74,36 +51,20 @@
 										<td>
 											<center>
 												<p:commandButton icon="fa fa-edit" title="View"
-													styleClass="btn btn-primary" 
+													styleClass="btn btn-primary"
 													update=":form1:groupRadios" ajax="true"
 													action="#{permissoesManager.novaPermissao(usuario)}" />
-											</center>
-										</td>
-										<td>
-											<center>
-												<p:commandButton styleClass="btn btn-primary"
-													icon="fa fa-remove" title="Remove" />
 											</center>
 										</td>
 									</tr>
 								</ui:repeat>
 							</tbody>
-							<tfoot>
-								<tr>
-									<th>Nome</th>
-									<th>Sobrenome</th>
-									<th>E-mail</th>
-									<th>RA</th>
-									<th><center>Editar Permissão</center></th>
-									<th><center>Inativar</center></th>
-								</tr>
-							</tfoot>
 						</table>
 					</div>
 
 					<div class="box-body">
 						<h:panelGroup id="groupRadios">
-							<h:selectOneRadio
+							<h:selectOneRadio layout="pageDirection"
 								value="#{permissoesManager.idTipoUsuarioSelected}">
 								<f:selectItems value="#{permissoesManager.listaTipoUsuario}"
 									var="tipo" itemLabel="#{tipo.nome}" itemValue="#{tipo.id}" />
@@ -112,16 +73,12 @@
 					
 					
 					<p:commandButton styleClass="btn btn-info pull-right"
-						value="SALVAR" update="form1" ajax="true"
+						value="SALVAR" update="form1" ajax="false"
 						action="#{permissoesManager.salvarPermissao}" />
 
 					</div>
 				</h:form>
 
-			</div>
-			<div class="box-footer">
-				Visit <a href="#">Select2 documentation</a> for more examples and
-				information about the plugin.
 			</div>
 			<script>
 			  $(function () {

@@ -11,11 +11,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.model.map.DefaultMapModel;
-import org.primefaces.model.map.LatLng;
-import org.primefaces.model.map.MapModel;
-import org.primefaces.model.map.Marker;
-
 import br.com.arguments.dto.GruposDTO;
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.GruposEntity;
@@ -66,15 +61,6 @@ public class GruposManager implements Serializable {
 	private List<UsuarioEntity> listaAlunos;
 
 	private List<UsuarioEntity> listaAlunosSelecionados;
-
-	/** TESTE **/
-	private MapModel emptyModel;
-
-	private String title;
-
-	private double lat;
-
-	private double lng;
 
 	@PostConstruct
 	public void init() {
@@ -214,16 +200,6 @@ public class GruposManager implements Serializable {
 		}
 	}
 
-	public void addMarker() {
-		emptyModel = new DefaultMapModel();
-		Marker marker = new Marker(new LatLng(lat, lng), title);
-		emptyModel.addOverlay(marker);
-
-		// FacesContext.getCurrentInstance().addMessage(null,
-		// new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Lat:" +
-		// lat + ", Lng:" + lng));
-	}
-
 	public int qtdMembros(Long id) {
 		return gruposService.findQtdMembrosGruposById(id);
 	}
@@ -317,38 +293,6 @@ public class GruposManager implements Serializable {
 
 	public void setListaCursos(List<CursosEntity> listaCursos) {
 		this.listaCursos = listaCursos;
-	}
-
-	public MapModel getEmptyModel() {
-		return emptyModel;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public double getLat() {
-		return lat;
-	}
-
-	public double getLng() {
-		return lng;
-	}
-
-	public void setEmptyModel(MapModel emptyModel) {
-		this.emptyModel = emptyModel;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public void setLat(double lat) {
-		this.lat = lat;
-	}
-
-	public void setLng(double lng) {
-		this.lng = lng;
 	}
 
 	public List<InstituicaoEntity> getListaInstituicao() {

@@ -15,25 +15,49 @@
 
         <navigation-case>
         
-   		<from-outcome>professorEvt</from-outcome>
+   			<from-outcome>professorEvt</from-outcome>
 
-   		<to-view-id>/pages/evento.xhtml</to-view-id>
+   			<to-view-id>/pages/evento.xhtml</to-view-id>
    		
 		</navigation-case>
 		
 		<navigation-case>
         
-   		<from-outcome>professorNtc</from-outcome>
+   			<from-outcome>professorNtc</from-outcome>
 
-   		<to-view-id>/pages/noticia.xhtml</to-view-id>
+   			<to-view-id>/pages/noticia.xhtml</to-view-id>
    		
 		</navigation-case>
 		
 		<navigation-case>
         
-   		<from-outcome>professorDbt</from-outcome>
+   			<from-outcome>professorDbt</from-outcome>
 
-   		<to-view-id>/pages/debate.xhtml</to-view-id>
+   			<to-view-id>/pages/debate.xhtml</to-view-id>
+   		
+		</navigation-case>
+		
+		<navigation-case>
+        
+   			<from-outcome>professorGrp</from-outcome>
+
+   			<to-view-id>/pages/grupos.xhtml</to-view-id>
+   		
+		</navigation-case>
+		
+		<navigation-case>
+        
+   			<from-outcome>professorTrb</from-outcome>
+
+   			<to-view-id>/pages/trabalho.xhtml</to-view-id>
+   		
+		</navigation-case>
+		
+		<navigation-case>
+        
+   			<from-outcome>admPerm</from-outcome>
+
+   			<to-view-id>/pages/permissoes.xhtml</to-view-id>
    		
 		</navigation-case>
 		

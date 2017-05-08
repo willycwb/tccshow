@@ -41,48 +41,48 @@
 										width="320" height="205">
 										<h:panelGrid columns="1" cellpadding="10">
 
-											<!-- IMAGEM DEFAULT -->
-											<p:panel id="editarimg1"
-												rendered="#{perfilManager.dto.baseFile eq null}">
-												<p:column>
+<!-- 											IMAGEM DEFAULT -->
+<!-- 											<p:panel id="editarimg1" -->
+<!-- 												rendered="#{perfilManager.dto.baseFile eq null}"> -->
+<!-- 												<p:column> -->
 
-													<img id="imgns" src="../resources/dist/img/defalt.jpg"
-														alt="..." width="250" height="185"
-														title="A imagem só será alterada em todo o sistema após reiniciar a sessão" />
-													<p:tooltip id="toolTipFocus1" for="editarimg1"
-														showEvent="focus" hideEvent="blur" />
+<!-- 													<img id="imgns" src="../resources/dist/img/defalt.jpg" -->
+<!-- 														alt="..." width="250" height="185" -->
+<!-- 														title="A imagem só será alterada em todo o sistema após reiniciar a sessão" /> -->
+<!-- 													<p:tooltip id="toolTipFocus1" for="editarimg1" -->
+<!-- 														showEvent="focus" hideEvent="blur" /> -->
 
-													<br></br>
-												</p:column>
-											</p:panel>
+<!-- 													<br></br> -->
+<!-- 												</p:column> -->
+<!-- 											</p:panel> -->
 
-											<!--IMAGEM DO USUARIO -->
-											<p:panel id="editarimg"
-												rendered="#{perfilManager.dto.baseFile ne null}">
-												<p:column>
+<!-- 											IMAGEM DO USUARIO -->
+<!-- 											<p:panel id="editarimg" -->
+<!-- 												rendered="#{perfilManager.dto.baseFile ne null}"> -->
+<!-- 												<p:column> -->
 
-													<img id="imgn"
-														src="data:image/jpg;base64,#{perfilManager.dto.baseFile}"
-														alt="..." width="250" height="185"
-														title="A imagem só será alterada em todo o sistema após reiniciar a sessão" />
-													<p:tooltip id="toolTipFocus" for="editarimg"
-														showEvent="focus" hideEvent="blur" />
+<!-- 													<img id="imgn" -->
+<!-- 														src="data:image/jpg;base64,#{perfilManager.dto.baseFile}" -->
+<!-- 														alt="..." width="250" height="185" -->
+<!-- 														title="A imagem só será alterada em todo o sistema após reiniciar a sessão" /> -->
+<!-- 													<p:tooltip id="toolTipFocus" for="editarimg" -->
+<!-- 														showEvent="focus" hideEvent="blur" /> -->
 
-													<br></br>
-												</p:column>
-											</p:panel>
+<!-- 													<br></br> -->
+<!-- 												</p:column> -->
+<!-- 											</p:panel> -->
 
 											<!-- 											UPLOAD DE IMAGEM DO USUARIO -->
-											<p:column>
-											<br/>
-											<center>
+<!-- 											<p:column> -->
+<!-- 											<br/> -->
+<!-- 											<center> -->
 											
-												<p:fileUpload id="file" mode="simple" skinSimple="true"
-													required="false" label="Alterar iamgem" sizeLimit="2097152"
-													value="#{perfilManager.file}"
-													requiredMessage="Faça o upload do arquivo" />
-											</center>	
-											</p:column>
+<!-- 												<p:fileUpload id="file" mode="simple" skinSimple="true" -->
+<!-- 													required="false" label="Alterar iamgem" sizeLimit="2097152" -->
+<!-- 													value="#{perfilManager.file}" -->
+<!-- 													requiredMessage="Faça o upload do arquivo" /> -->
+<!-- 											</center>	 -->
+<!-- 											</p:column> -->
 					
 
 
@@ -116,29 +116,6 @@
 												<br></br>
 											</h:panelGroup>
 
-
-<!-- 											<div class="form-group"> -->
-<!-- 												<div class="form-group"> -->
-<!-- 													<p:outputLabel for="form1" style="width:183%" value="curso" /> -->
-
-
-<!-- 												</div> -->
-<!-- 												<div class="col-sm-4"> -->
-<!-- 													<h:selectOneMenu id="menu" label="CURSO" filter="true" -->
-<!-- 														filterMatchMode="startsWith" -->
-<!-- 														value="#{perfilManager.selectedarea}" -->
-<!-- 														style="width:90%;height:30px;" required="true" -->
-<!-- 														requiredMessage="Campo Área Obrigatório"> -->
-<!-- 														<f:selectItem itemLabel="Selecione..." -->
-<!-- 															noSelectionOption="" itemValue="" /> -->
-<!-- 														<f:selectItems var="curso" itemLabel="#{curso.nome}" -->
-<!-- 															itemValue="#{curso.id}" value="#{perfilManager.area}" /> -->
-<!-- 													</h:selectOneMenu> -->
-
-<!-- 												</div> -->
-
-<!-- 											</div> -->
-
 											<br></br>
 											<p:outputLabel style="width:183%" value="SENHA*" />
 											<p:inputText value="#{perfilManager.senha}" required="true"
@@ -158,7 +135,7 @@
 												
 												<p:commandButton styleClass="btn btn-info"
 													id="idBotaCadEvento" value="Salvar Alterações"
-													action="#{perfilManager.save}" update="form1" ajax="false" />
+													action="#{perfilManager.Altera}" update="form1" ajax="false" />
 										</h:panelGrid>
 									</p:panel>
 								</div>

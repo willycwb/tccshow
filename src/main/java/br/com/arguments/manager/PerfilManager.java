@@ -7,17 +7,22 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.model.UploadedFile;
 
 import br.com.arguments.dto.LoginUsuarioDTO;
+import br.com.arguments.dto.UsuarioDTO;
 import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.service.LoginService;
 import br.com.arguments.service.UsuarioService;
 import br.com.arguments.util.jsf.SessionUtil;
 
+@ManagedBean
+@ViewScoped
 public class PerfilManager implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -31,11 +36,11 @@ public class PerfilManager implements Serializable {
 	@EJB
 	private UsuarioService usuarioService;
 
-	private LoginUsuarioDTO dto;
+	private UsuarioDTO dto;
 
 	private LoginEntity user;
 	
-	private boolean verifica;
+	private boolean verifica;	
 	
 	@EJB
 	private LoginService loginService;
@@ -58,7 +63,7 @@ public class PerfilManager implements Serializable {
 	
 	@PostConstruct
 	public void init() {
-		dto = new LoginUsuarioDTO();
+		dto = new UsuarioDTO();
 		idUsuario = new UsuarioEntity();
 		loginEntity = new LoginEntity();
 		user = (LoginEntity) SessionUtil.getParam("UserLoged");
@@ -113,14 +118,6 @@ public class PerfilManager implements Serializable {
 		
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage("Cadastro Atualizado com Sucesso"));
-	}
-
-	public LoginUsuarioDTO getDto() {
-		return dto;
-	}
-
-	public void setDto(LoginUsuarioDTO dto) {
-		this.dto = dto;
 	}
 
 	public String getSenha() {
@@ -185,6 +182,14 @@ public class PerfilManager implements Serializable {
 
 	public void setFile(UploadedFile file) {
 		this.file = file;
+	}
+
+	public UsuarioDTO getDto() {
+		return dto;
+	}
+
+	public void setDto(UsuarioDTO dto) {
+		this.dto = dto;
 	}
 
 }
