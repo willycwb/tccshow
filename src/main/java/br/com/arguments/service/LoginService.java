@@ -20,4 +20,8 @@ public class LoginService {
 		return loginDAO.save(login);
 	}
 	
+	public void update(LoginEntity loginEntity){
+		loginDAO.uptade(loginEntity);	
+	}
+	
 }

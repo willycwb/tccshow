@@ -3,6 +3,7 @@ package br.com.arguments.repository;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import br.com.arguments.entity.LoginEntity;
@@ -13,16 +14,6 @@ public class LoginDAO extends BaseDAO {
 	public LoginEntity save(LoginEntity login){
 		return getManager().merge(login);
 	}
-//	
-//	public List<LoginEntity> findAll() {
-//		return getManager().createQuery("SELECT A FROM LOGIN A", LoginEntity.class).getResultList();
-//	}
-//
-//	public List<LoginEntity> findByUsuario(String usuario) {
-//		TypedQuery<LoginEntity> query = getManager().createQuery("SELECT U FROM LOGIN U WHERE U.NOME LIKE :NOME", LoginEntity.class);
-//		query.setParameter("NOME", "%" + usuario + "%");
-//		return query.getResultList();
-//	}
 	
 	public LoginEntity findLogin(String user){
 		TypedQuery<LoginEntity> query = getManager()
@@ -35,6 +26,14 @@ public class LoginDAO extends BaseDAO {
 		}
 		
 		return ls.get(0);
+	}
+	
+	public void uptade(LoginEntity loginEntity) {
+		Query query = getManager().createQuery("UPDATE LoginEntity SET senha = :senha, idUsuario = :idUsuario " + " WHERE id = :id ");
+		query.setParameter("id", loginEntity.getId());
+		query.setParameter("senha",loginEntity.getSenha());
+		query.setParameter("idUsuario",loginEntity.getIdUsuario());
+		query.executeUpdate();
 	}
 	
 }

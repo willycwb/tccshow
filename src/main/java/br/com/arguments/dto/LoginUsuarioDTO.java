@@ -21,6 +21,8 @@ public class LoginUsuarioDTO {
 	
 	private TipoUsuarioEntity tipoUsuario;
 	
+	private String baseFile;
+	
 	public String getNome() {
 		return nome;
 	}
@@ -68,6 +70,12 @@ public class LoginUsuarioDTO {
 	}
 	public void setTipoUsuario(TipoUsuarioEntity tipoUsuario) {
 		this.tipoUsuario = tipoUsuario;
+	}
+	public String getBaseFile() {
+		return baseFile;
+	}
+	public void setBaseFile(String baseFile) {
+		this.baseFile = baseFile;
 	}
 
 }

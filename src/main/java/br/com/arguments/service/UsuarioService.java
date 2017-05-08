@@ -31,4 +31,9 @@ public class UsuarioService {
 		return usuarioDAO.findUserById(id);
 	}
 	
+	public void update(UsuarioEntity user) {
+		usuarioDAO.uptade(user);
+		
+	}
+	
 }
