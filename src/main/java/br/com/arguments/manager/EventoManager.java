@@ -25,7 +25,6 @@ import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.EventoEntity;
 import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.entity.UsuarioEntity;
-import br.com.arguments.filter.EventoFilter;
 import br.com.arguments.service.EventoService;
 import br.com.arguments.service.TimeLineService;
 import br.com.arguments.util.jsf.SessionUtil;
