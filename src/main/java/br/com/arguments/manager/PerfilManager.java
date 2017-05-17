@@ -87,6 +87,7 @@ public class PerfilManager implements Serializable {
 	public void Altera(){
 		UsuarioEntity user = new UsuarioEntity();
 		
+		user.setId(dto.getId());
 		user.setNome(dto.getNome());
 		user.setSobrenome(dto.getSobrenome());
 		user.setRa(dto.getRa());
@@ -97,6 +98,7 @@ public class PerfilManager implements Serializable {
 			dto.setBaseFile(bytesEncoded);
 		}
 		
+		user.setId(dto.getId());
 		user.setNome(dto.getNome());
 		user.setEmail(dto.getEmail());
 		user.setSobrenome(dto.getSobrenome());

@@ -13,6 +13,7 @@ import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.exception.UnexpectedException;
 import br.com.arguments.service.LoginService;
 import br.com.arguments.util.jsf.SessionUtil;
+import br.com.arguments.util.jsf.criptografia;
 
 @ManagedBean
 @ViewScoped
@@ -49,7 +50,8 @@ public class LoginManager implements Serializable {
 				 
 				 if(loginEntity != null){
 				
-					 if(loginEntity.getSenha().equals(senha)){
+					 if(loginEntity.getSenha().equals(criptografia.md5(senha))){
+//					 if(loginEntity.getSenha().equals(senha)){
 						 
 						 SessionUtil.setParam("UserLoged", loginEntity);
 						 return "template.xhtml?faces-redirect=true";

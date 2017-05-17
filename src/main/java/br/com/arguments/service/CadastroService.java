@@ -7,6 +7,7 @@ import br.com.arguments.dto.LoginUsuarioDTO;
 import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.repository.CadastroDAO;
+import br.com.arguments.util.jsf.criptografia;
 
 @Stateless
 public class CadastroService {
@@ -29,7 +30,7 @@ public class CadastroService {
 		usuario.setTipoUsuario(user.getTipoUsuario());
 		usuario.setIdInstituicaoCursos(user.getInstituicaoCurso());
 		LoginEntity login = new LoginEntity();
-		login.setSenha(user.getSenha());
+		login.setSenha(criptografia.md5( user.getSenha()));
 		login.setIdUsuario(cadastroDAO.insertUser(usuario));
 		if(user.getRa() != null){
 			login.setUsuario(user.getRa().toString());

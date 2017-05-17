@@ -76,7 +76,7 @@ public class TrabalhoManager implements Serializable{
 		login = (LoginEntity) SessionUtil.getParam("UserLoged");
 		user = login.getIdUsuario();
 		listaCursos = buscaListaCursos();
-		destinonome = "C:\\Develop\\Arguments\\workspace\\Arguments\\src\\main\\Trabalhos\\" + user.getId() + "\\";
+		destinonome = "C:\\Develop\\Arguments\\workspace\\tccshow\\src\\main\\Trabalhos\\" + user.getId() + "\\";
 		posInit();
 	}
 	

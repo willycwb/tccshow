@@ -43,13 +43,12 @@ public class UsuarioDAO extends BaseDAO {
 	
 	public void uptade(UsuarioEntity user) {
 		Query query = getManager()
-		 .createQuery("UPDATE UsuarioEntity SET nome = :nome, sobrenome = :sobrenome, email = :email, ra = :ra, area = :area, baseFile = :baseFile" + " WHERE id = :id ");
+		 .createQuery("UPDATE UsuarioEntity SET nome = :nome, sobrenome = :sobrenome, email = :email, ra = :ra" + " WHERE id = :id ");
 		query.setParameter("id", user.getId());
 		query.setParameter("nome", user.getNome());
 		query.setParameter("sobrenome", user.getSobrenome());
-		query.setParameter("email", user.getEmail());
+		query.setParameter("email", user.getEmail());		
 		query.setParameter("ra", user.getRa());		
-		query.setParameter("baseFile", user.getBaseFile());
 		query.executeUpdate();
 		
 	}
