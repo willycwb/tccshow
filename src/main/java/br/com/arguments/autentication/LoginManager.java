@@ -54,7 +54,7 @@ public class LoginManager implements Serializable {
 //					 if(loginEntity.getSenha().equals(senha)){
 						 
 						 SessionUtil.setParam("UserLoged", loginEntity);
-						 return "template.xhtml?faces-redirect=true";
+						 return "linha.xhtml?faces-redirect=true";
 					 }
 					 
 				 } 

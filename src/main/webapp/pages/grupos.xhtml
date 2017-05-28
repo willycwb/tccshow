@@ -274,6 +274,12 @@
 													<h:outputText rendered="#{grupos.tipoGrupo == 2 and grupos.instituicao.nome == null}" value="TODOS"></h:outputText>
 													<h:outputText rendered="#{grupos.tipoGrupo == 2}" value="#{grupos.instituicao.nome}"></h:outputText>
 												</td>
+												<td><p:commandButton
+														oncomplete="PF('eventDialogDelWid').show();"
+														process="@this" icon="fa fa-remove" title="Remove"
+														ajax="true"
+														action="#{gruposManager.setSelectGrupos(grupos)}">
+													</p:commandButton></td>
 
 											</tr>
 										</ui:repeat>
@@ -284,18 +290,18 @@
 						</div>
 
 						<!-- MODAL PARA EXCLUSÃO DO EVENTO -->
-						<p:dialog header="Exclusão do Evento"
+						<p:dialog header="Exclusão do Grupo"
 							widgetVar="eventDialogDelWid" id="eventDialogDel" modal="true"
 							showEffect="fade" hideEffect="fade" resizable="true">
 							<p:outputPanel id="eventDetailDel" style="text-align:lefth;">
 								<div>
 									<h:outputText
-										value=" Deseja excluir o evento #{eventoManager.selectedEvent.nome}" />
+										value=" Deseja excluir o Grupo #{gruposManager.selectGrupos.nome}" />
 								</div>
 								<div>
 
 									<p:commandButton styleClass="btn btn-info" id="idBotaRemEven"
-										value="Sim" action="#{eventoManager.removeEvent}"
+										value="Sim" action="#{gruposManager.removeGrupos}"
 										update="idTabelaGroup" ajax="false">
 									</p:commandButton>
 

@@ -36,4 +36,8 @@ public class LoginDAO extends BaseDAO {
 		query.executeUpdate();
 	}
 	
+	public LoginEntity findById(int id) {
+		return getManager().find(LoginEntity.class,id);
+	}
+	
 }

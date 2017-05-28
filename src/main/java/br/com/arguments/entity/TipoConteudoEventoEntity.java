@@ -18,6 +18,8 @@ import javax.persistence.Table;
 @Table(name="TIPO_CONTEUDO_EVENTO")
 public class TipoConteudoEventoEntity implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@Column(name="ID_TIPO_CONTEUDO_EVENTO")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -25,6 +27,10 @@ public class TipoConteudoEventoEntity implements Serializable {
 	
 	@Column(name="NOME_EVENTO")
 	private String nome;
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="ID_EVENTO")
+	private EventoEntity evento;
 	
 	@Column(name="DESCRICAO", nullable=true)
 	private String descricao;
@@ -74,6 +80,14 @@ public class TipoConteudoEventoEntity implements Serializable {
 
 	public void setUsuario(UsuarioEntity usuario) {
 		this.usuario = usuario;
+	}
+
+	public EventoEntity getEvento() {
+		return evento;
+	}
+
+	public void setEvento(EventoEntity evento) {
+		this.evento = evento;
 	}
 
 }

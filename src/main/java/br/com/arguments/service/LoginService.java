@@ -24,4 +24,8 @@ public class LoginService {
 		loginDAO.uptade(loginEntity);	
 	}
 	
+	public LoginEntity findById(int id) {
+		return loginDAO.findById(id);
+	}
+	
 }

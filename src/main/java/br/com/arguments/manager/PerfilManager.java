@@ -20,6 +20,7 @@ import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.service.LoginService;
 import br.com.arguments.service.UsuarioService;
 import br.com.arguments.util.jsf.SessionUtil;
+import br.com.arguments.util.jsf.criptografia;
 
 @ManagedBean
 @ViewScoped
@@ -109,17 +110,33 @@ public class PerfilManager implements Serializable {
 		
 		loginEntity.setIdUsuario(idUsuario);
 		
-		if(!senha.equals(senhaBd)){
-			loginEntity.setSenha(senha);
-			loginService.update(loginEntity);
+		if(dto != null){
+			
+			if(criptografia.md5(senha).equals(criptografia.md5(senhaconf))){
+				if(!senha.equals(senhaBd)){
+					loginEntity.setSenha(criptografia.md5(senha)); 
+					loginService.update(loginEntity);
+					usuarioService.update(user);
+				}
+				
+				
+				loginEntity = loginService.findById(loginEntity.getId());
+				SessionUtil.setParam("UserLoged", loginEntity);
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage("Cadastro Atualizado com Sucesso"));
+			}
+		}else{
+			
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage("ERRO", "Senhas diferentes"));
+			
 		}
 		
-		usuarioService.update(user);
+//		if(!senha.equals(senhaBd)){
+//			loginEntity.setSenha(criptografia.md5(senha));
+//			loginService.update(loginEntity);
+//		}		
 		
-		SessionUtil.setParam("UserLoged", loginEntity);
-		
-		FacesContext context = FacesContext.getCurrentInstance();
-		context.addMessage(null, new FacesMessage("Cadastro Atualizado com Sucesso"));
 	}
 
 	public String getSenha() {

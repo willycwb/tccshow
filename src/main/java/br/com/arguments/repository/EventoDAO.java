@@ -8,8 +8,10 @@ import javax.persistence.TypedQuery;
 
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.EventoEntity;
+import br.com.arguments.entity.TipoConteudoDebateEntity;
 //import br.com.unieventos.entity.UsuarioEntity;
 //import br.com.unieventos.entity.UsuarioEventoEntity;
+import br.com.arguments.entity.TipoConteudoEventoEntity;
 
 @Stateless
 public class EventoDAO extends BaseDAO {
@@ -53,6 +55,31 @@ public class EventoDAO extends BaseDAO {
 		Query query = getManager().createQuery("DELETE EventoEntity WHERE id = :id ");
 		query.setParameter("id", entity.getId());
 		query.executeUpdate();
+	}
+	
+	public void removeTipoConteudo(EventoEntity evento){
+		Query query = getManager().createQuery("DELETE TipoConteudoEventoEntity WHERE evento = :evento");
+		query.setParameter("evento", evento);
+		query.executeUpdate();
+	}
+	
+	public void removeTimeLine(TipoConteudoEventoEntity tcd){
+		Query query = getManager().createQuery("DELETE TimeLineEntity WHERE idTipoConteudoEvento = :tcd");
+		query.setParameter("tcd", tcd);
+		query.executeUpdate();
+	}
+	
+	public TipoConteudoEventoEntity findTipoConteudoEvento(EventoEntity evento){
+		
+		TypedQuery<TipoConteudoEventoEntity> query = getManager()
+				.createQuery("SELECT L FROM TipoConteudoEventoEntity L JOIN L.evento "
+						+ "WHERE L.evento = :evento", TipoConteudoEventoEntity.class);
+		
+		query.setParameter("evento", evento);
+		
+		List<TipoConteudoEventoEntity> itens = query.getResultList();
+		
+		return itens.get(0);
 	}
 //	
 //	public void cancelParticipacaoEvent(EventoEntity evento,UsuarioEntity user){

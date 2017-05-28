@@ -16,6 +16,7 @@ import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.GruposEntity;
 import br.com.arguments.entity.InstituicaoEntity;
 import br.com.arguments.entity.LoginEntity;
+import br.com.arguments.entity.TipoConteudoGrupoEntity;
 import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.service.GruposService;
 import br.com.arguments.service.TimeLineService;
@@ -49,6 +50,8 @@ public class GruposManager implements Serializable {
 	private boolean edit;
 
 	private GruposEntity gruposEntity;
+	
+	private GruposEntity selectGrupos;
 
 	private Integer cursoSelecionado;
 
@@ -185,6 +188,22 @@ public class GruposManager implements Serializable {
 		} else {
 			cleanVariaveis();
 		}
+	}
+	
+	public String removeGrupos(){
+		TipoConteudoGrupoEntity tcg = gruposService.findTipoConteudoGrupo(selectGrupos);
+		gruposService.removeTimeLine(tcg);
+		gruposService.removeTipoGrupo(selectGrupos);
+		gruposService.removeGruposUsuario(selectGrupos);
+		gruposService.removeGrupos(selectGrupos);
+		carregaListaGrupos();
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.addMessage(null, new FacesMessage("Sucesso", "Grupo Removido"));
+		return "grupos.xhtml?faces-redirect=true";
+	}
+	
+	public void selecionaGrupos(GruposEntity grupos){
+		this.selectGrupos = grupos;
 	}
 
 	public void buscaAlunos() {
@@ -325,6 +344,14 @@ public class GruposManager implements Serializable {
 
 	public void setListaAlunosSelecionados(List<UsuarioEntity> listaAlunosSelecionados) {
 		this.listaAlunosSelecionados = listaAlunosSelecionados;
+	}
+
+	public GruposEntity getSelectGrupos() {
+		return selectGrupos;
+	}
+
+	public void setSelectGrupos(GruposEntity selectGrupos) {
+		this.selectGrupos = selectGrupos;
 	}
 
 }

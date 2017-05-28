@@ -11,6 +11,8 @@ import javax.ejb.Stateless;
 import br.com.arguments.dto.EventoDTO;
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.EventoEntity;
+import br.com.arguments.entity.TipoConteudoDebateEntity;
+import br.com.arguments.entity.TipoConteudoEventoEntity;
 import br.com.arguments.repository.EventoDAO;
 
 @Stateless
@@ -65,6 +67,18 @@ public class EventoService {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public void removeTipoConteudo(EventoEntity evento){
+		eventoDAO.removeTipoConteudo(evento);
+	}
+	
+	public void removeTimeLine(TipoConteudoEventoEntity tcd){
+		eventoDAO.removeTimeLine(tcd);
+	}
+	
+	public TipoConteudoEventoEntity findTipoConteudoEvento(EventoEntity evento){
+		return eventoDAO.findTipoConteudoEvento(evento);
 	}
 	
 	

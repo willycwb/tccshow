@@ -24,6 +24,7 @@ import br.com.arguments.dto.EventoDTO;
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.EventoEntity;
 import br.com.arguments.entity.LoginEntity;
+import br.com.arguments.entity.TipoConteudoEventoEntity;
 import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.service.EventoService;
 import br.com.arguments.service.TimeLineService;
@@ -143,6 +144,9 @@ public class EventoManager implements Serializable {
 	}
 
 	public String removeEvent() {
+		TipoConteudoEventoEntity tce = eventoService.findTipoConteudoEvento(selectedEvent);
+		eventoService.removeTimeLine(tce);
+		eventoService.removeTipoConteudo(selectedEvent);
 		eventoService.remove(selectedEvent);
 		carregaLista();
 		FacesContext context = FacesContext.getCurrentInstance();

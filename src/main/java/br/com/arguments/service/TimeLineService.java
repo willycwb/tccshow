@@ -34,6 +34,7 @@ public class TimeLineService {
 		tpe.setDescricao(event.getDescricao());
 		tpe.setDataInicio(event.getDataInicio());
 		tpe.setUsuario(user);
+		tpe.setEvento(event);
 		
 		TipoConteudoEventoEntity tpEntity = timeLineDAO.insertTipoConteudoEvento(tpe);
 		
@@ -73,6 +74,7 @@ public class TimeLineService {
 		tl.setIdTipoConteudoDebate(tpEntity);
 		tl.setDataCriacao(dataAtual());
 		tl.setTipoConteudo(2);
+		
 		
 		TimeLineEntity tlEntity = timeLineDAO.insert(tl);
 		

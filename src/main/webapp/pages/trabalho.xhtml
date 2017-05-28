@@ -162,8 +162,7 @@
 											<th>Nome do Trabalho</th>
 											<th>Descricao</th>
 											<th>Curso</th>
-											<th>Nome Arquivo</th>
-											<th>Editar</th>
+											<th>Nome Arquivo</th>											
 											<th>Remover</th>
 										</tr>
 									</thead>
@@ -174,9 +173,6 @@
 												<td>#{trabalho.descricao}</td>												
 												<td>#{trabalho.numCurso.nome}</td>
 												<td>#{trabalho.nomearq}</td>												
-												<td><p:commandButton icon="fa fa-edit" title="Edit"
-														process="@form idTabelaGroup" update="form1" ajax="false"
-														action="#{trabalhoManager.editaTrabalho(trabalho)}" /></td>
 												<td><p:commandButton
 														oncomplete="PF('eventDialogDelWid').show();"
 														process="@this" icon="fa fa-remove" title="Remove"

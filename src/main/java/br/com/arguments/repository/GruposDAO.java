@@ -12,6 +12,8 @@ import br.com.arguments.entity.GruposEntity;
 import br.com.arguments.entity.GruposUsuarioEntity;
 import br.com.arguments.entity.InstituicaoCursosEntity;
 import br.com.arguments.entity.InstituicaoEntity;
+import br.com.arguments.entity.TipoConteudoDebateEntity;
+import br.com.arguments.entity.TipoConteudoGrupoEntity;
 import br.com.arguments.entity.UsuarioEntity;
 
 @Stateless
@@ -157,6 +159,37 @@ public class GruposDAO extends BaseDAO {
 		query.setParameter("grupo", grupo);
 		query.setParameter("usuario", user);
 		query.executeUpdate();
+	}
+	
+	public void removeTimeLine(TipoConteudoGrupoEntity tcg){
+		Query query = getManager().createQuery("DELETE TimeLineEntity WHERE idTipoConteudoGrupo = :tcg");
+		query.setParameter("tcg", tcg);
+		query.executeUpdate();
+	}
+	
+	public void removeTipoConteudo(GruposEntity grupo){
+		Query query = getManager().createQuery("DELETE TipoConteudoGrupoEntity WHERE grupo = :grupo");
+		query.setParameter("grupo",grupo);
+		query.executeUpdate();
+	}
+	
+	public void removeGrupoUsuario(GruposEntity grupo){
+		Query query = getManager().createQuery("DELETE GruposUsuarioEntity WHERE grupo = :grupo");
+		query.setParameter("grupo", grupo);
+		query.executeUpdate();
+	}
+	
+	public TipoConteudoGrupoEntity findTipoConteudoGrupos(GruposEntity grupo){
+		
+		TypedQuery<TipoConteudoGrupoEntity> query = getManager()
+				.createQuery("SELECT L FROM TipoConteudoGrupoEntity L JOIN L.grupo "
+						+ "WHERE L.grupo = :grupo", TipoConteudoGrupoEntity.class);
+		
+		query.setParameter("grupo", grupo);
+		
+		List<TipoConteudoGrupoEntity> itens = query.getResultList();
+		
+		return itens.get(0);
 	}
 
 

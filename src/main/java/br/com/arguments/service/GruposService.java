@@ -14,6 +14,8 @@ import br.com.arguments.entity.GruposEntity;
 import br.com.arguments.entity.GruposUsuarioEntity;
 import br.com.arguments.entity.InstituicaoEntity;
 import br.com.arguments.entity.LoginEntity;
+import br.com.arguments.entity.TipoConteudoDebateEntity;
+import br.com.arguments.entity.TipoConteudoGrupoEntity;
 import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.repository.GruposDAO;
 
@@ -107,6 +109,22 @@ public class GruposService {
 	public void cancelarPparticipacaoGrupos(GruposEntity grupo, UsuarioEntity user) {
 		grupoDAO.cancelarPparticipacaoGrupos(grupo,user);
 		
+	}
+	
+	public void removeTipoGrupo(GruposEntity grupo){
+		grupoDAO.removeTipoConteudo(grupo);
+	}
+	
+	public void removeTimeLine(TipoConteudoGrupoEntity tcg){
+		grupoDAO.removeTimeLine(tcg);
+	}
+	
+	public void removeGruposUsuario(GruposEntity grupo){
+		grupoDAO.removeGrupoUsuario(grupo);
+	}
+	
+	public TipoConteudoGrupoEntity findTipoConteudoGrupo(GruposEntity grupo){
+		return grupoDAO.findTipoConteudoGrupos(grupo);
 	}
 
 }
