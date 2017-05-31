@@ -158,6 +158,17 @@ public class DebateManager implements Serializable {
 			context.addMessage(null, new FacesMessage("ERRO", "Debate está em branco"));
 		}
 	}
+	
+	public void editTipo(DebateDTO entity){
+		if(entity != null){
+			debateService.updateTipoConteudoDebate(entity);
+			carregaLista();
+			
+		}else {
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.addMessage(null, new FacesMessage("ERRO", "Debate em branco"));
+	}	
+	}
 
 	public void saveEdit() {
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -169,6 +180,7 @@ public class DebateManager implements Serializable {
 
 					buscaCursoInstutuicao();
 					debateService.update(debateDTO);
+					editTipo(debateDTO);
 					posInit();
 					carregaLista();
 					context.addMessage(null, new FacesMessage(SUCESSO_01, "Editado com Sucesso"));

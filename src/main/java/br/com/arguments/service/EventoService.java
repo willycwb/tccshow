@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import br.com.arguments.dto.EventoDTO;
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.EventoEntity;
+import br.com.arguments.entity.TimeLineEntity;
 import br.com.arguments.entity.TipoConteudoDebateEntity;
 import br.com.arguments.entity.TipoConteudoEventoEntity;
 import br.com.arguments.repository.EventoDAO;
@@ -51,6 +52,25 @@ public class EventoService {
 		eventoDAO.update(evento);
 	}
 
+	public void updateTipoConteudoEvento(EventoDTO dto){	
+		EventoEntity evento = new EventoEntity();
+		evento.setId(dto.getId());
+		evento.setDataInicio(dto.getDataInicioStamp());
+		evento.setDescricao(dto.getDescricao());
+		evento.setNome(dto.getNome());		
+		eventoDAO.updateTipoConteudoEvento(evento);
+	}
+	
+//	public void updateTimeLine(EventoDTO dto){
+//		TimeLineEntity evento = new TimeLineEntity();
+//		TipoConteudoEventoEntity tce = new TipoConteudoEventoEntity();
+//		evento.setIdTipoConteudoEvento(dto.getId());
+//		evento.setIdCurso(dto.getNumCurso().getId().intValue());;
+//		EventoEntity evento = new EventoEntity();
+//		evento.setNumCurso(dto.getCurso());
+//		eventoDAO.updateTimeLine(evento);
+//	}
+	
 	public List<CursosEntity> findAllCursos() {
 		return eventoDAO.findAllCursos();
 	}
@@ -80,6 +100,5 @@ public class EventoService {
 	public TipoConteudoEventoEntity findTipoConteudoEvento(EventoEntity evento){
 		return eventoDAO.findTipoConteudoEvento(evento);
 	}
-	
 	
 }

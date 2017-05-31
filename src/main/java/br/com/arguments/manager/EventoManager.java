@@ -164,12 +164,34 @@ public class EventoManager implements Serializable {
 			cursoSelecionado = entity.getNumCurso().getId().intValue();
 			dto.setDataInicio(convertoCompleteTimestampToString(entity.getDataInicio()));
 			dto.setAtivo(entity.isAtivo());
-			edit = true;
+			edit = true;			
 		} else {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null, new FacesMessage("ERRO", "Evento em branco"));
-		}
+		}	
+		
+		
 	}
+	
+	public void editTipo(EventoDTO entity){
+		if(entity != null){
+			eventoService.updateTipoConteudoEvento(entity);
+			carregaLista();
+		}else {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage("ERRO", "Evento em branco"));
+		}	
+	}
+	
+//	public void editTimeLine(EventoDTO entity){
+//		if(entity != null){
+//			eventoService.updateTimeLine(entity);
+//			carregaLista();
+//		}else {
+//			FacesContext context = FacesContext.getCurrentInstance();
+//			context.addMessage(null, new FacesMessage("ERRO", "Evento em branco"));
+//		}	
+//	}
 	
 	public void addMarker() {
 		this.localizacao = new DefaultMapModel();
@@ -215,6 +237,8 @@ public class EventoManager implements Serializable {
 					}
 				}
 				eventoService.update(dto);
+				editTipo(dto);
+//				editTimeLine(dto);
 				posInit();
 				carregaLista();
 				context.addMessage(null, new FacesMessage("Sucesso" + ": Evento alterado."));

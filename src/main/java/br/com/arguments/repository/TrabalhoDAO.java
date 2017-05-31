@@ -8,6 +8,8 @@ import javax.persistence.TypedQuery;
 
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.GruposUsuarioEntity;
+import br.com.arguments.entity.TipoConteudoDebateEntity;
+import br.com.arguments.entity.TipoConteudoTrabalhoEntity;
 import br.com.arguments.entity.TrabalhoEntity;
 import br.com.arguments.entity.TrabalhoUsuarioEntity;
 import br.com.arguments.entity.UsuarioEntity;
@@ -104,6 +106,38 @@ public class TrabalhoDAO extends BaseDAO{
 		}
 		
 		return 0;
+	}
+	
+	public void removeTipoConteudo(TrabalhoEntity trabalho){
+		Query query = getManager().createQuery("DELETE TipoConteudoTrabalhoEntity WHERE trabalho = :trabalho");
+		query.setParameter("trabalho", trabalho);
+		query.executeUpdate();
+	}
+	
+	public void removeTimeLine(TipoConteudoTrabalhoEntity tct){
+		Query query = getManager().createQuery("DELETE TimeLineEntity WHERE idTipoConteudoTrabalho = :tct");
+		query.setParameter("tct", tct);
+		query.executeUpdate();
+	}
+	
+	public void removeTrabalhosUsuario(TrabalhoEntity trabalho){
+		Query query = getManager().createQuery("DELETE TrabalhoUsuarioEntity WHERE trabalho = :trabalho");
+		query.setParameter("trabalho", trabalho);
+		query.executeUpdate();
+	}
+	
+	public TipoConteudoTrabalhoEntity findTipoConteudoTrabalho(TrabalhoEntity trabalho){
+		
+		TypedQuery<TipoConteudoTrabalhoEntity> query = getManager()
+				.createQuery("SELECT L FROM TipoConteudoTrabalhoEntity L JOIN L.trabalho "
+						+ "WHERE L.trabalho = :trabalho", TipoConteudoTrabalhoEntity.class);
+		
+		query.setParameter("trabalho", trabalho);
+		
+		List<TipoConteudoTrabalhoEntity> itens = query.getResultList();
+		
+		return itens.get(0);
+				
 	}
 	
 	

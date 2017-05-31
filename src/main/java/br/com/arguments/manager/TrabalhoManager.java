@@ -23,6 +23,7 @@ import org.primefaces.model.UploadedFile;
 import br.com.arguments.dto.TrabalhoDTO;
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.LoginEntity;
+import br.com.arguments.entity.TipoConteudoTrabalhoEntity;
 import br.com.arguments.entity.TrabalhoEntity;
 import br.com.arguments.entity.UsuarioEntity;
 import br.com.arguments.service.TimeLineService;
@@ -142,11 +143,19 @@ public class TrabalhoManager implements Serializable{
 	}
 	
 	public String removeTrabalho(){
+		TipoConteudoTrabalhoEntity tct = trabalhoService.findTipoConteudoTrabalho(selectedTrabalho);
+		trabalhoService.removeTimeLine(tct);
+		trabalhoService.removeTipoConteudo(selectedTrabalho);
+		trabalhoService.removeTrabalhoUsuario(selectedTrabalho);
 		trabalhoService.remove(selectedTrabalho);
 		carregaLista();
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage("Sucesso", "Trabalho Removido"));
 		return "trabalho.xhtml?faces-redirect=true";
+	}
+	
+	public void selecionaTrabalhos(TrabalhoEntity trabalho){
+		this.selectedTrabalho = trabalho;
 	}
 	
 	public void editaTrabalho(TrabalhoEntity entity){

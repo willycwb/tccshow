@@ -42,7 +42,7 @@ public class DebateService {
 		debate.setTema(dto.getTemaDebate());
 		debate.setAssunto(dto.getAssunto());
 		return debateDao.insert(debate);
-	}
+	}	
 
 	public Timestamp dataAtual() {
 		try {
@@ -86,6 +86,16 @@ public class DebateService {
 		debate.setAssunto(dto.getAssunto());
 		debateDao.update(debate);
 
+	}
+	
+	public void updateTipoConteudoDebate(DebateDTO dto){
+		DebateEntity debate = new DebateEntity();
+		debate.setId(dto.getId());
+		debate.setDataAbertura(dto.getDataCriacaoStamp());
+		debate.setDataFechamento(dto.getDataFechamentoStamp());
+		debate.setNome(dto.getNomeDebate());
+		debate.setTema(dto.getTemaDebate());
+		debateDao.updateTipoConteudoDebate(debate);
 	}
 
 	public void remove(DebateEntity debate) {

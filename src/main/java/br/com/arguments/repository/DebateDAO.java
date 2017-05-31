@@ -63,6 +63,17 @@ public class DebateDAO extends BaseDAO {
 		query.setParameter("dataFechamento", entity.getDataFechamento());
 		query.executeUpdate();
 	}
+	
+	public void updateTipoConteudoDebate(DebateEntity entity){
+		Query query = getManager().createQuery("UPDATE TipoConteudoDebateEntity SET nome = :nome, tema = :tema, dataAbertura = :dataAbertura, dataFechamento = :dataFechamento "
+				+ "WHERE debate = :debate ");
+		query.setParameter("debate", entity);
+		query.setParameter("nome", entity.getNome());
+		query.setParameter("tema", entity.getTema());
+		query.setParameter("dataAbertura", entity.getDataAbertura());
+		query.setParameter("dataFechamento", entity.getDataFechamento());
+		query.executeUpdate();
+	}
 
 	public List<DebateCursoEntity> findDebatesByCursos(DebateEntity idDebateEntity) {
 		

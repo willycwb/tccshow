@@ -6,8 +6,10 @@ import javax.ejb.Stateless;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import br.com.arguments.dto.EventoDTO;
 import br.com.arguments.entity.CursosEntity;
 import br.com.arguments.entity.EventoEntity;
+import br.com.arguments.entity.TimeLineEntity;
 import br.com.arguments.entity.TipoConteudoDebateEntity;
 //import br.com.unieventos.entity.UsuarioEntity;
 //import br.com.unieventos.entity.UsuarioEventoEntity;
@@ -50,6 +52,22 @@ public class EventoDAO extends BaseDAO {
 		query.setParameter("dataInicio", entity.getDataInicio());
 		query.executeUpdate();
 	}
+	
+	public void updateTipoConteudoEvento(EventoEntity tce){
+		Query query = getManager().createQuery("UPDATE TipoConteudoEventoEntity SET nome = :nome, descricao = :descricao, dataInicio = :dataInicio " + "WHERE evento = :evento ");
+		query.setParameter("evento", tce);
+		query.setParameter("nome", tce.getNome());
+		query.setParameter("descricao", tce.getDescricao());
+		query.setParameter("dataInicio", tce.getDataInicio());
+		query.executeUpdate();
+	}
+	
+//	public void updateTimeLine(EventoEntity evento){
+//		Query query = getManager().createQuery("UPDATE TimeLineEntity SET idCurso = :idCurso WHERE idTipoConteudoEvento = :idTipoConteudoEvento ");
+//		query.setParameter("idTipoConteudoEvento", evento.getId());
+//		query.setParameter("idCurso", evento.getNumCurso().getId().intValue());
+//		query.executeUpdate();
+//	}
 //	
 	public void remove(EventoEntity entity){
 		Query query = getManager().createQuery("DELETE EventoEntity WHERE id = :id ");

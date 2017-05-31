@@ -7,6 +7,8 @@ import javax.ejb.Stateless;
 
 import br.com.arguments.dto.TrabalhoDTO;
 import br.com.arguments.entity.CursosEntity;
+import br.com.arguments.entity.TipoConteudoGrupoEntity;
+import br.com.arguments.entity.TipoConteudoTrabalhoEntity;
 import br.com.arguments.entity.TrabalhoEntity;
 import br.com.arguments.entity.TrabalhoUsuarioEntity;
 import br.com.arguments.entity.UsuarioEntity;
@@ -74,5 +76,20 @@ public class TrabalhoService {
 		return trabalhoDAO.qtdCurtidas(trabalho);
 	}
 	
+	public void removeTipoConteudo(TrabalhoEntity trabalho){
+		trabalhoDAO.removeTipoConteudo(trabalho);
+	}
+	
+	public void removeTimeLine(TipoConteudoTrabalhoEntity trabalho){
+		trabalhoDAO.removeTimeLine(trabalho);
+	}
+	
+	public void removeTrabalhoUsuario(TrabalhoEntity trabalho){
+		trabalhoDAO.removeTrabalhosUsuario(trabalho);
+	}
+	
+	public TipoConteudoTrabalhoEntity findTipoConteudoTrabalho(TrabalhoEntity trabalho){
+		return trabalhoDAO.findTipoConteudoTrabalho(trabalho);
+	}
 
 }
