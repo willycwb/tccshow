@@ -95,7 +95,7 @@ public class TimeLineService {
 		TipoConteudoGrupoEntity tpEntity = timeLineDAO.insertTipoConteudoGrupo(tcg);
 		
 		TimeLineEntity tl = new TimeLineEntity();
-		tl.setIdCurso(grupo.getCurso().getId().intValue());
+		tl.setIdCurso(grupo.getCurso() != null ? grupo.getCurso().getId().intValue() : 0);
 		tl.setIdTipoConteudoGrupo(tpEntity);
 		tl.setDataCriacao(dataAtual());
 		tl.setTipoConteudo(3);

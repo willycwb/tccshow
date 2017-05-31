@@ -70,7 +70,15 @@ public class CadastroManager implements Serializable {
 	public void init(){
 		dto = new LoginUsuarioDTO();
 		listaInstituicao = instituicaoService.findAllInstituicao();
-		listaTipoUsuario = tipoUsuarioService.findAllTipoUsuario();
+		
+		List<TipoUsuarioEntity> ls = new ArrayList<>();
+		
+		ls = tipoUsuarioService.findAllTipoUsuario();
+		
+		listaTipoUsuario = new ArrayList<>();
+		
+		listaTipoUsuario.add(ls.get(0));
+		
 	}
 	
 	public String cadastro() throws UnexpectedException {

@@ -84,63 +84,83 @@ public class GruposManager implements Serializable {
 		FacesContext context = FacesContext.getCurrentInstance();
 		GruposEntity grupo = new GruposEntity();
 		if ((!gruposDTO.getNomeGrupo().isEmpty() && gruposDTO.getNomeGrupo() != null)) {
-
-			if ((gruposDTO.getTipoGrupo() == 2 && cursoSelecionado != 0)
-					|| (gruposDTO.getTipoGrupo() == 1 && cursoSelecionado == 0)) {
-
-				if (cursoSelecionado != null) {
-					for (CursosEntity item : listaCursos) {
-						if (item.getId().equals(new Long(cursoSelecionado))) {
-							gruposDTO.setCurso(item);
-						}
-					}
-				}
-
-				if (instituicaoSelecionado != null) {
-					for (InstituicaoEntity item : listaInstituicao) {
-						if (item.getId().equals(new Long(instituicaoSelecionado))) {
-							gruposDTO.setInstituicao(item);
-						}
-					}
-				}
+			
+			if(gruposDTO.getTipoGrupo() == 1){
+				
+				grupo = saveGrupos();
+				saveTimeLine(grupo);
 
 				if (listaAlunosSelecionados != null) {
-					if (listaAlunosSelecionados.size() > gruposDTO.getQtdMaximaMembros()) {
-						LOG.warning(ERRO_01
-								+ " Numero de alunos selecionados maior que numero maximo permitido para o grupo! ");
-						context.addMessage(null, new FacesMessage(
-								"Numero de alunos selecionados maior que numero maximo permitido para o grupo!"));
-					} else {
+					for (UsuarioEntity item : listaAlunosSelecionados) {
+						gruposService.insertGruposCurso(grupo, item);
+					}
+				}
 
-						// grupo = gruposService.insert(gruposDTO, user);
-						grupo = saveGrupos();
-						saveTimeLine(grupo);
+				context.addMessage(null, new FacesMessage("Sucesso", "Cadastrado com Sucesso"));
+				posInit();
+				cleanVariaveis();
 
-						if (listaAlunosSelecionados != null) {
-							for (UsuarioEntity item : listaAlunosSelecionados) {
-								gruposService.insertGruposCurso(grupo, item);
+				carregaListaGrupos();
+				
+			}else{
+			
+				if ((gruposDTO.getTipoGrupo() == 2 && cursoSelecionado != 0)
+						|| (gruposDTO.getTipoGrupo() == 1 && cursoSelecionado == 0)) {
+	
+					if (cursoSelecionado != null) {
+						for (CursosEntity item : listaCursos) {
+							if (item.getId().equals(new Long(cursoSelecionado))) {
+								gruposDTO.setCurso(item);
 							}
 						}
-
+					}
+	
+					if (instituicaoSelecionado != null) {
+						for (InstituicaoEntity item : listaInstituicao) {
+							if (item.getId().equals(new Long(instituicaoSelecionado))) {
+								gruposDTO.setInstituicao(item);
+							}
+						}
+					}
+	
+					if (listaAlunosSelecionados != null) {
+						if (listaAlunosSelecionados.size() > gruposDTO.getQtdMaximaMembros()) {
+							LOG.warning(ERRO_01
+									+ " Numero de alunos selecionados maior que numero maximo permitido para o grupo! ");
+							context.addMessage(null, new FacesMessage(
+									"Numero de alunos selecionados maior que numero maximo permitido para o grupo!"));
+						} else {
+	
+							// grupo = gruposService.insert(gruposDTO, user);
+							grupo = saveGrupos();
+							saveTimeLine(grupo);
+	
+							if (listaAlunosSelecionados != null) {
+								for (UsuarioEntity item : listaAlunosSelecionados) {
+									gruposService.insertGruposCurso(grupo, item);
+								}
+							}
+	
+							context.addMessage(null, new FacesMessage("Sucesso", "Cadastrado com Sucesso"));
+							posInit();
+							cleanVariaveis();
+						}
+	
+						carregaListaGrupos();
+					} else {
+						grupo = saveGrupos();
+						saveTimeLine(grupo);
+	
 						context.addMessage(null, new FacesMessage("Sucesso", "Cadastrado com Sucesso"));
 						posInit();
 						cleanVariaveis();
+						carregaListaGrupos();
 					}
-
-					carregaListaGrupos();
-				} else {
-					grupo = saveGrupos();
-					saveTimeLine(grupo);
-
-					context.addMessage(null, new FacesMessage("Sucesso", "Cadastrado com Sucesso"));
-					posInit();
-					cleanVariaveis();
-					carregaListaGrupos();
+				}else{
+					cursoSelecionado = null;
+					LOG.warning(ERRO_01 + " Campos Sem preencher! ");
+					context.addMessage(null, new FacesMessage("Campo Curso obrigatorio!"));
 				}
-			}else{
-				cursoSelecionado = null;
-				LOG.warning(ERRO_01 + " Campos Sem preencher! ");
-				context.addMessage(null, new FacesMessage("Campo Curso obrigatorio!"));
 			}
 
 		} else {

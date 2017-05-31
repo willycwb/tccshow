@@ -117,16 +117,20 @@
 											</h:panelGroup>
 
 											<br></br>
-											<p:outputLabel style="width:183%" value="SENHA*" />
-											<p:inputText value="#{perfilManager.senha}" required="true"
+											<p:outputLabel style="width:183%" value="SENHA ANTIGA" />
+											<p:inputText value="#{perfilManager.novasenha}" required="true"
 												type="password" label="text" />
 
 
 											<br></br>
-											<p:outputLabel style="width:183%" value="CONFIRMAR SENHA*" />
-											<p:inputText value="#{perfilManager.senhaconf}"
+											<p:outputLabel style="width:183%" value="NOVA SENHA*" />
+											<p:inputText value="#{perfilManager.novaSenhaBd}"
 												required="true" type="password" label="text" />
-
+												
+											<br></br>
+											<p:outputLabel style="width:183%" value="CONFIRMAR NOVA SENHA*" />
+											<p:inputText value="#{perfilManager.novaSenhaconf}"
+												required="true" type="password" label="text" />
 
 
 											<br></br>

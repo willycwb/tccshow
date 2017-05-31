@@ -13,7 +13,6 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.model.UploadedFile;
 
-import br.com.arguments.dto.LoginUsuarioDTO;
 import br.com.arguments.dto.UsuarioDTO;
 import br.com.arguments.entity.LoginEntity;
 import br.com.arguments.entity.UsuarioEntity;
@@ -49,6 +48,12 @@ public class PerfilManager implements Serializable {
 	private LoginEntity loginEntity;
 	
 	private Long selectedarea;
+	
+	private String novasenha; 
+	
+	private String novaSenhaBd;
+	
+	private String novaSenhaconf;
 	
 	private String senha;
 	
@@ -88,48 +93,48 @@ public class PerfilManager implements Serializable {
 	public void Altera(){
 		UsuarioEntity user = new UsuarioEntity();
 		
-		user.setId(dto.getId());
+		user.setId(this.user.getIdUsuario().getId());
 		user.setNome(dto.getNome());
 		user.setSobrenome(dto.getSobrenome());
 		user.setRa(dto.getRa());
 		user.setEmail(dto.getEmail());
 		
-		if(file != null){
-			String bytesEncoded = Base64.getEncoder().encodeToString(file.getContents());
-			dto.setBaseFile(bytesEncoded);
-		}
+//		if(file != null){
+//			String bytesEncoded = Base64.getEncoder().encodeToString(file.getContents());
+//			dto.setBaseFile(bytesEncoded);
+//		}
 		
-		user.setId(dto.getId());
-		user.setNome(dto.getNome());
-		user.setEmail(dto.getEmail());
-		user.setSobrenome(dto.getSobrenome());
-		user.setRa(dto.getRa());
-		user.setBaseFile(dto.getBaseFile());
+//		user.setId(dto.getId());
+//		user.setNome(dto.getNome());
+//		user.setEmail(dto.getEmail());
+//		user.setSobrenome(dto.getSobrenome());
+//		user.setRa(dto.getRa());
 		
-		
-		
-		loginEntity.setIdUsuario(idUsuario);
+//		loginEntity.setIdUsuario(idUsuario);
+		loginEntity.setId(this.user.getId());		
+		loginEntity.setUsuario(this.user.getUsuario());
+		//loginEntity.setIdUsuario(user);
 		
 		if(dto != null){
 			
-			if(criptografia.md5(senha).equals(criptografia.md5(senhaconf))){
-				if(!senha.equals(senhaBd)){
-					loginEntity.setSenha(criptografia.md5(senha)); 
-					loginService.update(loginEntity);
+			if(senha.equals(criptografia.md5(novasenha))){
+				if(novaSenhaBd.equals(novaSenhaconf)){
+					loginEntity.setSenha(criptografia.md5(novaSenhaBd)); 
 					usuarioService.update(user);
+					loginService.update(loginEntity);
+				}else{
+					FacesContext context = FacesContext.getCurrentInstance();
+					context.addMessage(null, new FacesMessage("Senhas diferentes"));
 				}
-				
 				
 				loginEntity = loginService.findById(loginEntity.getId());
 				SessionUtil.setParam("UserLoged", loginEntity);
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(null, new FacesMessage("Cadastro Atualizado com Sucesso"));
+			}else{
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage("Senha atual inválida!"));
 			}
-		}else{
-			
-			FacesContext context = FacesContext.getCurrentInstance();
-			context.addMessage(null, new FacesMessage("ERRO", "Senhas diferentes"));
-			
 		}
 		
 //		if(!senha.equals(senhaBd)){
@@ -209,6 +214,30 @@ public class PerfilManager implements Serializable {
 
 	public void setDto(UsuarioDTO dto) {
 		this.dto = dto;
+	}
+
+	public String getNovasenha() {
+		return novasenha;
+	}
+
+	public void setNovasenha(String novasenha) {
+		this.novasenha = novasenha;
+	}
+
+	public String getNovaSenhaBd() {
+		return novaSenhaBd;
+	}
+
+	public void setNovaSenhaBd(String novaSenhaBd) {
+		this.novaSenhaBd = novaSenhaBd;
+	}
+
+	public String getNovaSenhaconf() {
+		return novaSenhaconf;
+	}
+
+	public void setNovaSenhaconf(String novaSenhaconf) {
+		this.novaSenhaconf = novaSenhaconf;
 	}
 
 }

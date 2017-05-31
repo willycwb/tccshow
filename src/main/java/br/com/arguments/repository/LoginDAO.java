@@ -29,10 +29,10 @@ public class LoginDAO extends BaseDAO {
 	}
 	
 	public void uptade(LoginEntity loginEntity) {
-		Query query = getManager().createQuery("UPDATE LoginEntity SET senha = :senha, idUsuario = :idUsuario " + " WHERE id = :id ");
+		Query query = getManager().createQuery("UPDATE LoginEntity SET senha = :senha, usuario = :usuario " + " WHERE id = :id ");
 		query.setParameter("id", loginEntity.getId());
 		query.setParameter("senha",loginEntity.getSenha());
-		query.setParameter("idUsuario",loginEntity.getIdUsuario());
+		query.setParameter("usuario",loginEntity.getUsuario());
 		query.executeUpdate();
 	}
 	

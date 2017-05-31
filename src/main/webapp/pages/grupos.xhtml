@@ -103,8 +103,7 @@
 																	required="true"
 																	requiredMessage="Ao menos um curso precisa ser selecionado."
 																	value="#{gruposManager.cursoSelecionado}">
-																	<f:selectItem itemLabel="-- Selecione --" itemValue="0"
-																		noSelectionOption="" />
+																	<f:selectItem itemLabel="-- Selecione --" itemValue="0" />
 																	<f:selectItems var="curso" itemLabel="#{curso.nome}"
 																		itemValue="#{curso.id}"
 																		value="#{gruposManager.listaCursos}" />
